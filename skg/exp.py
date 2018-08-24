@@ -1,3 +1,19 @@
+"""
+Exponential fit with additive bias.
+
+.. todo::
+
+   Add proper handling of colinear inputs (and other singular matrix cases).
+
+.. todo::
+
+   Add tests.
+
+.. todo::
+
+   Add nan_policy argument.
+"""
+
 from future import absolute_import, division
 
 from numpy import (
@@ -40,10 +56,6 @@ def exp_fit(x, y, sorted=True):
         A 3-element array of optimized fitting parameters. The first
         element is the additive bias, the second the multiplicative, and
         the third the exponential.
-
-    Notes
-    -----
-    The algorithm and the theory behind it is presented in the paper below.
 
     References
     ----------

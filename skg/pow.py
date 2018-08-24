@@ -1,3 +1,19 @@
+"""
+Power fit with additive bias.
+
+.. todo::
+
+   Add proper handling of colinear inputs (and other singular matrix cases).
+
+.. todo::
+
+   Add tests.
+
+.. todo::
+
+   Add nan_policy argument.
+"""
+
 from future import division, absolute_import
 
 from numpy import log, power
@@ -47,9 +63,6 @@ def pow_fit(x, y, sorted=True):
     .. math::
 
        A + Be^{Cx} = A + B(e^x)^C
-
-    The algorithm and the theory behind it is presented in the paper
-    below.
 
     References
     ----------
