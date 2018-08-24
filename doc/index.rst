@@ -40,7 +40,7 @@ Installation through pypi is preferred, e.g. with ::
 Installation from source is also an option. The latest version can be obtained
 from GitHub via ::
 
-    git clone github.com:madphysicis/scikit-guess
+    git clone github.com:madphysicist/scikit-guess
 
 You can then install in a couple of different ways. The standard is ::
 
