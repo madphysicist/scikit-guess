@@ -28,10 +28,11 @@ Project Structure
 -----------------
 
 Each fitting algorithm resides in its own module. All the functions get
-imported into the base `skg` namespace. Each module should contain a function
-called `model` that applies the fitting parameters to a given set of x-values,
-either raveled or along a particular axis (assuming the function is 1D).
-Multiple algorithms that fit to the same model can live in the same module.
+imported into the base :mod:`skg` namespace. Each module should contain a
+function called `model` that applies the fitting parameters to a given set of
+x-values, either raveled or along a particular axis (assuming the function is
+1D). Multiple algorithms that fit to the same model can live in the same
+module.
 
 
 -------
