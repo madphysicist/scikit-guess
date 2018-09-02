@@ -174,7 +174,13 @@ texinfo_documents = [
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {
+    'lmfit': ('https://lmfit.github.io/lmfit-py/', None),
+    'numpy': ('https://docs.scipy.org/doc/numpy/', None),
+    'pytest': ('https://docs.pytest.org/en/latest/', None),
+    'python': ('https://docs.python.org/3/', None),
+    'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+}
 
 # -- Options for todo extension ----------------------------------------------
 
