@@ -121,3 +121,6 @@ def model(x, a, b, c):
     """
     return a + b * exp(c * x)
 
+
+exp_fit.model = model
+

@@ -93,3 +93,6 @@ def model(x, a, b, c):
     """
     return a + b * power(x, c)
 
+
+pow_fit.model = model
+
