@@ -52,8 +52,8 @@ def exp_fit(x, y, sorted=True):
 
     References
     ----------
-    Jacquelin, Jean. "REGRESSIONS Et EQUATIONS INTEGRALES", pp. 15–18.,
-    Available online: https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
+    .. [1] Jacquelin, Jean. "REGRESSIONS Et EQUATIONS INTEGRALES", pp. 15–18.,
+       Available online: https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
     x = asfarray(x).ravel()
     y = asfarray(y).ravel()
@@ -72,6 +72,7 @@ def exp_fit(x, y, sorted=True):
     xn = x - x[0]
     yn = y - y[0]
 
+    # Recast this as a simple least-squares projection
     sx2 = square(xn).sum()
     sxs = (xn * s).sum()
     sys = (yn * s).sum()
@@ -84,6 +85,7 @@ def exp_fit(x, y, sorted=True):
 
     ex = exp(out[2] * x)
 
+    # Recast this as a simple least-squares projection
     se1 = ex.sum()
     se2 = square(ex).sum()
     sy0 = y.sum()

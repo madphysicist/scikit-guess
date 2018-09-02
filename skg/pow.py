@@ -53,15 +53,12 @@ def pow_fit(x, y, sorted=True):
     -----
     ``pow_fit(x, y, sorted)`` is equivalent to
     ``exp_fit(log(x), y, sorted)`` since
-
-    .. math::
-
-       A + Be^{Cx} = A + B(e^x)^C
+    :math:`A + Be^{Cx} = A + B(e^x)^C`
 
     References
     ----------
-    Jacquelin, Jean. "REGRESSIONS Et EQUATIONS INTEGRALES", pp. 15–18.,
-    Available online: https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
+    .. [1] Jacquelin, Jean. "REGRESSIONS Et EQUATIONS INTEGRALES", pp. 15–18.,
+       Available online: https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
     return exp_fit(log(x), y, sorted)
 
