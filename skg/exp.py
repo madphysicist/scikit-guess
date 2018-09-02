@@ -19,7 +19,7 @@ from __future__ import absolute_import, division
 from numpy import (
     argsort, asfarray, cumsum, diff, empty, empty_like, exp, square,
 )
-from numpy.linalg import inv
+from numpy.linalg import solve
 
 
 __all__ = ['exp_fit']
@@ -80,7 +80,7 @@ def exp_fit(x, y, sorted=True):
 
     out = empty(3, dtype=float)
 
-    _, out[2] = inv([[sx2, sxs], [sxs, ss2]]).dot([[sxy], [sys]])
+    _, out[2] = solve([[sx2, sxs], [sxs, ss2]], [sxy, sys])
 
     ex = exp(out[2] * x)
 
@@ -89,7 +89,7 @@ def exp_fit(x, y, sorted=True):
     sy0 = y.sum()
     sye = (y * ex).sum()
 
-    out[0], out[1] = inv([[x.size, se1], [se1, se2]]).dot([[sy0], [sye]])
+    out[0], out[1] = solve([[x.size, se1], [se1, se2]], [sy0, sye])
 
     return out
 
