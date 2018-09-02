@@ -6,6 +6,8 @@ Welcome to scikit-guess
    :caption: Contents:
 
    introduction
+   getting_started
+   contributing
    apiref
 
 * :ref:`genindex`
