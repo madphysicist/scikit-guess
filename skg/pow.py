@@ -11,7 +11,7 @@ Power fit with additive bias.
 
 .. todo::
 
-   Add nan_policy argument.
+   Add `nan_policy` argument.
 """
 
 from __future__ import division, absolute_import
@@ -26,13 +26,7 @@ __all__ = ['pow_fit']
 
 def pow_fit(x, y, sorted=True):
     """
-    Fit a power curve to raveled 1D data.
-
-    The fitting parameters are comptued for:
-
-    .. math::
-
-       y = A + Bx^C
+    Power fit of the form :math:`A + Bx^C`.
 
     Parameters
     ----------

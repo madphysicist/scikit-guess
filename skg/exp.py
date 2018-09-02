@@ -27,14 +27,7 @@ __all__ = ['exp_fit']
 
 def exp_fit(x, y, sorted=True):
     """
-    Fit an exponential curve to raveled 1D data.
-
-    This algorithm does not require any a-priori knowledge of the data,
-    such as the intercept. The fitting parameters are comptued for:
-
-    .. math::
-
-       y = A + Be^{Cx}
+    Exponential fit of the form :math:`A + Be^{Cx}`.
 
     Parameters
     ----------
