@@ -14,7 +14,7 @@ Exponential fit with additive bias.
    Add nan_policy argument.
 """
 
-from future import absolute_import, division
+from __future__ import absolute_import, division
 
 from numpy import (
     argsort, asfarray, cumsum, diff, empty, empty_like, exp, square,

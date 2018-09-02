@@ -14,7 +14,7 @@ Power fit with additive bias.
    Add nan_policy argument.
 """
 
-from future import division, absolute_import
+from __future__ import division, absolute_import
 
 from numpy import log, power
 
