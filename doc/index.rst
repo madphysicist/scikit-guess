@@ -9,6 +9,7 @@ Welcome to scikit-guess
    getting_started
    contributing
    apiref
+   testing
 
 * :ref:`genindex`
 * :ref:`modindex`

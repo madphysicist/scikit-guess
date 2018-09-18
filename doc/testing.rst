@@ -1,8 +1,9 @@
-API Reference
-=============
+Testing SKG
+===========
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-.. automodule:: skg
+.. automodule:: skg.tests
+

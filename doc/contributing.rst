@@ -9,12 +9,13 @@ If you have an idea or would like to correct something, please submit an
 If you have questions or are not sure if something is a bug, feel free to
 submit an issue, or ask a question tagged
 `scikit-guess <https://stackoverflow.com/questions/tagged/scikit-guess>`_ on
-`Stack Overflow <https://stackoverflow.com/>`_.
+`Stack Overflow`_.
 
 This scikit is still in early stages, so please provide all the criticism and
 advice you can. Any support at all is welcome. In particular, the following
 areas would be appreciated:
 
+- Proper packaging (setup.py)
 - Proper testing setup (e.g. TravisCI, Appveyor)
 - Pointing out anything that is missing
 - pandas support
@@ -39,8 +40,8 @@ module.
 Testing
 -------
 
-Testing is done using the :ref:`ptyest` framework. A test module for every main
-module exists in the :mod:`tests` package.
+Testing is done using the `pytest`_ framework. A test module for every main
+module exists in the :mod:`skg.tests` package.
 
 Tests for new modules are generated in a semi-automated manner (still WIP). All
 the modules containing a fitting function and a model will be tested against
@@ -61,3 +62,6 @@ categories: speed, accuracy and usefulness.
   :func:`~scipy.optimize.curve_fit` vs. the runtime of just
   :func:`~scipy.optimize.curve_fit` with default parameters. If the latter
   exceeds the former, that's a win.
+
+
+.. include:: /link-defs.rst

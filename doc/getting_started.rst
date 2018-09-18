@@ -31,8 +31,8 @@ Dependencies
 ------------
 
 This project strives to be a true scikit, and limit it's dependencies to just
-numpy and scipy. Pandas support will be added at some point, but may not result
-in a dependency, certainly not a mandatory one.
+`numpy`_ and `scipy`_. `pandas`_ support will be added at some point, but may
+not result in a dependency, certainly not a mandatory one.
 
 At this stage, the code is written in pure python, with all the extensions
 being implemented through the dependencies. That may change at some point in
@@ -40,4 +40,12 @@ the future.
 
 Python 2.7 and 3.4+ are supported.
 
-Building the documentation requires :ref:`sphinx`.
+Testing is done with `pytest`_ and has an optional dependency on `matplotlib`_
+for debugging images.
+
+Building the documentation requires `sphinx`_. The  `Sphinx RTD Theme`_ is an
+optional dependency. The theme will fail over to the built-in
+`Alabaster Theme`_ instead.
+
+
+.. include:: /link-defs.rst
