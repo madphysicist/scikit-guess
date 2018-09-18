@@ -1,3 +1,7 @@
+# Python artifacts
 *.pyc
 __pycache__/
 
+# Testing artifacts
+.pytest_cache/
+.skg_test/
