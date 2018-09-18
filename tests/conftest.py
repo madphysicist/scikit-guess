@@ -1,5 +1,5 @@
 """
-Global fixture setup for pytest.
+Global configuration and fixture setup for pytest.
 """
 
 from errno import EEXIST
@@ -12,14 +12,31 @@ from pytest import fixture
 from .noise import white_normal, white_triangular, white_uniform
 
 
+def pytest_addoption(parser):
+    """
+    Add some options to the default command line.
+
+    The following options are added:
+
+    `--plots`
+        Draw plots of x-values, y-values and fit comparisons. This
+        option checks if matplotlib is installed, and issues a warning
+        if not.
+
+    """
+    parser.addoption("--plots", action="store_true", default=False,
+                     help="Generate graphical plots of input data")
+
+
 @fixture(scope='module', params=[
-    0x0000, 0x1111, 0x1234, 0xBEEF, 0xCAFE, 0xDEAD, 0xFFFF
-], autouse=True)
+    0x0000, #0x1111, 0x1234, 0xBEEF, 0xCAFE, 0xDEAD, 0xFFFF
+])
 def seed(request):
     """
     Sets the seed for in numpy.random.
 
-    Return the seed value.
+    Return the seed value, so it can be used by plots as part of the
+    label.
     """
     seed = request.param
     np.random.seed(seed)
@@ -48,29 +65,33 @@ def noise_distribution(request):
 
 
 @fixture(scope='session')
-def debug():
+def plots(request):
     """
     Enables debugging for the fixtures/tests that care about it.
 
-    .. todo::
-
-       Enable this fixture only if the --debug command line option is
-       specified.
+    This fixture will only be set to `True` if the `--plots`
+    command-line option is set.
     """
-    try:
-        makedirs('.skg_test')
-    except OSError as e:
-        if e.errno != EEXIST:
-            raise
-    try:
-        import matplotlib
-        matplotlib.use('Agg')
-        import matplotlib.pyplot
-    except ImportError:
-        warn('Unable to import matplotlib: '
-             'graphical debugging will be disabled.')
+    if request.config.getoption('--plots'):
+        try:
+            makedirs('.skg_test')
+        except OSError as e:
+            if e.errno != EEXIST:
+                raise
+        try:
+            
+            import matplotlib
+            matplotlib.use('Agg')
+            import matplotlib.pyplot
+        except ImportError:
+            warn('Unable to import matplotlib: '
+                 'plotting will not be enabled.')
+            return False
 
-    return True
+        return True
+
+    else:
+        return False
 
 
 @fixture(scope='session')

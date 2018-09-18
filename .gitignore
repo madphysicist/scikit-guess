@@ -5,3 +5,4 @@ __pycache__/
 # Testing artifacts
 .pytest_cache/
 .skg_test/
+pytestdebug.log

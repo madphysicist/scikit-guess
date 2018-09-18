@@ -2,12 +2,12 @@
 Tests for the :func:`skg.exp_fit` function.
 """
 
-import sys
-
 import numpy as np
 from pytest import fixture
 
 from skg.exp import exp_fit
+
+from .util import plotting_context
 
 
 partials = {
@@ -50,7 +50,7 @@ def x_range(request):
 
 
 @fixture(scope='module')
-def x_data(seed, n_points, x_spread, x_range, debug):
+def x_data(seed, n_points, x_spread, x_range, plots):
     """
     Generate x-data points either uniformly or with random spacing
     across a given range.
@@ -67,21 +67,35 @@ def x_data(seed, n_points, x_spread, x_range, debug):
         # Gamma spacing
         d = end - start
         spread2 = x_spread**2
-        space = np.random.gamma(1.0 / spread2, spread2 * d / n_points, size=n_points)
-        space = np.cumsum(space) - space[0]
+        space = np.empty(n_points, dtype=np.float)
+        space[0] = 0
+        space[1:] = np.random.gamma(
+            shape=1.0 / spread2,
+            scale=spread2 * d / n_points,
+            size=n_points - 1
+        )
+        space = np.cumsum(space)
         x = start + space * d / space[-1]
     else:
         # Uniform spacing
         x = np.linspace(start, end, n_points)
 
-    if debug and 'matplotlib.pyplot' in sys.modules:
-        from matplotlib import pyplot as plt
-        fig, ax = plt.subplots()
-        ax.plot(range(x.size), x)
-        label = 'Gamma with spread {}'.format(x_spread) if x_spread else 'Uniform'
-        ax.set_title('X-VALUES\n{}, {} points\nFrom {} to {}'.format(label, n_points, start, end))
-        fig.savefig('.skg_test/x_data_N{}_S{}_{}-{}.debug.png'.format(n_points, x_spread, start, end))
-        plt.close(fig)
+    if plots:
+        with plotting_context() as fig:
+            ax = fig.subplots()
+            ax.plot(range(x.size), x)
+            if x_spread:
+                label = 'Gamma with spread {}'.format(x_spread)
+            else:
+                label = 'Uniform'
+            ax.set_title(
+                'X-VALUES for seed={}\n{}, {} points\nFrom {} to {}'.format(
+                    seed, label, n_points, start, end
+                )
+            )
+            fig.savefig('.skg_test/x_data_R{}_N{}_S{}_{}-{}.debug.png'.format(
+                seed, n_points, x_spread, start, end
+            ))
 
     return x
 
