@@ -12,6 +12,19 @@ Exponential fit with additive bias.
 .. todo::
 
    Add nan_policy argument.
+
+.. todo::
+
+   Simplify matrix accumulation and solving to use least squares to setup
+   the matrix for you.
+
+.. todo::
+
+   Add PEP8 check to formal tests.
+
+.. todo::
+
+   Add axis parameter.
 """
 
 from __future__ import absolute_import, division
@@ -45,7 +58,7 @@ def exp_fit(x, y, sorted=True):
 
     Return
     ------
-    a, b, c : array
+    a, b, c : ~numpy.ndarray
         A 3-element array of optimized fitting parameters. The first
         element is the additive bias, the second the multiplicative, and
         the third the exponential.
@@ -53,7 +66,7 @@ def exp_fit(x, y, sorted=True):
     References
     ----------
     .. [1] Jacquelin, Jean. "REGRESSIONS Et EQUATIONS INTEGRALES", pp. 15–18.,
-       Available online: https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
+       https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
     x = asfarray(x).ravel()
     y = asfarray(y).ravel()

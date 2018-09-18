@@ -44,7 +44,7 @@ def pow_fit(x, y, sorted=True):
 
     Return
     ------
-    a, b, c : array
+    a, b, c : ~numpy.ndarray
         A 3-element array of optimized fitting parameters. The first
         element is the additive bias, the second the multiplicative, and
         the third is the power.
@@ -58,7 +58,7 @@ def pow_fit(x, y, sorted=True):
     References
     ----------
     .. [1] Jacquelin, Jean. "REGRESSIONS Et EQUATIONS INTEGRALES", pp. 15–18.,
-       Available online: https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
+       https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
     return exp_fit(log(x), y, sorted)
 
