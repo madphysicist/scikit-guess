@@ -6,6 +6,7 @@
 .. _pandas: https://pandas.pydata.org/
 .. _pypi: https://pypi.org/
 .. _pytest: https://docs.pytest.org/en/latest/
+.. _pytest-pep8: https://pypi.org/project/pytest-pep8/
 .. _Sphinx RTD Theme: http://sphinx-rtd-theme.readthedocs.io/en/latest/
 .. _scipy: https://docs.scipy.org/doc/scipy/reference/
 .. _setuptools: https://setuptools.readthedocs.io/en/latest/

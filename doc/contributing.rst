@@ -16,7 +16,8 @@ advice you can. Any support at all is welcome. In particular, the following
 areas would be appreciated:
 
 - Proper packaging (setup.py)
-- Proper testing setup (e.g. TravisCI, Appveyor)
+- Proper testing setup (e.g. TravisCI, Appveyor).
+  https://blog.ionelmc.ro/2014/05/25/python-packaging as a reference.
 - Pointing out anything that is missing
 - pandas support
 - Adding new algorithms

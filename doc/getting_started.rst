@@ -41,7 +41,7 @@ the future.
 Python 2.7 and 3.4+ are supported.
 
 Testing is done with `pytest`_ and has an optional dependency on `matplotlib`_
-for debugging images.
+for debugging images. An optional dependency is `pytest-pep8`_.
 
 Building the documentation requires `sphinx`_. The  `Sphinx RTD Theme`_ is an
 optional dependency. The theme will fail over to the built-in
