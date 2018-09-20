@@ -29,14 +29,16 @@ The algorithms presented in this scikit have two main criteria:
 
 Algorithms that provide a fast, non-iterative fit to functions that would
 otherwise require non-linear fitting are welcome here. One required test is
-that the function works faster than :func:`scipy.optimize.curve_fit`.
+that the function works faster than a modified version of
+:func:`scipy.optimize.curve_fit`, with default initial parameters.
 
 While algorithms should yield good results, they do not need to be completely
 optimal. The main criterion for accuracy is that the result can be used as a
-good initial guess for a non-linear optimization method. As a consequece, some
-of the algorithms provided by this scikit are good candidates for the
+good initial guess for a non-linear optimization method. Some parameters are
+more significant than others (think frequency of a sine wave). As a consequece,
+some of the algorithms provided by this scikit are good candidates for the
 :meth:`~lmfit.model.Model.guess` methods of corresponding models in
-:doc:`lmfit <lmfit:index>`.
+`lmfit`_.
 
 All the functions that are *currently* supported are one dimensional, but that
 is not a requirement.
@@ -45,4 +47,7 @@ is not a requirement.
 .. rubric:: Footnotes
 
 .. [1] Jacquelin, Jean. "REGRESSIONS Et EQUATIONS INTEGRALES", pp. 15–18.,
-   Available online https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
+   https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
+
+
+.. include:: /link-defs.rst

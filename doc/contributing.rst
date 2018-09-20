@@ -13,12 +13,11 @@ submit an issue, or ask a question tagged
 
 This scikit is still in early stages, so please provide all the criticism and
 advice you can. Any support at all is welcome. In particular, the following
-areas would be appreciated:
+areas are under construction:
 
 - Proper packaging (setup.py)
 - Proper testing setup (e.g. TravisCI, Appveyor).
   https://blog.ionelmc.ro/2014/05/25/python-packaging as a reference.
-- Pointing out anything that is missing
 - pandas support
 - Adding new algorithms
 
@@ -34,7 +33,7 @@ imported into the base :mod:`skg` namespace. Each module should contain a
 function called `model` that applies the fitting parameters to a given set of
 x-values, either raveled or along a particular axis (assuming the function is
 1D). Multiple algorithms that fit to the same model can live in the same
-module.
+module. There is no standard yet for resolving naming conflicts in such cases.
 
 
 -------
@@ -63,6 +62,8 @@ categories: speed, accuracy and usefulness.
   :func:`~scipy.optimize.curve_fit` vs. the runtime of just
   :func:`~scipy.optimize.curve_fit` with default parameters. If the latter
   exceeds the former, that's a win.
+
+See the :doc:`testing` page for information on how to run and modify the tests.
 
 
 .. include:: /link-defs.rst
