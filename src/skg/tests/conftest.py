@@ -90,8 +90,7 @@ def plots(request):
 
         return True
 
-    else:
-        return False
+    return False
 
 
 @fixture(scope='session')
