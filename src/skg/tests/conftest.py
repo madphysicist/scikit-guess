@@ -4,6 +4,7 @@ Global configuration and fixture setup for pytest.
 
 from errno import EEXIST
 from os import makedirs
+from os.path import join
 from warnings import warn
 
 import numpy as np
@@ -74,7 +75,7 @@ def plots(request):
     """
     if request.config.getoption('--plots'):
         try:
-            makedirs('.skg_test')
+            makedirs(join(request.config.rootdir, '.skg_test'))
         except OSError as e:
             if e.errno != EEXIST:
                 raise

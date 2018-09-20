@@ -2,6 +2,12 @@
 *.pyc
 __pycache__/
 
+# Build artifacts
+build/
+dist/
+.egg/
+*.egg-info/
+
 # Testing artifacts
 .pytest_cache/
 .skg_test/
