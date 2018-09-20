@@ -65,7 +65,7 @@ def exp_fit(x, y, sorted=True):
 
     References
     ----------
-    .. [1] Jacquelin, Jean. "REGRESSIONS Et EQUATIONS INTEGRALES", pp. 15–18.,
+    .. [1] Jacquelin, Jean. "REGRESSIONS Et EQUATIONS INTEGRALES", pp. 15-18.,
        https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
     x = asfarray(x).ravel()

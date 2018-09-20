@@ -29,42 +29,6 @@ def pytest_addoption(parser):
                      help="Generate graphical plots of input data")
 
 
-@fixture(scope='module', params=[
-    0x0000, #0x1111, 0x1234, 0xBEEF, 0xCAFE, 0xDEAD, 0xFFFF
-])
-def seed(request):
-    """
-    Sets the seed for in numpy.random.
-
-    Return the seed value, so it can be used by plots as part of the
-    label.
-    """
-    seed = request.param
-    np.random.seed(seed)
-    return seed
-
-
-@fixture(scope='module', params=[
-    white_normal, white_uniform, white_triangular
-])
-def noise_distribution(request):
-    """
-    A sequence of noise distribution types.
-
-    All distribututions are implemented as functions that accept an
-    amplitude and optionally the output size. The distributions are
-    centered and symmetrical about zero.
-
-    1. White Gaussian (normal) noise: amplitude is the standard
-       deviation.
-    2. Uniform noise: amplitude is the upper and lower bounds of the
-       distribution.
-    3. Triangular noise: amplitude is the upper and lower bounds of the
-       distribution.
-    """
-    return request.param
-
-
 @fixture(scope='session')
 def plots(request):
     """
@@ -103,3 +67,39 @@ def quality_metric():
     quality_metric = {}
     yield quality_metric
     # TODO: Publish as HTML page
+
+
+@fixture(scope='module', params=[
+    0x0000, #0x1111, 0x1234, 0xBEEF, 0xCAFE, 0xDEAD, 0xFFFF
+])
+def seed(request):
+    """
+    Sets the seed for in numpy.random.
+
+    Return the seed value, so it can be used by plots as part of the
+    label.
+    """
+    seed = request.param
+    np.random.seed(seed)
+    return seed
+
+
+@fixture(scope='module', params=[
+    white_normal, white_uniform, white_triangular
+])
+def noise_distribution(request):
+    """
+    A sequence of noise distribution types.
+
+    All distribututions are implemented as functions that accept an
+    amplitude and optionally the output size. The distributions are
+    centered and symmetrical about zero.
+
+    1. White Gaussian (normal) noise: amplitude is the standard
+       deviation.
+    2. Uniform noise: amplitude is the upper and lower bounds of the
+       distribution.
+    3. Triangular noise: amplitude is the upper and lower bounds of the
+       distribution.
+    """
+    return request.param

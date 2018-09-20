@@ -17,6 +17,8 @@ refers to the model function being fitted. Each fitting routine has a
 from .exp import exp_fit
 from .pow import pow_fit
 
+from .version import __version__
+
 
 __all__ = ['exp_fit', 'pow_fit']
 
