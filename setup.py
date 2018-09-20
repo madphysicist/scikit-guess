@@ -50,6 +50,9 @@ CLASSIFIERS = (
 )
 
 
+COMMANDS = {}
+
+
 class PyTest(TestCommand):
     """
     Suggested by pytest documentation to avoid dependency on
@@ -71,6 +74,15 @@ class PyTest(TestCommand):
         args.insert(0, '--rootdir=src/skg/tests')
         errno = pytest.main(args)
         sys.exit(errno)
+
+COMMANDS['test'] = PyTest
+
+
+try:
+    from sphinx.setup_command import BuildDoc
+    COMMANDS['doc'] = BuildDoc
+except ImportError:
+    pass
 
 
 def version_info():
@@ -132,12 +144,13 @@ setup(
         'scipy',
     ],
     tests_require=['pytest'],
-    cmdclass={'test': PyTest},
+    cmdclass=COMMANDS,
     extras_require={
         'pandas': ['pandas'],
         'test-plots': ['matplotlib'],
-        'pep8-check': ['pytest-pep8'],
+        'test-pep8': ['pytest-pep8'],
         # TODO: Some of the sphinx extensions may need to go in here.
+        'docs': ['sphinx >= 1.8'],
         'docs-rtd': ['sphinx_rtd_theme'],
     }
 )

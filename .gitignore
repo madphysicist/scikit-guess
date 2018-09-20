@@ -2,13 +2,17 @@
 *.pyc
 __pycache__/
 
-# Build artifacts
+# Build + distribution artifacts
 build/
 dist/
 .egg/
 *.egg-info/
 
+# Documenation artifacts
+doc/generated/
+
 # Testing artifacts
 .pytest_cache/
 .skg_test/
 pytestdebug.log
+

@@ -8,6 +8,7 @@ Testing SKG
 .. automodule:: skg.tests
 
 
+----------------
 Additional Notes
 ----------------
 
