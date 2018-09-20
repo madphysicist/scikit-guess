@@ -22,3 +22,15 @@ from .version import __version__
 
 __all__ = ['exp_fit', 'pow_fit']
 
+
+def test(*args, **kwargs):
+    """
+    Run the tests.
+
+    Positional arguments will be inserted as command line arguments to
+    the main test routine. Keyword arguments will be passed directly.
+    """
+    from pytest import main
+    cmd = ['--pyargs', 'skg.tests']
+    cmd.extend(args)
+    return main(cmd, **kwargs)
