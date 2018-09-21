@@ -80,7 +80,7 @@ COMMANDS['test'] = PyTest
 
 try:
     from sphinx.setup_command import BuildDoc
-    COMMANDS['doc'] = BuildDoc
+    COMMANDS['build_sphinx'] = BuildDoc
 except ImportError:
     pass
 
