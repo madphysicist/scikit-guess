@@ -10,6 +10,7 @@ Welcome to scikit-guess
    contributing
    apiref
    testing
+   appendices/references
 
 * :ref:`genindex`
 * :ref:`modindex`

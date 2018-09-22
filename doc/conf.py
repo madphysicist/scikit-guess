@@ -194,3 +194,10 @@ add_function_parentheses = False
 
 # Auto-generate stubs
 autosummary_generate = True
+
+
+def setup(app):
+    """
+    Add custom stylesheet(s).
+    """
+    app.add_stylesheet('css/custom.css')
