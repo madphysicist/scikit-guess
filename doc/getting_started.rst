@@ -107,5 +107,20 @@ older version, comment out the ``nitpicky`` option in `setup.cfg`.
 The documentation output goes to `build/doc` in the root directory with both
 versions.
 
+The HTML documentation uses a small amount of CSS3, and will likely not render
+100% accurately on IE8 or older. The discrepancies should be quite minimal
+however.
+
+It is also possible to build the documentation as LaTeX using ::
+
+    $ make -C doc clean latex
+
+Direct output to PDF through the ``pdf`` or ``pdflatex`` targets is not
+supported. However, the LaTeX build can be used to genrate PDFs::
+
+    $ make -C build/doc/latex pdf-all
+
+This requires some additional dependencies, like a LaTeX system and `latexmk`.
+
 
 .. include:: /link-defs.rst
