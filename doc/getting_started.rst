@@ -68,6 +68,19 @@ or ::
 
 The latter is preferred.
 
+All the usual `pytest` command line options are allowed. To enable plotting of
+some of the fixtures and output results, a ``--plots`` flag is provided::
+
+    >>> skg.test('--plots')
+
+or ::
+
+    $ python setup.py test --pytest-args=--plots
+
+or ::
+
+    $ pytest --plots
+
 
 .. _start-docs:
 
