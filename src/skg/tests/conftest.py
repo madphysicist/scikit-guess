@@ -1,5 +1,7 @@
 """
 Global configuration and fixture setup for pytest.
+
+This configuration depends on the :mod:`skg.tests.options` plugin.
 """
 
 from errno import EEXIST
@@ -13,29 +15,14 @@ from pytest import fixture
 from .noise import white_normal, white_triangular, white_uniform
 
 
-def pytest_addoption(parser):
-    """
-    Add some options to the default command line.
-
-    The following options are added:
-
-    `--plots`
-        Draw plots of x-values, y-values and fit comparisons. This
-        option checks if matplotlib is installed, and issues a warning
-        if not.
-
-    """
-    parser.addoption("--plots", action="store_true", default=False,
-                     help="Generate graphical plots of input data")
-
-
 @fixture(scope='session')
 def plots(request):
     """
     Enables debugging for the fixtures/tests that care about it.
 
     This fixture will only be set to `True` if the `--plots`
-    command-line option is set.
+    command-line option is set through the :mod:`skg.tests.options`
+    plugin.
     """
     if request.config.getoption('--plots'):
         try:

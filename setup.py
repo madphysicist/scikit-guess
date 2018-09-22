@@ -71,7 +71,8 @@ class PyTest(TestCommand):
         import pytest
 
         args = shlex.split(self.pytest_args)
-        args.insert(0, '--rootdir=src/skg/tests')
+        args.insert(0, '-p')
+        args.insert(1, 'skg.tests.options')
         errno = pytest.main(args)
         sys.exit(errno)
 

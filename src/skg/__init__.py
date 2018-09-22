@@ -31,6 +31,6 @@ def test(*args, **kwargs):
     the main test routine. Keyword arguments will be passed directly.
     """
     from pytest import main
-    cmd = ['--pyargs', 'skg.tests']
+    cmd = ['-p', 'skg.tests.options', '--pyargs', 'skg.tests']
     cmd.extend(args)
     return main(cmd, **kwargs)
