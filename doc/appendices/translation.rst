@@ -12,8 +12,8 @@ REGRESSIONS et EQUATIONS INTEGRALES
 
 | Sample applications to various functions:
 | :ref:`Gaussian <x1-sec3>`
-| Power, Exponential, Logarithmic, Weibull
-| Sinusoidal
+| :ref:`Power, Exponential, Logarithmic, Weibull <x2>`
+| :ref:`Sinusoidal <x3>`
 | Logistic
 | Generalization of Sinusoidal Regression
 | Damped Sinusoidal Regression
@@ -43,15 +43,12 @@ purpose well, and this translation (as well as the whole scikit) were the
 result. I hope that these endeavors do justice to Jean Jacquelin's work, and
 prove as useful to someone else as they did to me.
 
-The paper translated here is a compilation of eight original papers by the
-author, gathered into a single multi-chapter unit. Some of the original
-matrial is in French and some in English. I have attempted to translate the
-French as faithfully as I could. I have also attempted to clean up the grammar
-and usage of the English portions. My goal is to represent the meaning of the
-original as accurately possible, both technically and linguistically. I have
-made shameless use of Google Translate, some dictionaries that I have held on
-to since before high school, and some lingering memories of my French classes.
-In all cases, the final wording is entirely my own.
+The paper translated here is a compilation of related original papers by the
+author, gathered into a single multi-chapter unit. Some of the original matrial
+is in French and some in English. I have attempted to translate the French as
+faithfully as I could. I have also attempted to clean up the grammar and usage
+of the English portions. My goal is to represent the meaning of the original as
+accurately possible, both technically and linguistically.
 
 
 [ Translation : 22 September 2018 ]
@@ -98,12 +95,9 @@ distributions commonly found in statistical applications.
 .. include:: page_break.rst
 
 
-.. rst-class:: center
-
-.. _x1-paper:
-
-Regressions and Integral Equations
-==================================
+.. rubric:: Regressions and Integral Equations
+   :name: x1-paper
+   :class: center
 
 .. rst-class:: center
 
@@ -113,13 +107,13 @@ Regressions and Integral Equations
 
 | The first revision of the paper *Regressions and Integral Equations* was
   dated 01/14/2009.
-| The current version was published on 04/27/09.
+| The current version was published on 04/27/2009.
 
 
 .. _x1-sec1:
 
 1. Introduction
----------------
+===============
 
 The survey presented here falls into the general category of regression
 problems. For example, given the coordinates of a sequence of :math:`n` points:
@@ -147,37 +141,279 @@ shows that, except in special cases, an integral equation is better suited to
 the task of numerical approximation than a differential equation, in the
 context of such problems.
 
+The idea of using integral equations will be explained and demonstrated in
+practice using a Gaussian distribution as a concrete example. Other examples of
+regression using integral equations will be described in a detailed manner in
+the two associated papers:
+
+- :ref:`x2`
+- :ref:`x3`
+
 
 .. _x1-sec2:
 
 2. Principle of Linearization Through Differential and/or Integral Equations
-----------------------------------------------------------------------------
+============================================================================
+
+Let us begin with a summary of the numerical methods used to approximate
+derivatives and/or primitives. Given :math:`n` points :math:`(x_k, y_k)` that
+lie near the curve of a function :math:`y(x)`, and given another function
+:math:`g(x)`, we can calculate the approximations for the following derivatives
+and/or integrals, with :math:`g_k = g(x_k)`:
+
+.. math::
+
+   D_k = \frac{g_{k+1}y_{k+1} - g_{k-1}y_{k-1}}{x_{k+1} - x_{k-1}} \simeq
+   \left(\frac{d}{dx} g(x)y(x) \right)_{\left(x = x_k \right)}
+
+.. math::
+
+   DD_k = \frac{D_{k+1} - D_{k-1}}{x_{k+1} - x_{k-1}} \simeq
+   \left(\frac{d^2}{dx^2} g(x)y(x)\right)_{\left(x = x_k\right)}
+
+And so on, for further derivatives, as necessary.
 
 
 .. _x1-sec3:
 
 3. Example: Case of the Gaussian Probability Density Function
--------------------------------------------------------------
+=============================================================
 
 
 .. _x1-sec4:
 
 4. Commentary
--------------
+=============
 
 
 .. rst-class:: center
 
 .. _x1-appendix1:
 
-Appendix 1: Linear Regression (Refresher)
------------------------------------------
+Appendix 1: Review of Linear Regression
+=======================================
 
 
 .. rst-class:: center
 
 .. _x1-appendix2:
 
-Appendix 2: Case of the Gaussian Probability Density Function
--------------------------------------------------------------
+Appendix 2: Linear Regression of the Gaussian Probability Density Function
+==========================================================================
 
+
+.. rst-class:: center
+
+.. _x2:
+
+------------------------------------------------------------------------------
+Non-Linear Regression of Power, Exponential, Logarithmic and Weibull Functions
+------------------------------------------------------------------------------
+
+.. rst-class:: center
+
+**Jean Jacquelin**
+
+
+.. _x2-abstract:
+
+Abstract
+========
+
+We demonstrate the application of a well-chosen integral equation to produce a
+non-iterative optimization of the parameters of power, exponential, logarithmic
+and Weibull functions.
+
+
+.. rubric:: Non-Linear Regression of Power, Exponential, Logarithmic and
+            Weibull Functions
+   :name: x2-paper
+   :class: center
+
+
+.. rst-class:: center
+
+**Jean Jacquelin**
+
+
+.. _x2-sec1:
+
+1. Introduction
+===============
+
+
+.. _x2-sec2:
+
+2. Regression of Functions of the Form :math:`y(x) = a + b exp(c x)`
+====================================================================
+
+
+.. _x2-sec3:
+
+3. Regression of the Three-Parameter Weibull Distribution
+=========================================================
+
+
+.. _x2-sec4:
+
+4. Conclusion
+=============
+
+
+.. rst-class:: center
+
+.. _x3:
+
+-----------------------
+Regression of Sinusoids
+-----------------------
+
+.. rst-class:: center
+
+**Jean Jacquelin**
+
+.. rst-class:: center
+
+| The first revision of the paper *Regressions of Sinusoids* was dated
+  01/09/2009.
+| The current version was published on 02/15/2009.
+
+
+.. _x3-sec1:
+
+1. Introduction
+===============
+
+
+.. _x3-sec2:
+
+2. Cases Where :math:`\omega` is Known Ahead of Time
+====================================================
+
+
+.. _x3-sec3:
+
+3. Linearization With an Integral Equation
+==========================================
+
+
+.. _x3-sec4:
+
+4. Succinct Performance Analysis
+================================
+
+
+.. _x3-sec4-1:
+
+4.1 "Equidistant" Distribution of Abscissae and Non-dispersion of Ordinals
+--------------------------------------------------------------------------
+
+
+.. _x3-sec4-2:
+
+4.2 Aleatory Distribution of Point Abscissae Without Ordinal Dispersion
+-----------------------------------------------------------------------
+
+
+.. _x3-sec4-3:
+
+4.3 Aleatory Distribution of Point Abscissae With Dispersed Ordinals
+--------------------------------------------------------------------
+
+
+.. _x3-sec5:
+
+5. Cases Where :math:`a` and :math:`\rho` Parameters Are Approximately Known
+============================================================================
+
+
+.. _x3-sec6:
+
+6. Results of a Complete Optimization
+=====================================
+
+
+.. _x3-sec7:
+
+7. Commentary
+=============
+
+
+.. rst-class:: center
+
+.. _x3-appendix1:
+
+Appendix 1: Summary of Sinusoidal Regression Algorithm
+======================================================
+
+
+.. rst-class:: center
+
+.. _x3-appendix2:
+
+Appendix 2: Detailed Procedure for Sinusoidal Regression
+========================================================
+
+
+.. rst-class:: center
+
+.. _x4:
+
+-----------------------------------------------------------
+Application to the Logistic Distribution (Three Parameters)
+-----------------------------------------------------------
+
+
+
+.. rst-class:: center
+
+.. _x5:
+
+----------------------------------------------------------
+Application to the Logistic Distribution (Four Parameters)
+----------------------------------------------------------
+
+
+.. rst-class:: center
+
+.. _x6:
+
+--------------------------------------
+Mixed Linear and Sinusoidal Regression
+--------------------------------------
+
+
+.. rst-class:: center
+
+.. _x7:
+
+---------------------------------
+Generalized Sinusoidal Regression
+---------------------------------
+
+
+.. rst-class:: center
+
+.. _x8:
+
+----------------------------
+Damped Sinusoidal Regression
+----------------------------
+
+
+.. rst-class:: center
+
+.. _x9:
+
+-------------------------------------------------------
+Double Exponential Regression & Double Power Regression
+-------------------------------------------------------
+
+
+.. rst-class:: center
+
+.. _x10:
+
+-----------------------
+Multivariate Regression
+-----------------------
