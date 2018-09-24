@@ -173,6 +173,27 @@ and/or integrals, with :math:`g_k = g(x_k)`:
 
 And so on, for further derivatives, as necessary.
 
+.. math::
+
+   S_k \simeq \int_{x_1}^x g(u)y(u)du
+   \begin{cases}
+       S_1 = 0 \hfill \text{and for $k = 2 \rightarrow n$:} & \\
+       S_k = S_{k-1} + \frac{1}{2}(g_ky_k + g_{k-1}y_{k-1})(x_k - x_{k-1}) &
+   \end{cases}
+
+.. math::
+
+   SS_k \simeq \int_{x_1}^x \left(\int_{x_1}^v g(u)y(u)du\right)dv
+   \begin{cases}
+       SS_1 = 0 \hfill \text{and for $k = 2 \rightarrow n$:} & \\
+       SS_k = SS_{k-1} + \frac{1}{2}(S_k + S_{k-1})(x_k - x_{k-1}) &
+   \end{cases}
+
+And do on, for further integrals, as necessary.
+
+It goes without saying that the points must first be ranked in order of
+increasing :math:`x_k`.
+
 
 .. _x1-sec3:
 
