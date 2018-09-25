@@ -6,3 +6,7 @@ img.center {
     display: block;
     margin: auto;
 }
+
+.math {
+    text-align: left;
+}

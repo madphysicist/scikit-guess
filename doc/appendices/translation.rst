@@ -44,14 +44,15 @@ result. I hope that these endeavors do justice to Jean Jacquelin's work, and
 prove as useful to someone else as they did to me.
 
 The paper translated here is a compilation of related original papers by the
-author, gathered into a single multi-chapter unit. Some of the original matrial
-is in French and some in English. I have attempted to translate the French as
-faithfully as I could. I have also attempted to clean up the grammar and usage
-of the English portions. My goal is to represent the meaning of the original as
-accurately possible, both technically and linguistically.
+author, gathered into a single multi-chapter unit. Some of the original
+material is in French and some in English. I have attempted to translate the
+French as faithfully as I could. I have also attempted to conform the English
+portions to what I consider to be modern American usage.
+
+    -- Joseph Fox-Rabinovitz
 
 
-[ Translation : 22 September 2018 ]
+[ Translation : 01 October 2018 ]
 
 
 .. include:: page_break.rst
@@ -115,36 +116,35 @@ distributions commonly found in statistical applications.
 1. Introduction
 ===============
 
-The survey presented here falls into the general category of regression
+The study presented here falls into the general framework of regression
 problems. For example, given the coordinates of a sequence of :math:`n` points:
 :math:`(x_1, y_1), (x_2, y_2), ..., (x_k, y_k), ..., (x_n, y_n)`, we wish to
 find the function :math:`y = F(a, b, c, ...; x)` which lies as close as
 possible to the sequence by optimizing the parameters :math:`a, b, c, ...`
 
 The commonly known solution to linear regression merits only a brief
-discussion, which is to be found in :ref:`x1-appendix1`. There are a few cases
-whose linearity might be overlooked at first glance, but for which it is
-possible to recast the problem as a linear regression. The case of the Gaussian
-distribution function is an example, treated in :ref:`x1-appendix2`.
+discussion, which is to be found in :ref:`x1-appendix1`. Some problems can be
+solved through linear regression even though they appear non-linear at first
+glance. The Gaussian distribution is an example of such a function, and is
+discussed in :ref:`x1-appendix2`.
 
-Barring such trivial cases, we are confronted with the daunting problem of
+Barring such simple cases, we are confronted with the daunting problem of
 non-linear regression. The literature on the subject is quite extensive. Even
 the briefest review would derail us from the purpose of this paper. It is also
-unnecessary because our goal is to reduce some non-linear problems to a linear
-regression without using iterative or recursive procedures (otherwise, how
+unnecessary because our goal is to reduce some non-linear problems to linear
+regression through non-iterative and non-recursive procedures (otherwise, how
 would our method be innovative with respect to existing methods?).
 
 Starting with the next paragraph, we will proceed to the heart of the matter:
-that is to say, to render a non-linear problem to a linear form using a
+that is to say, to render a non-linear problem to a linear form by means of a
 suitable differential and/or integral equation. The preliminary discussion
-shows that, except in special cases, an integral equation is better suited to
-the task of numerical approximation than a differential equation, in the
-context of such problems.
+shows that in the context of such problems, integral equations tend to be more
+numerically stable than differential equations.
 
-The idea of using integral equations will be explained and demonstrated in
-practice using a Gaussian distribution as a concrete example. Other examples of
-regression using integral equations will be described in a detailed manner in
-the two associated papers:
+The principle of using integral equations will be explained and demonstrated in
+practice using the Gaussian distribution as a concrete example. Other examples
+of regression using integral equations will be described in a detailed manner
+in the two following papers:
 
 - :ref:`x2`
 - :ref:`x3`
@@ -155,44 +155,108 @@ the two associated papers:
 2. Principle of Linearization Through Differential and/or Integral Equations
 ============================================================================
 
-Let us begin with a summary of the numerical methods used to approximate
-derivatives and/or primitives. Given :math:`n` points :math:`(x_k, y_k)` that
-lie near the curve of a function :math:`y(x)`, and given another function
-:math:`g(x)`, we can calculate the approximations for the following derivatives
-and/or integrals, with :math:`g_k = g(x_k)`:
+Let us begin with a summary of numerical methods for approximating derivatives
+and integrals. Given :math:`n` points :math:`(x_k, y_k)` located near the curve
+of a function :math:`y(x)`, and given another function :math:`g(x)`, we can
+calculate approximations for the following derivatives and integrals with
+:math:`g_k = g(x_k)`:
 
-.. math::
+    .. math::
 
-   D_k = \frac{g_{k+1}y_{k+1} - g_{k-1}y_{k-1}}{x_{k+1} - x_{k-1}} \simeq
-   \left(\frac{d}{dx} g(x)y(x) \right)_{\left(x = x_k \right)}
+       D_k = \frac{g_{k+1}y_{k+1} - g_{k-1}y_{k-1}}{x_{k+1} - x_{k-1}} \simeq
+       \left(\frac{d}{dx} g(x)y(x) \right)_{\left(x = x_k \right)}
 
-.. math::
+    .. math::
 
-   DD_k = \frac{D_{k+1} - D_{k-1}}{x_{k+1} - x_{k-1}} \simeq
-   \left(\frac{d^2}{dx^2} g(x)y(x)\right)_{\left(x = x_k\right)}
+       DD_k = \frac{D_{k+1} - D_{k-1}}{x_{k+1} - x_{k-1}} \simeq
+       \left(\frac{d^2}{dx^2} g(x)y(x)\right)_{\left(x = x_k\right)}
 
-And so on, for further derivatives, as necessary.
+    And so on, for subsequent derivatives, as necessary.
 
-.. math::
+    .. math::
 
-   S_k \simeq \int_{x_1}^x g(u)y(u)du
-   \begin{cases}
-       S_1 = 0 \hfill \text{and for $k = 2 \rightarrow n$:} & \\
-       S_k = S_{k-1} + \frac{1}{2}(g_ky_k + g_{k-1}y_{k-1})(x_k - x_{k-1}) &
-   \end{cases}
+       S_k \simeq \int_{x_1}^x g(u)y(u)du \quad
+       \begin{cases}
+           S_1 = 0 \hfill \text{and for $k = 2 \rightarrow n$:} & \\
+           S_k = S_{k-1} +
+           \frac{1}{2}(g_ky_k + g_{k-1}y_{k-1})(x_k - x_{k-1}) &
+       \end{cases}
 
-.. math::
+    .. math::
 
-   SS_k \simeq \int_{x_1}^x \left(\int_{x_1}^v g(u)y(u)du\right)dv
-   \begin{cases}
-       SS_1 = 0 \hfill \text{and for $k = 2 \rightarrow n$:} & \\
-       SS_k = SS_{k-1} + \frac{1}{2}(S_k + S_{k-1})(x_k - x_{k-1}) &
-   \end{cases}
+       SS_k \simeq \int_{x_1}^x \left(\int_{x_1}^v g(u)y(u)du\right)dv \quad
+       \begin{cases}
+           SS_1 = 0 \hfill \text{and for $k = 2 \rightarrow n$:} & \\
+           SS_k = SS_{k-1} + \frac{1}{2}(S_k + S_{k-1})(x_k - x_{k-1}) &
+       \end{cases}
 
-And do on, for further integrals, as necessary.
+    And do on, for subsequent integrals, as necessary.
 
 It goes without saying that the points must first be ranked in order of
 increasing :math:`x_k`.
+
+It is possible to use more sophisticated approximations for numerical
+differentiation and integration. Nothing prevents us from selecting a lower
+limit (or lower limits) of integration other than :math:`x_1`, and using
+different limits for the successive integrations. However, that would
+complicate the formulas and explanations unnecessarily. For the sake of
+simplicity, let us agree to use these formulas, at least for this stage of the
+presentation.
+
+Returning to our initial formulation of the problem, we wish to optimize the
+parameters :math:`a, b, c, ...` of a function :math:`y(a, b, c, ...; x)` so
+that its curve approaches the :math:`n` points :math:`(x_k, y_k)` as closely as
+possible. Evidently, the exact expressions of the derivatives and integrals of
+the function depend on the pameters :math:`a, b, c, ...`. However the
+approximate values calculated using the formulas shown above, i.e. the
+numerical values of :math:`D_k, DD_k, ..., S_k, SS_k, ...`, are computed solely
+from the data points :math:`x_k, y_k`, **without requiring prior knowledge of**
+:math:`a, b, c, ...`. This observation is the crux of the method that is to be
+shown.
+
+Suppose the function :math:`y(a, b, c, ...; x)` is the solution to a
+differential and/or integral equation of the form:
+
+.. math::
+
+   y(x) = A\Phi(x) + B\int G(x)y(x)dx + C\int\int H(x)y(x)dx^2 + ...
+        + \alpha\frac{d}{dx}g(x)y(x) + \beta\frac{d^2}{dx^2}h(x)y(x) + ...
+
+with :math:`\Phi(x), G(x), H(x), ..., g(x), h(x), ...` predetermined functions
+independent of :math:`a, b, c, ...`, and
+:math:`A, B, C, ..., \alpha, \beta, ...` dependent on :math:`a, b, c, ...`. The
+approximate values are then respectively (with
+:math:`\Phi_k = \Phi(x_k); G_k = G(x_k); H_k = H(x_k); ...`):
+
+.. note::
+
+   The following was omitted on the line above, because I believe that it is
+   not correct/necessary, pending confirmation from the author:
+   :math:`; \alpha_k = \alpha(x_k); \beta_k = \beta(x_k); ...`.
+
+.. math::
+
+   D_k = \frac{g_{k+1}y_{k+1} - g_{k-1}y{k-1}}{x_{k+1} - x_{k-1}}
+
+.. math::
+
+   DD_k = \frac{\Delta_{k+1} - \Delta_{k-1}}{x_{k+1} - x_{k-1}}
+   \quad \text{with} \quad
+   \Delta_k = \frac{h_{k+1}y_{k+1} - h_{k-1}y_{k-1}}{x_{k+1} - x_{k-1}}
+
+.. math::
+
+   S_1 = 0 \quad ; \quad S_k = S_{k-1} +
+   \frac{1}{2}\left(G_ky_k + G_{k-1}y_{k-1}\right)\left(x_k - x_{k-1}\right)
+
+.. math::
+
+   \begin{cases}
+       SS_1 = 0 \quad ; \quad SS_k = SS_{k-1} +
+       \frac{1}{2}\left(\Xi_k + \Xi_{k-1}\right)\left(x_k - x_{k-1}\right) \\
+       \text{with: } \Xi_k = 0 \quad ; \quad \Xi_k = \Xi_{k-1} +
+       \frac{1}{2}\left(H_ky_k + H_{k-1}y_{k-1}\right)\left(x_k - x_{k-1}\right)
+   \end{cases}
 
 
 .. _x1-sec3:
