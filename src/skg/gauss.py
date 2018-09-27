@@ -32,16 +32,16 @@ Gaussian distribution fit.
 
 from __future__ import absolute_import, division
 
-from numpy import array, cumsum, diff, empty, exp, pi, sqrt
+from numpy import array, cumsum, diff, empty, exp, matmul, pi, sqrt
 from scipy.linalg import lstsq
 
-from ._util import preprocess
+from ._util import axis_slice, preprocess, transpose_last
 
 
 __all__ = ['gauss_fit']
 
 
-def gauss_fit(x, y, sorted=True):
+def gauss_fit(x, y, axis=None, sorted=True):
     r"""
     Gaussian fit of the form
 
@@ -53,12 +53,15 @@ def gauss_fit(x, y, sorted=True):
     Parameters
     ----------
     x : array-like
-        The x-values of the data points. The fit will be performed on a
-        raveled version of this array.
+        The x-values of the data points
     y : array-like
         The y-values of the data points corresponding to `x`. Must be
-        the same size as `x`. The fit will be performed on a raveled
-        version of this array.
+        the same size as `x`.
+    axis : int or None
+        The axis along which to perform the fit. If `None`, `x` and `y`
+        are raveled and a the fit a 1-D array. Otherwise, the output
+        will be the same shape as `y`, except that `axis` will be
+        reduced to two elements.
     sorted : bool
         Set to True if `x` is already monotonically increasing or
         decreasing. If False, `x` will be sorted into increasing order,
@@ -76,18 +79,24 @@ def gauss_fit(x, y, sorted=True):
     .. [1] Jacquelin, Jean. "\ :ref:`ref-reei`\ ", :ref:`pp. 6-8. <x1-sec3>`,
        https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
-    x, y = preprocess(x, y, sorted)
+    x, y, axis = preprocess(x, y, axis, sorted)
 
-    d = 0.5 * diff(x)
+    d = 0.5 * diff(x, axis=axis)
     xy = x * y
 
     st = empty(xy.shape + (2,), dtype=xy.dtype)
 
-    st[0, :] = 0
-    st[:, 0] = cumsum((y[1:] + y[:-1]) * d)
-    st[:, 1] = cumsum((xy[1:] + xy[:-1]) * d)
+    head = axis_slice(xy, axis, 0)
+    st[head] = 0
 
-    sol, *_ = lstsq(st, y - y[0], overwrite_a=True, overwrite_b=True)
+    tail = axis_slice(xy, axis, slice(1, None))
+    st[tail + (0,)] = cumsum((y[1:] + y[:-1]) * d, axis=axis)
+    st[tail + (1,)] = cumsum((xy[1:] + xy[:-1]) * d, axis=axis)
+
+    a = matmul(transpose_last(st), st)
+    b = matmul((y - y[0])[..., None], st)
+
+    sol, *_ = lstsq(a, b, overwrite_a=True, overwrite_b=True)
     out = array([-sol[0] / sol[1], -sqrt(2.0 / pi) / sol[1]])
 
     return out
