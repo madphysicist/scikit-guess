@@ -37,11 +37,12 @@ REGRESSIONS et EQUATIONS INTEGRALES
 Translator's Note
 -----------------
 
-I came across this paper while searching for efficient optimization routines
-for fitting exponentials. The techniques presented in this paper have served my
-purpose well, and this translation (as well as the whole scikit) were the
-result. I hope that these endeavors do justice to Jean Jacquelin's work, and
-prove as useful to someone else as they did to me.
+I came across this paper while searching for efficient, preferably
+non-iterative, routines for fitting exponentials. The techniques presented in
+this paper have served my purpose well, and this translation (and to some
+extent the entire scikit) were the result. I hope that my endeavors do justice
+to Jean Jacquelin's work, and prove as useful to someone else as they did to
+me.
 
 The paper translated here is a compilation of related original papers by the
 author, gathered into a single multi-chapter unit. Some of the original
@@ -50,9 +51,7 @@ French as faithfully as I could. I have also attempted to conform the English
 portions to what I consider to be modern American usage.
 
     -- Joseph Fox-Rabinovitz
-
-
-[ Translation : 01 October 2018 ]
+       23rd September 2018
 
 
 .. include:: page_break.rst
@@ -123,23 +122,23 @@ find the function :math:`y = F(a, b, c, ...; x)` which lies as close as
 possible to the sequence by optimizing the parameters :math:`a, b, c, ...`
 
 The commonly known solution to linear regression merits only a brief
-discussion, which is to be found in :ref:`x1-appendix1`. Some problems can be
-solved through linear regression even though they appear non-linear at first
-glance. The Gaussian distribution is an example of such a function, and is
-discussed in :ref:`x1-appendix2`.
+discussion, which is to be found in :ref:`Appendix 1 <x1-appendix1>`. Some
+problems can be solved through linear regression even though they appear
+non-linear at first glance. The Gaussian distribution is an example of such a
+function, and is discussed in :ref:`Appendix 2 <x1-appendix2>`.
 
-Barring such simple cases, we are confronted with the daunting problem of
+Excepting such simple cases, we are confronted with the daunting problem of
 non-linear regression. The literature on the subject is quite extensive. Even
 the briefest review would derail us from the purpose of this paper. It is also
 unnecessary because our goal is to reduce some non-linear problems to linear
 regression through non-iterative and non-recursive procedures (otherwise, how
 would our method be innovative with respect to existing methods?).
 
-Starting with the next paragraph, we will proceed to the heart of the matter:
-that is to say, to render a non-linear problem to a linear form by means of a
-suitable differential and/or integral equation. The preliminary discussion
-shows that in the context of such problems, integral equations tend to be more
-numerically stable than differential equations.
+In the next section, we will proceed to the heart of the matter: that is to
+say, to render a non-linear problem to a linear form by means of a suitable
+differential and/or integral equation. The preliminary discussion shows that in
+the context of such problems, integral equations tend to be more numerically
+stable than differential equations.
 
 The principle of using integral equations will be explained and demonstrated in
 practice using the Gaussian distribution as a concrete example. Other examples
@@ -206,16 +205,16 @@ presentation.
 Returning to our initial formulation of the problem, we wish to optimize the
 parameters :math:`a, b, c, ...` of a function :math:`y(a, b, c, ...; x)` so
 that its curve approaches the :math:`n` points :math:`(x_k, y_k)` as closely as
-possible. Evidently, the exact expressions of the derivatives and integrals of
-the function depend on the pameters :math:`a, b, c, ...`. However the
-approximate values calculated using the formulas shown above, i.e. the
-numerical values of :math:`D_k, DD_k, ..., S_k, SS_k, ...`, are computed solely
-from the data points :math:`x_k, y_k`, **without requiring prior knowledge of**
-:math:`a, b, c, ...`. This observation is the crux of the method that is to be
-shown.
+possible. Evidently, the exact expressions of the derivatives and
+anti-derivatives of the function depend on the pameters :math:`a, b, c, ...`.
+However the approximate values calculated using the formulas shown above, i.e.
+the numerical values of :math:`D_k, DD_k, ..., S_k, SS_k, ...`, are computed
+solely from the data points :math:`x_k, y_k`, **without requiring prior
+knowledge of** :math:`a, b, c, ...`. This observation is the crux of the method
+that is to be shown.
 
-Suppose the function :math:`y(a, b, c, ...; x)` is the solution to a
-differential and/or integral equation of the form:
+Let us suppose that the function :math:`y(a, b, c, ...; x)` is the solution to
+a differential and/or integral equation of the form:
 
 .. math::
 
@@ -258,11 +257,196 @@ approximate values are then respectively (with
        \frac{1}{2}\left(H_ky_k + H_{k-1}y_{k-1}\right)\left(x_k - x_{k-1}\right)
    \end{cases}
 
+If we replace the exact derivatives and/or anti-derivatives with their
+numerical approximations, the equation will no longer hold true. We can
+therefore work with the sum of squared differences:
+
+    .. math::
+
+       \sum_{k=1}^n \varepsilon_k^2 =
+           \sum_{k=1}^n \left(-y_k + A \Phi_k + B S_k + C SS_k + ... +
+           \alpha D_k + \beta DD_k + ...\right)^2
+
+The relationship is linear with respect to
+:math:`A, B, C, ..., \alpha, \beta, ...`. We have therefore returned to
+classical linear regression, which allows us to calculate the optimal values of
+:math:`A_0, B_0, C_0, ..., \alpha_0, \beta_0, ...`. Finally, since
+:math:`A, B, C, ..., \alpha, \beta, ...` are known functions of
+:math:`a, b, c, ...`, we must solve the system of equations
+:math:`A(a, b, c, ...) = A_0 ; B(a, b, c, ...) = B_0 ; ... ; \alpha(a, b, c, ...) = \alpha_0 ; \beta(a, b, c, ...) = \beta_0`
+to obtain the optimal values of the parameters :math:`a, b, c, ...`.
+
+There are some additional considerations that must be taken into account when
+choosing the differental and/or integral equation. Other than the requirement
+for linearity in its coefficients (but not necessarily in the functions, since
+we have the choice of :math:`G(x), H(x), ..., g(x), h(x), ...`), the equation
+should preferably have as many coefficients
+:math:`A_0, B_0, ..., \alpha_0, \beta_0, ...` as there are initial parameters
+:math:`a, b, c, ...` to optimize. If there are fewer coefficients, an
+additional regression (or regressions) will be necessary to calculate the
+coefficients that do not figure explicitly in the equation.
+
+Moreover, to avoid overloading the explanation, we have been considering a
+simplified form of differential and/or integral equation. In fact, the equation
+could have any number of different functions :math:`\Phi(x)`, several different
+derivatives (corresponding to various choices of :math:`g(x)`), several
+different integrals (corresponding to various choice of :math:`G(x)`), and so
+on for subsequent multiple derivatives and integrals.
+
+We see that there is a multitude of choices of differential and/or integral
+equation that we can bring to bear on the problem. However, practical
+considerations limit our choices. One of the main stumbling blocks is the
+difficulty inherent in numerical approximation of derivatives. In fact, in
+cases where the points have an irregular distribution, and are too sparse and
+if, to make matters worse, the values of :math:`y_k` are not sufficiently
+precise, the computed derivatives will fluctuate so much and be so dispersed as
+to render the regression ineffective. On the other hand, numerical
+approximations of integrals retain their stability even in these difficult
+cases (this does not mean that the inevitable deviations are insignificant, but
+that they remain damped, which is essential for the robustness of the overall
+process). Except in special cases, the preference is therefore to seek an
+integral equation rather than a differential one.
+
+The generality of the presentation that has just been made may give the
+impression that the method is complicated and difficult to implement in
+practice. The fact of the matter is quite the opposite, as we will see once we
+shift focus from an the abstract discussion of many possibilities to solving a
+single concrete example.
+
+One of the most spectacular examples is that of sinusoidal regression (which
+we only mention in passing, without going into depth here, but which will be
+treated in detail in the attached paper :ref:`x3`). It concerns the
+optimization of the parameters :math:`a, b, c` and :math:`\omega` in the
+equation:
+
+    .. math::
+
+       y(x) = a + b sin(\omega x) + c cos(\omega x)
+
+This function is the solution to the differential equation:
+
+     .. math::
+
+        y(x) = A + B \frac{d^2y}{dx^2} \quad \text{with} \quad
+            A = a \quad \text{and} \quad B = -\frac{1}{\omega^2}
+
+This is a linear equation with respect to :math:`A` and :math:`B`, which are
+themselves (very simple) functions of :math:`a` and :math:`\omega`. Moreover,
+the parameters :math:`b` and :math:`c` no longer figure in the differential
+equation directly. This case is therefore a typical application of the method,
+and among the easiest to implement, except that it contains a second
+derivative, which makes it immediately suspect. Fortunately, there is no
+a-priori indication that it would be better to use an integral equation whose
+solution is a sinusoid instead. This method is hardly complicated and gives
+largely satisfactory results (which are studied in detail in the attached
+paper: :ref:`x3`).
+
+As a first demonstration of the calculation, let us look for a simpler example.
+In the following section, we will apply the method of regression through an
+integral equation to the Gaussian probability density function.
+
 
 .. _x1-sec3:
 
-3. Example: Case of the Gaussian Probability Density Function
-=============================================================
+3. Example: Illustration of the Gaussian Probability Density Function
+=====================================================================
+
+We will consider a probability density function of two parameters,
+:math:`\sigma` and :math:`\mu`, defined by
+
+    .. math::
+       :label: gauss-fx
+
+       f(x) = \frac{1}{\sigma \sqrt{2 \pi}}
+           exp\left(-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2\right)
+
+The general notation :math:`y(x)` of the previous sections is replaced with
+:math:`f(x)` here due to the specific nature of this case.
+
+The integration :eq:`gauss-int` leads to the integral equation :eq:`gauss-eq`,
+of which :math:`f(x)` is the solution:
+
+    .. math::
+       :label: gauss-int
+
+       \int_{x_1}^x \left(t - \mu\right)f(t)dt =
+           -\sqrt{\frac{\pi}{2}}\sigma\left(f(x) - f(x_1)\right)
+
+    .. math::
+       :label: gauss-eq
+
+       \begin{cases}
+           f(x) - f(x_1) = A \int_{x_1}^x f(t)dt + B \int_{x_1}^x t f(t)dt \\
+           \text{with:} \quad A = \frac{\mu}{\sigma}\sqrt{\frac{2}{\pi}} \quad
+           \text{and} \quad B = -\frac{1}{\sigma}\sqrt{\frac{2}{\pi}}
+       \end{cases}
+
+This is a linear integral equation, consisting of two simple integrals, which
+places it among the extensions mentioned in the previous section. We compute
+the respective approximations, the first denoted :math:`S` with
+:math:`G(x) = 1`, and the second denoted :math:`T` with :math:`G(x) = x`:
+
+    .. math::
+       :label: gauss-S
+
+       \begin{cases}
+           S_1 = 0 \\
+           S_k = S_{k-1} +
+               \frac{1}{2}\left(f_k + f_{k-1}\right)
+               \left(x_k - x_{k-1}\right) \quad k = 2 \rightarrow n
+       \end{cases}
+
+    .. math::
+       :label: gauss-T
+
+       \begin{cases}
+           S_1 = 0 \\
+           S_k = S_{k-1} +
+               \frac{1}{2}\left(x_k f_k + x_{k-1} f_{k-1}\right)
+               \left(x_k - x_{k-1}\right) \quad k = 2 \rightarrow n
+       \end{cases}
+
+When we replace :math:`f(x_k)` with :math:`f_k`, :math:`f(x_1)` with
+:math:`f_1` and the integrals with :math:`S_k` and :math:`T_k`, respectively,
+equation :eq:`gauss-eq` no longer holds true. We seek to minimize the sum of
+the squares of the residuals:
+
+    .. math::
+       :label: gauss-resid
+
+       \sum_{k=1}^n \varepsilon_k^2 =
+           \sum_{k=1}^n \left(-\left(f_k - f_1\right) + A S_k + B T_k\right)^2
+
+Notice that if we had chosen a different lower limit for the integration than
+:math:`x_1`, it would have changed not only the value of :math:`f_1`, but also
+the numerical values of :math:`S_k` and :math:`T_k`, in a way that would cancel
+out the differences without changing the final result.
+
+The relationship :eq:`gauss-resid` is none other than the than the equation of
+a linear regression, which we know how to optimize for the parameters
+:math:`A_1` and :math:`B_1`:
+
+    .. math::
+       :label: gauss-lsq
+
+       \begin{bmatrix}A_1 \\ B_1\end{bmatrix} =
+       \begin{bmatrix}
+           \sum \left(S_k\right)^2 & \sum S_k T_k \\
+           \sum S_k T_k            & \sum \left(T_k\right)^2
+       \end{bmatrix}
+       \begin{bmatrix}
+           \sum \left(y_k - y_1\right) S_k \\
+           \sum \left(y_k - y_1\right) T_k
+       \end{bmatrix}
+
+With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
+:math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-eq`:
+
+     .. math::
+        :label: gauss-solve
+
+        \sigma_1 = -\frac{1}{B_1} \sqrt{\frac{2}{\pi}} \quad ; \quad
+        \mu_1 = -\frac{A_1}{B_1}
 
 
 .. _x1-sec4:

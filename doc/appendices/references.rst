@@ -11,6 +11,8 @@ where permitted, and any additional materials.
 ..   :depth: 1
 
 
+.. _ref-reei:
+
 -----------------------------------
 Régressions et équations intégrales
 -----------------------------------
