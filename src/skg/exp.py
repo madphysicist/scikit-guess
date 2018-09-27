@@ -29,10 +29,10 @@ Exponential fit with additive bias.
 
 from __future__ import absolute_import, division
 
-from numpy import (
-    argsort, asfarray, cumsum, diff, empty, empty_like, exp, square,
-)
+from numpy import cumsum, diff, empty, empty_like, exp, square
 from numpy.linalg import solve
+
+from ._util import preprocess
 
 
 __all__ = ['exp_fit']
@@ -68,15 +68,7 @@ def exp_fit(x, y, sorted=True):
     .. [1] Jacquelin, Jean. "REGRESSIONS Et EQUATIONS INTEGRALES", pp. 15-18.,
        https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
-    x = asfarray(x).ravel()
-    y = asfarray(y).ravel()
-    if x.size != y.size:
-        raise ValueError('x and y must be the same size')
-    if not sorted:
-        # Is there a better way to do this in scipy?
-        ind = argsort(x)
-        x = x[ind]
-        y = y[ind]
+    x, y = preprocess(x, y, sorted)
 
     s = empty_like(y)
     s[0] = 0
