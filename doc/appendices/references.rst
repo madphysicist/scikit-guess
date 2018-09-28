@@ -28,17 +28,18 @@ https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales.
 Concept
 =======
 
-The concept behind this paper is that any function can be rewritten as a linear
-combination of integrals and derivatives of itself multiplied by some other
-function. By finding the appropriate integral or differential equation, we can
-estimate the parameters of the function that would optmimze its fit to our
-data. We can estimate the values of the integrals and derivatives from our data
-using either simple summation and differencing (as in the paper), or more
-complex techniques, thereby setting up a simple system of equations for the
-optimal parameters amounting to a simple least squares regression. The
-approximations of integrals by cumulative sums tend to be more robust than the
-approximations of derivatives by differentials, so integral equations are
-preferred.
+The concept behind this paper is that integrals and derivatives can be
+estimated through differentials and cumulative sums. The goal is to set up an
+integral or differential equation whose solution is the model function. If the
+right-hand side of such an equation can be expressed as a linear combination of
+integrals and derivatives of itself multiplied by some other pre-determined
+functions, we can estimate the numerical values of the equation's terms. While
+the coefficients that make the equation work depend on the fitting parameters,
+the functions themselves do not. It is therefore possible to set up a simple
+linear regression for the coefficients based on the numerical approximations of
+the integrals and derivatives. The numerical approximation of integrals by
+cumulative sums tend to be more robust than the approximations of derivatives
+by differentials, so integral equations are generally preferred.
 
 
 Translation
@@ -51,4 +52,5 @@ as part of the documentation of scikit-guess. The translation can be read here:
    :maxdepth: 4
    :caption: Paper Contents
 
-   translation
+   reei/translation
+   reei/supplement

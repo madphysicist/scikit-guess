@@ -28,7 +28,7 @@ REGRESSIONS et EQUATIONS INTEGRALES
 [ First Draft : 14 January 2009 - Published : 3 January 2014 ]
 
 
-.. include:: page_break.rst
+.. include:: ../page_break.rst
 
 
 .. rst-class:: center
@@ -50,11 +50,16 @@ material is in French and some in English. I have attempted to translate the
 French as faithfully as I could. I have also attempted to conform the English
 portions to what I consider to be modern American usage.
 
+A small number of technical corrections were made to the content of this paper
+throughout the translation. In all cases, the errata are clearly marked with
+footnotes with detailed descriptions of the fix in question. Errata are to be
+submitted to Jean Jacquelin before publication of this translation.
+
     -- Joseph Fox-Rabinovitz
        23rd September 2018
 
 
-.. include:: page_break.rst
+.. include:: ../page_break.rst
 
 
 .. rst-class:: center
@@ -92,7 +97,7 @@ and logarithmic functions are presented, along with the Gaussian and Weibull
 distributions commonly found in statistical applications.
 
 
-.. include:: page_break.rst
+.. include:: ../page_break.rst
 
 
 .. rubric:: Regressions and Integral Equations
@@ -225,13 +230,7 @@ with :math:`\Phi(x), G(x), H(x), ..., g(x), h(x), ...` predetermined functions
 independent of :math:`a, b, c, ...`, and
 :math:`A, B, C, ..., \alpha, \beta, ...` dependent on :math:`a, b, c, ...`. The
 approximate values are then respectively (with
-:math:`\Phi_k = \Phi(x_k); G_k = G(x_k); H_k = H(x_k); ...`):
-
-.. note::
-
-   The following was omitted on the line above, because I believe that it is
-   not correct/necessary, pending confirmation from the author:
-   :math:`; \alpha_k = \alpha(x_k); \beta_k = \beta(x_k); ...`.
+:math:`\Phi_k = \Phi(x_k); G_k = G(x_k); H_k = H(x_k); ...`)\ [#err-x1-sec2-1]_:
 
 .. math::
 
@@ -364,21 +363,21 @@ The general notation :math:`y(x)` of the previous sections is replaced with
 :math:`f(x)` here due to the specific nature of this case.
 
 The integration :eq:`gauss-int` leads to the integral equation :eq:`gauss-eq`,
-of which :math:`f(x)` is the solution:
+of which :math:`f(x)` is the solution\ [#err-x1-sec3-1]_:
 
     .. math::
        :label: gauss-int
 
        \int_{x_1}^x \left(t - \mu\right)f(t)dt =
-           -\sqrt{\frac{\pi}{2}}\sigma\left(f(x) - f(x_1)\right)
+           -\sigma^2\left(f(x) - f(x_1)\right)
 
     .. math::
        :label: gauss-eq
 
        \begin{cases}
            f(x) - f(x_1) = A \int_{x_1}^x f(t)dt + B \int_{x_1}^x t f(t)dt \\
-           \text{with:} \quad A = \frac{\mu}{\sigma}\sqrt{\frac{2}{\pi}} \quad
-           \text{and} \quad B = -\frac{1}{\sigma}\sqrt{\frac{2}{\pi}}
+           \text{with:} \quad A = \frac{\mu}{\sigma^2} \quad
+           \text{and} \quad B = -\frac{1}{\sigma^2}
        \end{cases}
 
 This is a linear integral equation, consisting of two simple integrals, which
@@ -440,13 +439,20 @@ a linear regression, which we know how to optimize for the parameters
        \end{bmatrix}
 
 With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
-:math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-eq`:
+:math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-eq`\ [#err-x1-sec3-2]_:
 
      .. math::
         :label: gauss-solve
 
-        \sigma_1 = -\frac{1}{B_1} \sqrt{\frac{2}{\pi}} \quad ; \quad
-        \mu_1 = -\frac{A_1}{B_1}
+        \sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}
+
+Here is a summary of the numerical calculation:
+
+.. _x1-sec3-alg:
+
++-----------------------------------------------------------------------------+
+| **Data**: :math:`(x_1, f_1), (x_2, f_2), ..., (x_k, f_k), ..., (x_n, f_n)`  |
++-----------------------------------------------------------------------------+
 
 
 .. _x1-sec4:

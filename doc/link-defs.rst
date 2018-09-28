@@ -1,4 +1,5 @@
 .. _Alabaster Theme: https://alabaster.readthedocs.io/en/latest/
+.. _LAPACK: http://www.netlib.org/lapack/
 .. _lmfit: https://lmfit.github.io/lmfit-py/
 .. _matplotlib: https://matplotlib.org/
 .. _napoleon: http://www.sphinx-doc.org/en/latest/usage/extensions/napoleon.html
