@@ -195,6 +195,9 @@ add_function_parentheses = False
 # Auto-generate stubs
 autosummary_generate = True
 
+# Number figures and tables
+numfig = True
+
 
 def setup(app):
     """

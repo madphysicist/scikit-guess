@@ -453,63 +453,68 @@ With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
 
 Here is a summary of the numerical computation:
 
+
 .. _reei1-sec3-alg:
 
-+-------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Data:** :math:`(x_1, f_1), (x_2, f_2), ..., (x_k, f_k), ..., (x_n, f_n)`                                                                            |
-|                                                                                                                                                       |
-| - Compute :math:`S_k`:                                                                                                                                |
-|                                                                                                                                                       |
-|   .. math::                                                                                                                                           |
-|                                                                                                                                                       |
-|      \begin{cases}                                                                                                                                    |
-|          S_1 = 0 \\                                                                                                                                   |
-|          S_k = S_{k-1} +                                                                                                                              |
-|              \frac{1}{2}\left(f_k + f_{k-1}\right)                                                                                                    |
-|              \left(x_k - x_{k-1}\right) \quad k = 2 \rightarrow n                                                                                     |
-|      \end{cases}                                                                                                                                      |
-|                                                                                                                                                       |
-| - Compute :math:`T_k`:                                                                                                                                |
-|                                                                                                                                                       |
-|   .. math::                                                                                                                                           |
-|                                                                                                                                                       |
-|      \begin{cases}                                                                                                                                    |
-|          T_1 = 0 \\                                                                                                                                   |
-|          T_k = T_{k-1} +                                                                                                                              |
-|              \frac{1}{2}\left(x_k f_k + x_{k-1} f_{k-1}\right)                                                                                        |
-|              \left(x_k - x_{k-1}\right) \quad k = 2 \rightarrow n                                                                                     |
-|      \end{cases}                                                                                                                                      |
-|                                                                                                                                                       |
-| - Compute :math:`\sum \left(S_k\right)^2 , \sum S_k T_k, \sum \left(T_k\right)^2 \\ \sum \left(f_k - f_1\right) S_k, \sum \left(f_k - f_1\right) T_k` |
-|                                                                                                                                                       |
-| - Compute :math:`A_1` and :math:`B_1`\ [errata-reei-5]_:                                                                                              |
-|                                                                                                                                                       |
-|   .. math::                                                                                                                                           |
-|                                                                                                                                                       |
-|      \begin{bmatrix}A_1 \\ B_1\end{bmatrix} =                                                                                                         |
-|      \begin{bmatrix}                                                                                                                                  |
-|          \sum \left(S_k\right)^2 & \sum S_k T_k \\                                                                                                    |
-|          \sum S_k T_k            & \sum \left(T_k\right)^2                                                                                            |
-|      \end{bmatrix}                                                                                                                                    |
-|      \begin{bmatrix}                                                                                                                                  |
-|          \sum \left(f_k - f_1\right) S_k \\                                                                                                           |
-|          \sum \left(f_k - f_1\right) T_k                                                                                                              |
-|      \end{bmatrix}                                                                                                                                    |
-|                                                                                                                                                       |
-| - Compute :math:`\sigma_1` and :math:`\mu_1`\ [errata-reei-6]_: :math:`\sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}`       |
-|                                                                                                                                                       |
-| **Result:** :math:`\sigma_1` and :math:`\mu_1` are the approximations of :math:`\sigma` and :math:`\mu`.                                              |
-+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+.. rst-class:: algorithm
 
-To illustrate the calculation (:ref:`reei-fig-1`), numerical data
-(:ref:`reei-tab-1`) was genererated in the following manner: :math:`x_k` values
-were chosen at random from the domain. From the "exact" values :math:`\sigma_e`
-and :math:`\mu_e` (defining the "exact" function :math:`f(x)`, whose
-representative curve is plotted as a dashed line in :ref:`reei-fig-1`), we
-computed the exact values of :math:`f(x_k)` given by equation
-:eq:`gauss-fx`\ [errata-reei-7]_. Then we added deviations randomly drawn from
-a range between - and +10% of :math:`f(x_k)`, which gave us the numerical
-values of :math:`f_k` in :ref:`reei-tab-1`, after rounding.
+.. 
+
+   **Data:** :math:`(x_1, f_1), (x_2, f_2), ..., (x_k, f_k), ..., (x_n, f_n)`
+
+   - Compute :math:`S_k`:
+
+     .. math::
+
+        \begin{cases}
+            S_1 = 0 \\
+            S_k = S_{k-1} +
+                \frac{1}{2}\left(f_k + f_{k-1}\right)
+                \left(x_k - x_{k-1}\right) \quad k = 2 \rightarrow n
+        \end{cases}
+
+   - Compute :math:`T_k`:
+
+     .. math::
+
+        \begin{cases}
+            T_1 = 0 \\
+            T_k = T_{k-1} +
+                \frac{1}{2}\left(x_k f_k + x_{k-1} f_{k-1}\right)
+                \left(x_k - x_{k-1}\right) \quad k = 2 \rightarrow n
+        \end{cases}
+
+   - Compute :math:`\sum \left(S_k\right)^2 , \sum S_k T_k, \sum \left(T_k\right)^2 \\ \sum \left(f_k - f_1\right) S_k, \sum \left(f_k - f_1\right) T_k`
+
+   - Compute :math:`A_1` and :math:`B_1`\ [errata-reei-5]_:
+
+     .. math::
+
+        \begin{bmatrix}A_1 \\ B_1\end{bmatrix} =
+        \begin{bmatrix}
+            \sum \left(S_k\right)^2 & \sum S_k T_k \\
+            \sum S_k T_k            & \sum \left(T_k\right)^2
+        \end{bmatrix}
+        \begin{bmatrix}
+            \sum \left(f_k - f_1\right) S_k \\
+            \sum \left(f_k - f_1\right) T_k
+        \end{bmatrix}
+
+   - Compute :math:`\sigma_1` and :math:`\mu_1`\ [errata-reei-6]_:
+     :math:`\sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}`
+
+   **Result:** :math:`\sigma_1` and :math:`\mu_1` are the approximations of
+   :math:`\sigma` and :math:`\mu`.
+
+To illustrate the calculation (:numref:`reei-gauss-plot`), numerical data
+(:numref:`reei-gauss-data`) was genererated in the following manner:
+:math:`x_k` values were chosen at random from the domain. From the "exact"
+values :math:`\sigma_e` and :math:`\mu_e` (defining the "exact" function
+:math:`f(x)`, whose representative curve is plotted as a dashed line in
+:numref:`reei-gauss-plot`), we computed the exact values of :math:`f(x_k)`
+given by equation :eq:`gauss-fx`\ [errata-reei-7]_. Then we added deviations
+randomly drawn from a range - to +10% of :math:`f(x_k)`, which gave us the
+numerical values of :math:`f_k` in :numref:`reei-gauss-data`, after rounding.
 
 The outrageous error modeling is motivated by the need for legibility in the
 figure, so that the so called "experimental" points, represented by crosses,
@@ -518,6 +523,17 @@ vein, only a handful of points was chosen so that the deviations between the
 "exact" dashed curves and the calculated solid curves are are highlighted for
 both the intermediate and the final calculation. The fact that the points are
 not uniformly distributed across the domain is also a significant complication.
+
+.. figure:: /generated/reei/gauss-plot.png
+   :name: reei-gauss-plot
+
+   Gaussian probability density function, a sample regression.
+
+.. table:: Numerical values corresponding to the example in :numref:`reei-gauss-plot`.
+   :name: reei-gauss-data
+   :class: data-table
+
+   .. include:: /generated/reei/gauss-data.rst
 
 
 .. _reei1-sec4:
