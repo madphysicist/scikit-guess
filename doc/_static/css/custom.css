@@ -11,6 +11,15 @@ img.center {
     text-align: left;
 }
 
+div.math {
+    margin-bottom: 0.2cm;
+}
+
+img.math {
+    padding-top: 0.2cm;
+    padding-bottom: 0.2cm;
+}
+
 .eqno {
     float: right;
 }
