@@ -9,11 +9,11 @@ Errata
 The following list of errata was complied during the translation. All items
 link back to the corresponding location in the translated paper as footnotes.
 
-.. [#err-x1-sec2-1] The following was omitted from the list, because I believe
+.. [err-x1-sec2-1] The following was omitted from the list, because I believe
    that it is not correct/necessary, pending confirmation from the author:
    :math:`; \alpha_k = \alpha(x_k); \beta_k = \beta(x_k); ...`.
 
-.. [#err-x1-sec3-1] The original equations :eq:`gauss-int` and :eq:`gauss-eq`
+.. [err-x1-sec3-1] The original equations :eq:`gauss-int` and :eq:`gauss-eq`
    read:
 
    .. math::
@@ -37,7 +37,7 @@ link back to the corresponding location in the translated paper as footnotes.
    :math:`\sigma`. This factor then propagates to :math:`A` and :math:`B` as
    shown in the translated paper.
 
-.. [#err-x1-sec3-2] The original equation :eq:`gauss-lsq` had :math:`y - y_1`
+.. [err-x1-sec3-2] The original equation :eq:`gauss-lsq` had :math:`y - y_1`
    in the rightmost matrix:
 
    .. math::
@@ -52,7 +52,7 @@ link back to the corresponding location in the translated paper as footnotes.
    :ref:`section <x1-sec3>`, and with equations :eq:`gauss-S`, :eq:`gauss-T`
    and :eq:`gauss-resid`.
 
-.. [#err-x1-sec3-3] The original expression for :math:`\sigma_1` in
+.. [err-x1-sec3-3] The original expression for :math:`\sigma_1` in
    :eq:`gauss-solve` was:
 
    .. math::

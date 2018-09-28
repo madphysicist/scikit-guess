@@ -230,7 +230,7 @@ with :math:`\Phi(x), G(x), H(x), ..., g(x), h(x), ...` predetermined functions
 independent of :math:`a, b, c, ...`, and
 :math:`A, B, C, ..., \alpha, \beta, ...` dependent on :math:`a, b, c, ...`. The
 approximate values are then respectively (with
-:math:`\Phi_k = \Phi(x_k); G_k = G(x_k); H_k = H(x_k); ...`)\ [#err-x1-sec2-1]_:
+:math:`\Phi_k = \Phi(x_k); G_k = G(x_k); H_k = H(x_k); ...`)\ [err-x1-sec2-1]_:
 
 .. math::
 
@@ -363,7 +363,7 @@ The general notation :math:`y(x)` of the previous sections is replaced with
 :math:`f(x)` here due to the specific nature of this case.
 
 The integration :eq:`gauss-int` leads to the integral equation :eq:`gauss-eq`,
-of which :math:`f(x)` is the solution\ [#err-x1-sec3-1]_:
+of which :math:`f(x)` is the solution\ [err-x1-sec3-1]_:
 
     .. math::
        :label: gauss-int
@@ -423,7 +423,7 @@ out the differences without changing the final result.
 
 The relationship :eq:`gauss-resid` is none other than the than the equation of
 a linear regression, which we know how to optimize for the parameters
-:math:`A_1` and :math:`B_1`\ [#err-x1-sec3-2]_:
+:math:`A_1` and :math:`B_1`\ [err-x1-sec3-2]_:
 
     .. math::
        :label: gauss-lsq
@@ -439,7 +439,7 @@ a linear regression, which we know how to optimize for the parameters
        \end{bmatrix}
 
 With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
-:math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-eq`\ [#err-x1-sec3-3]_:
+:math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-eq`\ [err-x1-sec3-3]_:
 
      .. math::
         :label: gauss-solve
