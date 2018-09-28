@@ -9,9 +9,17 @@ Errata
 The following list of errata was complied during the translation. All items
 link back to the corresponding location in the translated paper as footnotes.
 
-.. [errata-reei-1] The following was omitted from the list, because I believe
-   that it is not correct/necessary, pending confirmation from the author:
-   :math:`; \alpha_k = \alpha(x_k); \beta_k = \beta(x_k); ...`.
+.. [errata-reei-1] The original list of function conventions read
+
+   .. math::
+
+      \Phi_k = \Phi(x_k); G_k = G(x_k); H_k = H(x_k); ...;
+          \alpha_k = \alpha(x_k); \beta_k = \beta(x_k); ...
+
+   The portion :math:`; \alpha_k = \alpha(x_k); \beta_k = \beta(x_k); ...` does
+   not appear to be correct. The list is referring to functions of :math:`x_k`,
+   which :math:`\alpha` and :math:`\beta` are definitely not. Subscripting them
+   is probably an error.
 
 .. [errata-reei-2] The original equations :eq:`gauss-int` and :eq:`gauss-eq`
    read:
@@ -69,6 +77,10 @@ link back to the corresponding location in the translated paper as footnotes.
 
 .. [errata-reei-6] An extension of [errata-reei-2]_ to the summary section. The
    formula for :math:`\sigma_1` has been corrected.
+
+.. [errata-reei-7] The original paper lists equation [9]. There is no equation
+   [9] in the paper, and contextually, it makes sense that the reference is in
+   fact to equation [1].
 
 
 -------------------------

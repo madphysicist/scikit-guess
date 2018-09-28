@@ -55,9 +55,14 @@ throughout the translation. In all cases, the errata are clearly marked with
 footnotes with detailed descriptions of the fix in question. Errata are to be
 submitted to Jean Jacquelin before publication of this translation.
 
+To the extent possible, I have re-generated the plots in the paper using
+`matplotlib`_ as faithfully as I could, rather than copying them out of the
+original.
+
     -- Joseph Fox-Rabinovitz
        23rd September 2018
 
+.. include:: /link-defs.rst
 
 .. include:: ../page_break.rst
 
