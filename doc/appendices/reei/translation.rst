@@ -399,8 +399,8 @@ the respective approximations, the first denoted :math:`S` with
        :label: gauss-T
 
        \begin{cases}
-           S_1 = 0 \\
-           S_k = S_{k-1} +
+           T_1 = 0 \\
+           T_k = T_{k-1} +
                \frac{1}{2}\left(x_k f_k + x_{k-1} f_{k-1}\right)
                \left(x_k - x_{k-1}\right) \quad k = 2 \rightarrow n
        \end{cases}
