@@ -501,6 +501,24 @@ Here is a summary of the numerical computation:
 | **Result:** :math:`\sigma_1` and :math:`\mu_1` are the approximations of :math:`\sigma` and :math:`\mu`.                                              |
 +-------------------------------------------------------------------------------------------------------------------------------------------------------+
 
+To illustrate the calculation (:ref:`reei-fig-1`), numerical data
+(:ref:`reei-tab-1`) was genererated in the following manner: :math:`x_k` values
+were chosen at random from the domain. From the "exact" values :math:`\sigma_e`
+and :math:`\mu_e` (defining the "exact" function :math:`f(x)`, whose
+representative curve is plotted as a dashed line in :ref:`reei-fig-1`), we
+computed the exact values of :math:`f(x_k)` given by equation
+:eq:`gauss-fx`\ [errata-reei-7]_. Then we added deviations randomly drawn from
+a range between - and +10% of :math:`f(x_k)`, which gave us the numerical
+values of :math:`f_k` in :ref:`reei-tab-1`, after rounding.
+
+The outrageous error modeling is motivated by the need for legibility in the
+figure, so that the so called "experimental" points, represented by crosses,
+lie far enough from the dashed curve to be clearly distinguishable. In the same
+vein, only a handful of points was chosen so that the deviations between the
+"exact" dashed curves and the calculated solid curves are are highlighted for
+both the intermediate and the final calculation. The fact that the points are
+not uniformly distributed across the domain is also a significant complication.
+
 
 .. _reei1-sec4:
 
