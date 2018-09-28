@@ -17,11 +17,13 @@ link back to the corresponding location in the translated paper as footnotes.
    read:
 
    .. math::
+      :label: gauss-int-old
 
       \int_{x_1}^x \left(t - \mu\right)f(t)dt =
           -\sqrt{\frac{\pi}{2}}\sigma\left(f(x) - f(x_1)\right)
 
    .. math::
+      :label: gauss-eq-old
 
       \begin{cases}
           f(x) - f(x_1) = A \int_{x_1}^x f(t)dt + B \int_{x_1}^x t f(t)dt \\
@@ -35,9 +37,26 @@ link back to the corresponding location in the translated paper as footnotes.
    :math:`\sigma`. This factor then propagates to :math:`A` and :math:`B` as
    shown in the translated paper.
 
-.. [#err-x1-sec3-2] The original expression for :math:`\sigma_1` was
+.. [#err-x1-sec3-2] The original equation :eq:`gauss-lsq` had :math:`y - y_1`
+   in the rightmost matrix:
 
    .. math::
+      :label: gauss-lsq-old
+
+      \begin{bmatrix}
+          \sum \left(y_k - y_1\right) S_k \\
+          \sum \left(y_k - y_1\right) T_k
+      \end{bmatrix}
+
+   This is inconsistent with the explicit note at the beginning of the
+   :ref:`section <x1-sec3>`, and with equations :eq:`gauss-S`, :eq:`gauss-T`
+   and :eq:`gauss-resid`.
+
+.. [#err-x1-sec3-3] The original expression for :math:`\sigma_1` in
+   :eq:`gauss-solve` was:
+
+   .. math::
+      :label: gauss-solve-old
 
       \sigma_1 = -\frac{1}{B_1} \sqrt{\frac{2}{\pi}} \quad ; \quad
           \mu_1 = -\frac{A_1}{B_1}

@@ -423,7 +423,7 @@ out the differences without changing the final result.
 
 The relationship :eq:`gauss-resid` is none other than the than the equation of
 a linear regression, which we know how to optimize for the parameters
-:math:`A_1` and :math:`B_1`:
+:math:`A_1` and :math:`B_1`\ [#err-x1-sec3-2]_:
 
     .. math::
        :label: gauss-lsq
@@ -434,12 +434,12 @@ a linear regression, which we know how to optimize for the parameters
            \sum S_k T_k            & \sum \left(T_k\right)^2
        \end{bmatrix}
        \begin{bmatrix}
-           \sum \left(y_k - y_1\right) S_k \\
-           \sum \left(y_k - y_1\right) T_k
+           \sum \left(f_k - f_1\right) S_k \\
+           \sum \left(f_k - f_1\right) T_k
        \end{bmatrix}
 
 With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
-:math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-eq`\ [#err-x1-sec3-2]_:
+:math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-eq`\ [#err-x1-sec3-3]_:
 
      .. math::
         :label: gauss-solve
