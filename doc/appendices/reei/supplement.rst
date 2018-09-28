@@ -58,8 +58,7 @@ link back to the corresponding location in the translated paper as footnotes.
    .. math::
       :label: gauss-solve-old
 
-      \sigma_1 = -\frac{1}{B_1} \sqrt{\frac{2}{\pi}} \quad ; \quad
-          \mu_1 = -\frac{A_1}{B_1}
+      \sigma_1 = -\frac{1}{B_1} \sqrt{\frac{2}{\pi}}
 
    The correction is due to the error in the equations :eq:`gauss-eq` and
    :eq:`gauss-int`. Notice that :math:`\mu_1` is unaffected by the change in
@@ -110,7 +109,7 @@ Algorithm originally presented in :ref:`x1-sec3` and summarized
 :ref:`here <x1-sec3-alg>`.
 
 :math:`A` is a concatenation of the cumulative sums :math:`S` and :math:`T` as
-the columns. In numpy terms::
+the columns. In numpy terms:
 
 .. code-block:: python
 
@@ -121,10 +120,10 @@ the columns. In numpy terms::
    T = np.cumsum(0.5 * (xy[1:] + xy[:-1]) * np.diff(x))
    T = np.insert(T, 0, 0)
 
-   A = np.hstack((S, T))
+   A = np.stack((S, T), axis=1)
 
 :math:`b` is the vector of measured :math:`y` values decreased by its first
-element. In numpy terms::
+element. In numpy terms:
 
 .. code-block:: python
 
