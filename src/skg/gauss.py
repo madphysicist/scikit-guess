@@ -81,14 +81,15 @@ def gauss_fit(x, y, sorted=True):
     d = 0.5 * diff(x)
     xy = x * y
 
-    st = empty(xy.shape + (2,), dtype=xy.dtype)
+    a = empty(xy.shape + (2,), dtype=xy.dtype)
+    a[0, :] = 0
+    a[1:, 0] = cumsum((y[1:] + y[:-1]) * d)
+    a[1:, 1] = cumsum((xy[1:] + xy[:-1]) * d)
 
-    st[0, :] = 0
-    st[1:, 0] = cumsum((y[1:] + y[:-1]) * d)
-    st[1:, 1] = cumsum((xy[1:] + xy[:-1]) * d)
+    b = y - y[0]
 
-    sol, *_ = lstsq(st, y - y[0], overwrite_a=True, overwrite_b=True)
-    out = array([-sol[0] / sol[1], sqrt(-1.0 / sol[1])])
+    (A, B), *_ = lstsq(a, b, overwrite_a=True, overwrite_b=True)
+    out = array([-A / B, sqrt(-1.0 / B)])
 
     return out
 
