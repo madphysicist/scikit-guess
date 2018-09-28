@@ -9,11 +9,11 @@ Errata
 The following list of errata was complied during the translation. All items
 link back to the corresponding location in the translated paper as footnotes.
 
-.. [err-x1-sec2-1] The following was omitted from the list, because I believe
+.. [errata-reei-1] The following was omitted from the list, because I believe
    that it is not correct/necessary, pending confirmation from the author:
    :math:`; \alpha_k = \alpha(x_k); \beta_k = \beta(x_k); ...`.
 
-.. [err-x1-sec3-1] The original equations :eq:`gauss-int` and :eq:`gauss-eq`
+.. [errata-reei-2] The original equations :eq:`gauss-int` and :eq:`gauss-eq`
    read:
 
    .. math::
@@ -37,7 +37,7 @@ link back to the corresponding location in the translated paper as footnotes.
    :math:`\sigma`. This factor then propagates to :math:`A` and :math:`B` as
    shown in the translated paper.
 
-.. [err-x1-sec3-2] The original equation :eq:`gauss-lsq` had :math:`y - y_1`
+.. [errata-reei-3] The original equation :eq:`gauss-lsq` had :math:`y - y_1`
    in the rightmost matrix:
 
    .. math::
@@ -49,10 +49,10 @@ link back to the corresponding location in the translated paper as footnotes.
       \end{bmatrix}
 
    This is inconsistent with the explicit note at the beginning of the
-   :ref:`section <x1-sec3>`, and with equations :eq:`gauss-S`, :eq:`gauss-T`
+   :ref:`section <reei1-sec3>`, and with equations :eq:`gauss-S`, :eq:`gauss-T`
    and :eq:`gauss-resid`.
 
-.. [err-x1-sec3-3] The original expression for :math:`\sigma_1` in
+.. [errata-reei-4] The original expression for :math:`\sigma_1` in
    :eq:`gauss-solve` was:
 
    .. math::
@@ -61,13 +61,13 @@ link back to the corresponding location in the translated paper as footnotes.
       \sigma_1 = -\frac{1}{B_1} \sqrt{\frac{2}{\pi}}
 
    The correction is due to the error in the equations :eq:`gauss-eq` and
-   :eq:`gauss-int`\ [err-x1-sec3-1]_. Notice that :math:`\mu_1` is unaffected
+   :eq:`gauss-int`\ [errata-reei-2]_. Notice that :math:`\mu_1` is unaffected
    by the change in factor since it is a ratio.
 
-.. [err-x1-sec3-4] An extension of [err-x1-sec3-2]_ to the summary section. The
+.. [errata-reei-5] An extension of [errata-reei-3]_ to the summary section. The
    right-most matrix had :math:`y_k - y_1` replaced with :math:`f_k - f_1`.
 
-.. [err-x1-sec3-5] An extension of [err-x1-sec3-1]_ to the summary section. The
+.. [errata-reei-6] An extension of [errata-reei-2]_ to the summary section. The
    formula for :math:`\sigma_1` has been corrected.
 
 
@@ -111,8 +111,8 @@ implicitly imported under the conventional name ``np``.
 Gaussian
 ========
 
-Algorithm originally presented in :ref:`x1-sec3` and summarized
-:ref:`here <x1-sec3-alg>`.
+Algorithm originally presented in :ref:`reei1-sec3` and summarized
+:ref:`here <reei1-sec3-alg>`.
 
 :math:`A` is a concatenation of the cumulative sums :math:`S` and :math:`T` as
 the columns. In numpy terms:

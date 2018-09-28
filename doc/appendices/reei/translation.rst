@@ -11,9 +11,9 @@ REGRESSIONS et EQUATIONS INTEGRALES
 .. rst-class:: center
 
 | Sample applications to various functions:
-| :ref:`Gaussian <x1-sec3>`
-| :ref:`Power, Exponential, Logarithmic, Weibull <x2>`
-| :ref:`Sinusoidal <x3>`
+| :ref:`Gaussian <reei1-sec3>`
+| :ref:`Power, Exponential, Logarithmic, Weibull <reei2>`
+| :ref:`Sinusoidal <reei3>`
 | Logistic
 | Generalization of Sinusoidal Regression
 | Damped Sinusoidal Regression
@@ -64,7 +64,7 @@ submitted to Jean Jacquelin before publication of this translation.
 
 .. rst-class:: center
 
-.. _x1:
+.. _reei1:
 
 ----------------------------------
 Regressions and Integral Equations
@@ -75,7 +75,7 @@ Regressions and Integral Equations
 **Jean Jacquelin**
 
 
-.. _x1-abstract:
+.. _reei1-abstract:
 
 Abstract
 ========
@@ -101,7 +101,7 @@ distributions commonly found in statistical applications.
 
 
 .. rubric:: Regressions and Integral Equations
-   :name: x1-paper
+   :name: reei1-paper
    :class: center
 
 .. rst-class:: center
@@ -115,7 +115,7 @@ distributions commonly found in statistical applications.
 | The current version was published on 04/27/2009.
 
 
-.. _x1-sec1:
+.. _reei1-sec1:
 
 1. Introduction
 ===============
@@ -127,10 +127,10 @@ find the function :math:`y = F(a, b, c, ...; x)` which lies as close as
 possible to the sequence by optimizing the parameters :math:`a, b, c, ...`
 
 The commonly known solution to linear regression merits only a brief
-discussion, which is to be found in :ref:`Appendix 1 <x1-appendix1>`. Some
+discussion, which is to be found in :ref:`Appendix 1 <reei1-appendix1>`. Some
 problems can be solved through linear regression even though they appear
 non-linear at first glance. The Gaussian distribution is an example of such a
-function, and is discussed in :ref:`Appendix 2 <x1-appendix2>`.
+function, and is discussed in :ref:`Appendix 2 <reei1-appendix2>`.
 
 Excepting such simple cases, we are confronted with the daunting problem of
 non-linear regression. The literature on the subject is quite extensive. Even
@@ -150,11 +150,11 @@ practice using the Gaussian distribution as a concrete example. Other examples
 of regression using integral equations will be described in a detailed manner
 in the two following papers:
 
-- :ref:`x2`
-- :ref:`x3`
+- :ref:`reei2`
+- :ref:`reei3`
 
 
-.. _x1-sec2:
+.. _reei1-sec2:
 
 2. Principle of Linearization Through Differential and/or Integral Equations
 ============================================================================
@@ -230,7 +230,7 @@ with :math:`\Phi(x), G(x), H(x), ..., g(x), h(x), ...` predetermined functions
 independent of :math:`a, b, c, ...`, and
 :math:`A, B, C, ..., \alpha, \beta, ...` dependent on :math:`a, b, c, ...`. The
 approximate values are then respectively (with
-:math:`\Phi_k = \Phi(x_k); G_k = G(x_k); H_k = H(x_k); ...`)\ [err-x1-sec2-1]_:
+:math:`\Phi_k = \Phi(x_k); G_k = G(x_k); H_k = H(x_k); ...`)\ [errata-reei-1]_:
 
 .. math::
 
@@ -314,7 +314,7 @@ single concrete example.
 
 One of the most spectacular examples is that of sinusoidal regression (which
 we only mention in passing, without going into depth here, but which will be
-treated in detail in the attached paper :ref:`x3`). It concerns the
+treated in detail in the attached paper :ref:`reei3`). It concerns the
 optimization of the parameters :math:`a, b, c` and :math:`\omega` in the
 equation:
 
@@ -338,14 +338,14 @@ derivative, which makes it immediately suspect. Fortunately, there is no
 a-priori indication that it would be better to use an integral equation whose
 solution is a sinusoid instead. This method is hardly complicated and gives
 largely satisfactory results (which are studied in detail in the attached
-paper: :ref:`x3`).
+paper: :ref:`reei3`).
 
 As a first demonstration of the calculation, let us look for a simpler example.
 In the following section, we will apply the method of regression through an
 integral equation to the Gaussian probability density function.
 
 
-.. _x1-sec3:
+.. _reei1-sec3:
 
 3. Example: Illustration of the Gaussian Probability Density Function
 =====================================================================
@@ -363,7 +363,7 @@ The general notation :math:`y(x)` of the previous sections is replaced with
 :math:`f(x)` here due to the specific nature of this case.
 
 The integration :eq:`gauss-int` leads to the integral equation :eq:`gauss-eq`,
-of which :math:`f(x)` is the solution\ [err-x1-sec3-1]_:
+of which :math:`f(x)` is the solution\ [errata-reei-2]_:
 
     .. math::
        :label: gauss-int
@@ -423,7 +423,7 @@ out the differences without changing the final result.
 
 The relationship :eq:`gauss-resid` is none other than the than the equation of
 a linear regression, which we know how to optimize for the parameters
-:math:`A_1` and :math:`B_1`\ [err-x1-sec3-2]_:
+:math:`A_1` and :math:`B_1`\ [errata-reei-3]_:
 
     .. math::
        :label: gauss-lsq
@@ -439,7 +439,7 @@ a linear regression, which we know how to optimize for the parameters
        \end{bmatrix}
 
 With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
-:math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-eq`\ [err-x1-sec3-3]_:
+:math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-eq`\ [errata-reei-4]_:
 
      .. math::
         :label: gauss-solve
@@ -448,7 +448,7 @@ With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
 
 Here is a summary of the numerical computation:
 
-.. _x1-sec3-alg:
+.. _reei1-sec3-alg:
 
 +-------------------------------------------------------------------------------------------------------------------------------------------------------+
 | **Data:** :math:`(x_1, f_1), (x_2, f_2), ..., (x_k, f_k), ..., (x_n, f_n)`                                                                            |
@@ -477,7 +477,7 @@ Here is a summary of the numerical computation:
 |                                                                                                                                                       |
 | - Compute :math:`\sum \left(S_k\right)^2 , \sum S_k T_k, \sum \left(T_k\right)^2 \\ \sum \left(f_k - f_1\right) S_k, \sum \left(f_k - f_1\right) T_k` |
 |                                                                                                                                                       |
-| - Compute :math:`A_1` and :math:`B_1`\ [err-x1-sec3-4]_:                                                                                              |
+| - Compute :math:`A_1` and :math:`B_1`\ [errata-reei-5]_:                                                                                              |
 |                                                                                                                                                       |
 |   .. math::                                                                                                                                           |
 |                                                                                                                                                       |
@@ -491,14 +491,14 @@ Here is a summary of the numerical computation:
 |          \sum \left(f_k - f_1\right) T_k                                                                                                              |
 |      \end{bmatrix}                                                                                                                                    |
 |                                                                                                                                                       |
-| - Compute :math:`\sigma_1` and `\mu_1`\ [err-x1-sec3-5]_: :math:`\sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}`             |
+| - Compute :math:`\sigma_1` and `\mu_1`\ [errata-reei-6]_: :math:`\sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}`             |
 |                                                                                                                                                       |
 | **Result:** :math:`\sigma_1` and `\mu_1` are the approximations of                                                                                    |
 | :math:`\sigma` and :math:`\mu`.                                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
-.. _x1-sec4:
+.. _reei1-sec4:
 
 4. Commentary
 =============
@@ -506,7 +506,7 @@ Here is a summary of the numerical computation:
 
 .. rst-class:: center
 
-.. _x1-appendix1:
+.. _reei1-appendix1:
 
 Appendix 1: Review of Linear Regression
 =======================================
@@ -514,7 +514,7 @@ Appendix 1: Review of Linear Regression
 
 .. rst-class:: center
 
-.. _x1-appendix2:
+.. _reei1-appendix2:
 
 Appendix 2: Linear Regression of the Gaussian Probability Density Function
 ==========================================================================
@@ -522,7 +522,7 @@ Appendix 2: Linear Regression of the Gaussian Probability Density Function
 
 .. rst-class:: center
 
-.. _x2:
+.. _reei2:
 
 ------------------------------------------------------------------------------
 Non-Linear Regression of Power, Exponential, Logarithmic and Weibull Functions
@@ -533,7 +533,7 @@ Non-Linear Regression of Power, Exponential, Logarithmic and Weibull Functions
 **Jean Jacquelin**
 
 
-.. _x2-abstract:
+.. _reei2-abstract:
 
 Abstract
 ========
@@ -545,7 +545,7 @@ and Weibull functions.
 
 .. rubric:: Non-Linear Regression of Power, Exponential, Logarithmic and
             Weibull Functions
-   :name: x2-paper
+   :name: reei2-paper
    :class: center
 
 
@@ -554,25 +554,25 @@ and Weibull functions.
 **Jean Jacquelin**
 
 
-.. _x2-sec1:
+.. _reei2-sec1:
 
 1. Introduction
 ===============
 
 
-.. _x2-sec2:
+.. _reei2-sec2:
 
 2. Regression of Functions of the Form :math:`y(x) = a + b exp(c x)`
 ====================================================================
 
 
-.. _x2-sec3:
+.. _reei2-sec3:
 
 3. Regression of the Three-Parameter Weibull Distribution
 =========================================================
 
 
-.. _x2-sec4:
+.. _reei2-sec4:
 
 4. Conclusion
 =============
@@ -580,7 +580,7 @@ and Weibull functions.
 
 .. rst-class:: center
 
-.. _x3:
+.. _reei3:
 
 -----------------------
 Regression of Sinusoids
@@ -597,61 +597,61 @@ Regression of Sinusoids
 | The current version was published on 02/15/2009.
 
 
-.. _x3-sec1:
+.. _reei3-sec1:
 
 1. Introduction
 ===============
 
 
-.. _x3-sec2:
+.. _reei3-sec2:
 
 2. Cases Where :math:`\omega` is Known Ahead of Time
 ====================================================
 
 
-.. _x3-sec3:
+.. _reei3-sec3:
 
 3. Linearization With an Integral Equation
 ==========================================
 
 
-.. _x3-sec4:
+.. _reei3-sec4:
 
 4. Succinct Performance Analysis
 ================================
 
 
-.. _x3-sec4-1:
+.. _reei3-sec4-1:
 
 4.1 "Equidistant" Distribution of Abscissae and Non-dispersion of Ordinals
 --------------------------------------------------------------------------
 
 
-.. _x3-sec4-2:
+.. _reei3-sec4-2:
 
 4.2 Aleatory Distribution of Point Abscissae Without Ordinal Dispersion
 -----------------------------------------------------------------------
 
 
-.. _x3-sec4-3:
+.. _reei3-sec4-3:
 
 4.3 Aleatory Distribution of Point Abscissae With Dispersed Ordinals
 --------------------------------------------------------------------
 
 
-.. _x3-sec5:
+.. _reei3-sec5:
 
 5. Cases Where :math:`a` and :math:`\rho` Parameters Are Approximately Known
 ============================================================================
 
 
-.. _x3-sec6:
+.. _reei3-sec6:
 
 6. Results of a Complete Optimization
 =====================================
 
 
-.. _x3-sec7:
+.. _reei3-sec7:
 
 7. Commentary
 =============
@@ -659,7 +659,7 @@ Regression of Sinusoids
 
 .. rst-class:: center
 
-.. _x3-appendix1:
+.. _reei3-appendix1:
 
 Appendix 1: Summary of Sinusoidal Regression Algorithm
 ======================================================
@@ -667,7 +667,7 @@ Appendix 1: Summary of Sinusoidal Regression Algorithm
 
 .. rst-class:: center
 
-.. _x3-appendix2:
+.. _reei3-appendix2:
 
 Appendix 2: Detailed Procedure for Sinusoidal Regression
 ========================================================
@@ -675,7 +675,7 @@ Appendix 2: Detailed Procedure for Sinusoidal Regression
 
 .. rst-class:: center
 
-.. _x4:
+.. _reei4:
 
 -----------------------------------------------------------
 Application to the Logistic Distribution (Three Parameters)
@@ -685,7 +685,7 @@ Application to the Logistic Distribution (Three Parameters)
 
 .. rst-class:: center
 
-.. _x5:
+.. _reei5:
 
 ----------------------------------------------------------
 Application to the Logistic Distribution (Four Parameters)
@@ -694,7 +694,7 @@ Application to the Logistic Distribution (Four Parameters)
 
 .. rst-class:: center
 
-.. _x6:
+.. _reei6:
 
 --------------------------------------
 Mixed Linear and Sinusoidal Regression
@@ -703,7 +703,7 @@ Mixed Linear and Sinusoidal Regression
 
 .. rst-class:: center
 
-.. _x7:
+.. _reei7:
 
 ---------------------------------
 Generalized Sinusoidal Regression
@@ -712,7 +712,7 @@ Generalized Sinusoidal Regression
 
 .. rst-class:: center
 
-.. _x8:
+.. _reei8:
 
 ----------------------------
 Damped Sinusoidal Regression
@@ -721,7 +721,7 @@ Damped Sinusoidal Regression
 
 .. rst-class:: center
 
-.. _x9:
+.. _reei9:
 
 -------------------------------------------------------
 Double Exponential Regression & Double Power Regression
@@ -730,7 +730,7 @@ Double Exponential Regression & Double Power Regression
 
 .. rst-class:: center
 
-.. _x10:
+.. _reei10:
 
 -----------------------
 Multivariate Regression
