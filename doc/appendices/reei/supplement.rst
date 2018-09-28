@@ -61,8 +61,14 @@ link back to the corresponding location in the translated paper as footnotes.
       \sigma_1 = -\frac{1}{B_1} \sqrt{\frac{2}{\pi}}
 
    The correction is due to the error in the equations :eq:`gauss-eq` and
-   :eq:`gauss-int`. Notice that :math:`\mu_1` is unaffected by the change in
-   factor since it is a ratio.
+   :eq:`gauss-int`\ [err-x1-sec3-1]_. Notice that :math:`\mu_1` is unaffected
+   by the change in factor since it is a ratio.
+
+.. [err-x1-sec3-4] An extension of [err-x1-sec3-2]_ to the summary section. The
+   right-most matrix had :math:`y_k - y_1` replaced with :math:`f_k - f_1`.
+
+.. [err-x1-sec3-5] An extension of [err-x1-sec3-1]_ to the summary section. The
+   formula for :math:`\sigma_1` has been corrected.
 
 
 -------------------------

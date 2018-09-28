@@ -446,13 +446,56 @@ With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
 
         \sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}
 
-Here is a summary of the numerical calculation:
+Here is a summary of the numerical computation:
 
 .. _x1-sec3-alg:
 
-+-----------------------------------------------------------------------------+
-| **Data**: :math:`(x_1, f_1), (x_2, f_2), ..., (x_k, f_k), ..., (x_n, f_n)`  |
-+-----------------------------------------------------------------------------+
++-------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Data:** :math:`(x_1, f_1), (x_2, f_2), ..., (x_k, f_k), ..., (x_n, f_n)`                                                                            |
+|                                                                                                                                                       |
+| - Compute :math:`S_k`:                                                                                                                                |
+|                                                                                                                                                       |
+|   .. math::                                                                                                                                           |
+|                                                                                                                                                       |
+|      \begin{cases}                                                                                                                                    |
+|          S_1 = 0 \\                                                                                                                                   |
+|          S_k = S_{k-1} +                                                                                                                              |
+|              \frac{1}{2}\left(f_k + f_{k-1}\right)                                                                                                    |
+|              \left(x_k - x_{k-1}\right) \quad k = 2 \rightarrow n                                                                                     |
+|      \end{cases}                                                                                                                                      |
+|                                                                                                                                                       |
+| - Compute :math:`T_k`:                                                                                                                                |
+|                                                                                                                                                       |
+|   .. math::                                                                                                                                           |
+|                                                                                                                                                       |
+|      \begin{cases}                                                                                                                                    |
+|          T_1 = 0 \\                                                                                                                                   |
+|          T_k = T_{k-1} +                                                                                                                              |
+|              \frac{1}{2}\left(x_k f_k + x_{k-1} f_{k-1}\right)                                                                                        |
+|              \left(x_k - x_{k-1}\right) \quad k = 2 \rightarrow n                                                                                     |
+|      \end{cases}                                                                                                                                      |
+|                                                                                                                                                       |
+| - Compute :math:`\sum \left(S_k\right)^2 , \sum S_k T_k, \sum \left(T_k\right)^2 \\ \sum \left(f_k - f_1\right) S_k, \sum \left(f_k - f_1\right) T_k` |
+|                                                                                                                                                       |
+| - Compute :math:`A_1` and :math:`B_1`\ [err-x1-sec3-4]_:                                                                                              |
+|                                                                                                                                                       |
+|   .. math::                                                                                                                                           |
+|                                                                                                                                                       |
+|      \begin{bmatrix}A_1 \\ B_1\end{bmatrix} =                                                                                                         |
+|      \begin{bmatrix}                                                                                                                                  |
+|          \sum \left(S_k\right)^2 & \sum S_k T_k \\                                                                                                    |
+|          \sum S_k T_k            & \sum \left(T_k\right)^2                                                                                            |
+|      \end{bmatrix}                                                                                                                                    |
+|      \begin{bmatrix}                                                                                                                                  |
+|          \sum \left(f_k - f_1\right) S_k \\                                                                                                           |
+|          \sum \left(f_k - f_1\right) T_k                                                                                                              |
+|      \end{bmatrix}                                                                                                                                    |
+|                                                                                                                                                       |
+| - Compute :math:`\sigma_1` and `\mu_1`\ [err-x1-sec3-5]_: :math:`\sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}`             |
+|                                                                                                                                                       |
+| **Result:** :math:`\sigma_1` and `\mu_1` are the approximations of                                                                                    |
+| :math:`\sigma` and :math:`\mu`.                                                                                                                       |
++-------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 .. _x1-sec4:
