@@ -496,10 +496,9 @@ Here is a summary of the numerical computation:
 |          \sum \left(f_k - f_1\right) T_k                                                                                                              |
 |      \end{bmatrix}                                                                                                                                    |
 |                                                                                                                                                       |
-| - Compute :math:`\sigma_1` and `\mu_1`\ [errata-reei-6]_: :math:`\sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}`             |
+| - Compute :math:`\sigma_1` and :math:`\mu_1`\ [errata-reei-6]_: :math:`\sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}`       |
 |                                                                                                                                                       |
-| **Result:** :math:`\sigma_1` and `\mu_1` are the approximations of                                                                                    |
-| :math:`\sigma` and :math:`\mu`.                                                                                                                       |
+| **Result:** :math:`\sigma_1` and :math:`\mu_1` are the approximations of :math:`\sigma` and :math:`\mu`.                                              |
 +-------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
