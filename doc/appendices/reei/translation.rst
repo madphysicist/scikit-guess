@@ -677,13 +677,13 @@ which is a system that is non-linear in the same measure that the functions
 But this does not prevent the regression that was performed from being linear,
 so even this case has its rightful place in this section.
 
-Of course, this can be extended by considering more variables, for example
-:math:`x, y, z, t, ...`, instead of just :math:`x, y`, and so we can work in
+Of course, this can be further extended by considering more variables, for
+example :math:`x, y, z, t, ...`, instead of just :math:`x, y`, thus working in
 3D, or 4D, ..., instead of 2D. Everything mentioned here figures in literature
-in much more detail and with better structure, with presentations adapted to
-the exposition of general theory. The purpose of this discussion was to present
-a brief review, with a specific consistent notation to be used throughout the
-rest of the work.
+in a more detailed and more structured manner, with presentations adapted to
+the exposition of general theory. The purpose was only to present a brief
+review, with a specific notation to be used consistently throughout the
+remainder of the work.
 
 
 .. rst-class:: center
@@ -779,8 +779,8 @@ Regression of Sinusoids
 
 .. _reei3-sec2:
 
-2. Cases Where :math:`\omega` is Known Ahead of Time
-====================================================
+2. Instances Where :math:`\omega` is Known Ahead of Time
+========================================================
 
 
 .. _reei3-sec3:
@@ -815,8 +815,8 @@ Regression of Sinusoids
 
 .. _reei3-sec5:
 
-5. Cases Where :math:`a` and :math:`\rho` Parameters Are Approximately Known
-============================================================================
+5. Instances Where :math:`a` and :math:`\rho` Parameters Are Approximately Known
+================================================================================
 
 
 .. _reei3-sec6:
