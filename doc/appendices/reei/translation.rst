@@ -506,15 +506,16 @@ Here is a summary of the numerical computation:
    **Result:** :math:`\sigma_1` and :math:`\mu_1` are the approximations of
    :math:`\sigma` and :math:`\mu`.
 
-To illustrate the calculation (:numref:`reei-gauss-plot`), numerical data
-(:numref:`reei-gauss-data`) was genererated in the following manner:
+To illustrate the calculation (:numref:`reei-gauss-pdf-plot`), numerical data
+(:numref:`reei-gauss-pdf-data`) was genererated in the following manner:
 :math:`x_k` values were chosen at random from the domain. From the "exact"
 values :math:`\sigma_e` and :math:`\mu_e` (defining the "exact" function
 :math:`f(x)`, whose representative curve is plotted as a dashed line in
-:numref:`reei-gauss-plot`), we computed the exact values of :math:`f(x_k)`
+:numref:`reei-gauss-pdf-plot`), we computed the exact values of :math:`f(x_k)`
 given by equation :eq:`gauss-fx`\ [errata-reei-7]_. Then we added deviations
 randomly drawn from a range - to +10% of :math:`f(x_k)`, which gave us the
-numerical values of :math:`f_k` in :numref:`reei-gauss-data`, after rounding.
+numerical values of :math:`f_k` in :numref:`reei-gauss-pdf-data`, after
+rounding.
 
 The outrageous error modeling is motivated by the need for legibility in the
 figure, so that the so called "experimental" points, represented by crosses,
@@ -524,24 +525,24 @@ vein, only a handful of points was chosen so that the deviations between the
 both the intermediate and the final calculation. The fact that the points are
 not uniformly distributed across the domain is also a significant complication.
 
-.. figure:: /generated/reei/gauss-plot.png
-   :name: reei-gauss-plot
+.. figure:: /generated/reei/gauss-pdf-plot.png
+   :name: reei-gauss-pdf-plot
 
    A sample regression of the Gaussian probability density function.
 
 .. table:: Numerical values corresponding to the example in \
-   :numref:`reei-gauss-plot`.
-   :name: reei-gauss-data
+   :numref:`reei-gauss-pdf-plot`.
+   :name: reei-gauss-pdf-data
    :class: data-table
 
-   .. include:: /generated/reei/gauss-data.rst
+   .. include:: /generated/reei/gauss-pdf-data.rst
 
-In :numref:`reei-gauss-plot`, the shape of the curves of the "exact" integrals
-and the points :math:`\left(x_k, S_k\right)` and :math:`\left(x_k, T_k\right)`
-make the primary reason for the deviations in this method of calculation
-clearly apparent: numerical integration, while preferable to derivation, is not
-by any means perfect, and causes the deviations in
-:math:`\left(\sigma_1, \mu_1\right)`.
+In :numref:`reei-gauss-pdf-plot`, the shape of the curves of the "exact"
+integrals and the points :math:`\left(x_k, S_k\right)` and
+:math:`\left(x_k, T_k\right)` make the primary reason for the deviations in
+this method of calculation clearly apparent: numerical integration, while
+preferable to derivation, is not by any means perfect, and causes the
+deviations in :math:`\left(\sigma_1, \mu_1\right)`.
 
 To form an objective opinion about the qualities and defects of the method
 exposed here, it would be necessary to perform a systematic experimental
@@ -608,7 +609,8 @@ to the optimization parameters.
 
 Even more generally, if the function :math:`y = F(a, b, c, ...; x)` can be
 transformed into :math:`F(x, y) = A f(x, y) + B g(x, y) + C h(x, y)` with known
-functions :math:`F(x, y), f(x, y), g(x, y), h(x, y), ..., A(a, b, c, ...), B(a, b, c, ...), C(a, b, c, ...), ...`
+functions
+:math:`F(x, y), f(x, y), g(x, y), h(x, y), ..., A(a, b, c, ...), B(a, b, c, ...), C(a, b, c, ...), ...`
 the process is again linear with respect to the coefficients :math:`A`,
 :math:`B` and :math:`C`, even if it is not linear with respect to
 :math:`a, b, c, ...`. But it always reverts to a linear regression. The method
