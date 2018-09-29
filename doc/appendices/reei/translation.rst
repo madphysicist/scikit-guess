@@ -536,11 +536,61 @@ not uniformly distributed across the domain is also a significant complication.
 
    .. include:: /generated/reei/gauss-data.rst
 
+In :numref:`reei-gauss-plot`, the shape of the curves of the "exact" integrals
+and the points :math:`\left(x_k, S_k\right)` and :math:`\left(x_k, T_k\right)`
+make the primary reason for the deviations in this method of calculation
+clearly apparent: numerical integration, while preferable to derivation, is not
+by any means perfect, and causes the deviations in
+:math:`\left(\sigma_1, \mu_1\right)`.
+
+To form an objective opinion about the qualities and defects of the method
+exposed here, it would be necessary to perform a systematic experimental
+study of a very large number of cases and examples. In the current state of
+progress of this study, this remains yet to be done.
+
+It is certain that the deviations, caused by the defects inherent in numerical
+integration, would be considerably reduced if the points were sufficiently
+numerous and their abscissae were partitioned at sufficiently regular
+intervals.
+
 
 .. _reei1-sec4:
 
-4. Commentary
-=============
+4. Comments
+===========
+
+It would be unreasonable to imagine that the method presented here could
+replace currently used methods, implemented in commercial software, and with
+the benefits of long term study, experimentation and improvements. We must ask
+then, what is the motivation behind this work.
+
+Of course, recursive methods generally require a first approximation within the
+same order of magnitude as the target value. This is not generally a handicap
+since users are not completely in the dark. One might be tempted to consider
+this method of integral equations to satisfy the need for initial
+approximation. However, the need is quite marginal, and should not be seen as a
+serious motivation.
+
+A simple method, easy to program, like the one shown here, might certainly
+seduce some potential users in particular situations where we seek full mastery
+over the calculations that are performed. Users of commercial software are
+usually satisfied with the results they provide, but may occasionally deplore
+not knowing precisely what the sophisticated software is doing. Nevertheless,
+it would be poor motivation indeed for this study to attempt to provide a less
+powerful tool than what already exists, just to aleviate some of the
+frustration caused by using tools whose exact mechanisms are unknown.
+
+In fact, we must see in this paper not a specific utilitarian motivation in
+the case of the Gaussian distribution, but the intention to understand and draw
+attention to a more general idea: the numerous possibilities offered by
+integral equations to transform a problem of non-linear regression into a
+linear regression, computed through a non-iterative process.
+
+It is out of the question to compete against what already exists, and what is
+more imporant, works well. On the other hand, it would be a pity to forget a
+method that might potentially help resolve future problems: the method that has
+been the subject of this paper, whose essence is presented in
+:ref:`section 2 <reei1-sec2>`.
 
 
 .. rst-class:: center
