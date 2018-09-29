@@ -3,6 +3,8 @@ This file implements the code used to generate figures for the paper.
 """
 
 from itertools import zip_longest
+from os import makedirs
+from os.path import join
 
 import numpy as np
 from scipy.linalg import lstsq
@@ -14,6 +16,7 @@ from skg import gauss_fit
 
 
 SAVE = True
+OUTPUT = 'generated/reei'
 
 
 #############
@@ -47,6 +50,9 @@ def write_line(file, indent, line):
 
 plt.ioff()
 
+if SAVE:
+    makedirs(OUTPUT, exist_ok=True)
+
 
 ############
 # Figure 1 #
@@ -58,8 +64,6 @@ x = np.array([-0.992, -0.935, -0.836, -0.404, -0.326,
               -0.042,  0.068,  0.302,  0.439,  0.58])
 y = np.array([0.238, 0.262, 0.38, 1.041, 0.922,
               0.755, 0.589, 0.34, 0.193, 0.083])
-
-xy = x * y
 
 S = np.cumsum(0.5 * (y[1:] + y[:-1]) * np.diff(x))
 S = np.insert(S, 0, 0)
@@ -88,29 +92,29 @@ ax1.plot(domain, gauss_fit.model(domain, *fit), '-')
 annotate(ax1, '$f_k$', xy=(x[7], y[7]), xytext=(0.42, 0.45))
 
 # S(x) = mu * erf((x - mu) / (sqrt(2) * sigma)) / (2 * sigma**2)
-def Sk(x, mu, sigma):
+def Smodel(x, mu, sigma):
     return 0.5 * erf((x - mu) / (np.sqrt(2) * sigma))
 ax1.plot(x, S, 's-', markersize=7, markerfacecolor='none')
-ax1.plot(domain, Sk(domain, *exact) - Sk(x[0], *exact), '--')
+ax1.plot(domain, Smodel(domain, *exact) - Smodel(x[0], *exact), '--')
 #ax1.plot(domain, Sk(domain, *fit) - Sk(x[0], *fit), '-')
 annotate(ax1, '$S_k$', xy=(x[7], S[7]), xytext=(0.42, 0.72))
 
-# T(x) = S(x) - f(x)
-def Tk(x, mu, sigma):
-    return mu * Sk(x, mu, sigma) - sigma**2 * gauss_fit.model(x, mu, sigma)
+# T(x) = mu * S(x) - sigma**2 * f(x)
+def Tmodel(x, mu, sigma):
+    return mu * Smodel(x, mu, sigma) - sigma**2 * gauss_fit.model(x, mu, sigma)
 ax1.plot(x, T, 'D-', markersize=7, markerfacecolor='none')
-ax1.plot(domain, Tk(domain, *exact) - Tk(x[0], *exact), '--')
+ax1.plot(domain, Tmodel(domain, *exact) - Tmodel(x[0], *exact), '--')
 #ax1.plot(domain, Tk(domain, *fit) - Tk(x[0], *fit), '-')
 annotate(ax1, '$T_k$', xy=(x[7], T[7]), xytext=(0.42, -0.18))
 
 if SAVE:
-    fig1.savefig('doc/generated/reei/gauss-plot.png', figsize=(6, 4.5), dpi=300,
+    fig1.savefig(join(OUTPUT, 'gauss-plot.png'), figsize=(6, 4.5), dpi=300,
                  bbox_inches='tight')
     def ex_fmt(name, value):
         return ':math:`{}` = {:< 0.6g}'.format(name, value)
     extra = ['', ex_fmt(r'\sigma_e', exact[1]), ex_fmt(r'\mu_e', exact[0]), '',
              ex_fmt(r'\sigma_1', fit[1]), ex_fmt(r'\mu_1', fit[0])]
-    with open('doc/generated/reei/gauss-data.rst', 'w') as table:
+    with open(join(OUTPUT, 'gauss-data.rst'), 'w') as table:
         write_line(table, 0,
                    '+-----------+-------------+-------------+-------------+'
                    '-------------+-------------------------------+')

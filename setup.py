@@ -86,14 +86,11 @@ except ImportError:
     pass
 
 
-def version_info():
+def import_file(location):
     """
-    Jump through some hoops to import version.py for the different
-    versions of Python.
-
-    https://stackoverflow.com/a/67692/2988730
+    Imports the specified python file as a module, without explicitly
+    registering it to `sys.modules`.
     """
-    location = join(dirname(__file__) or '.', 'src', 'skg', 'version.py')
     if sys.version_info[0] == 2:
         # Python 2.7-
         from imp import load_source
@@ -108,7 +105,18 @@ def version_info():
         spec = spec_from_file_location('version', location)
         mod = module_from_spec(spec)
         spec.loader.exec_module(mod)
+    return mod
 
+
+def version_info():
+    """
+    Jump through some hoops to import version.py for the different
+    versions of Python.
+
+    https://stackoverflow.com/a/67692/2988730
+    """
+    location = join(dirname(__file__) or '.', 'src', 'skg', 'version.py')
+    mod = import_file(location)
     return mod.__version__
 
 
@@ -121,37 +129,38 @@ def long_description():
         return '%s\n\n%s' % (readme.read(), changes.read())
 
 
-setup(
-    name=DIST_NAME,
-    version=version_info(),
-    license=LICENSE,
-    description=DESCRIPTION,
-    long_description_content_type='text/markdown',
-    long_description=long_description(),
-    author=AUTHOR,
-    author_email=AUTHOR_EMAIL,
-    maintainer=MAINTAINER,
-    maintainer_email=MAINTAINER_EMAIL,
-    classifiers=CLASSIFIERS,
-    url='https://github.com/madphysicist/scikit-guess',
-    project_urls={
-        'Bugs': 'https://github.com/madphysicist/scikit-guess/issues',
-        'Documentation': 'https://scikit-guess.readthedocs.io/en/latest/',
-    },
-    packages=['skg', 'skg.tests'],
-    package_dir={'': 'src'},
-    install_requires=[
-        'numpy',
-        'scipy',
-    ],
-    tests_require=['pytest'],
-    cmdclass=COMMANDS,
-    extras_require={
-        'pandas': ['pandas'],
-        'test-plots': ['matplotlib'],
-        'test-pep8': ['pytest-pep8'],
-        # TODO: Some of the sphinx extensions may need to go in here.
-        'docs': ['sphinx >= 1.8'],
-        'docs-rtd': ['sphinx_rtd_theme'],
-    }
-)
+if __name__ == '__main__':
+    setup(
+        name=DIST_NAME,
+        version=version_info(),
+        license=LICENSE,
+        description=DESCRIPTION,
+        long_description_content_type='text/markdown',
+        long_description=long_description(),
+        author=AUTHOR,
+        author_email=AUTHOR_EMAIL,
+        maintainer=MAINTAINER,
+        maintainer_email=MAINTAINER_EMAIL,
+        classifiers=CLASSIFIERS,
+        url='https://github.com/madphysicist/scikit-guess',
+        project_urls={
+            'Bugs': 'https://github.com/madphysicist/scikit-guess/issues',
+            'Documentation': 'https://scikit-guess.readthedocs.io/en/latest/',
+        },
+        packages=['skg', 'skg.tests'],
+        package_dir={'': 'src'},
+        install_requires=[
+            'numpy',
+            'scipy',
+        ],
+        tests_require=['pytest'],
+        cmdclass=COMMANDS,
+        extras_require={
+            'pandas': ['pandas'],
+            'test-plots': ['matplotlib'],
+            'test-pep8': ['pytest-pep8'],
+            # TODO: Some of the sphinx extensions may need to go in here.
+            'docs': ['sphinx >= 1.8'],
+            'docs-rtd': ['sphinx_rtd_theme'],
+        }
+    )

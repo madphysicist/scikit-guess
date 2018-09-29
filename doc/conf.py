@@ -198,9 +198,63 @@ autosummary_generate = True
 # Number figures and tables
 numfig = True
 
+# Content generators
+content_preprocess = ['appendices/reei']
+
+
+def preprocess_content():
+    """
+    This is a hack to ensure that the appropriate content is generated
+    for the figures and tables in the paper. It checks the folders
+    listed in `content_preprocess` and runs each file there.
+
+    This is not a really good stand-in for say a proper directive to
+    auto-generate the content right there and then into a configurable
+    folder, etc., but it will have to do.
+
+    If such an extension were to be created, it would add directives for
+    `auto-figure` and `auto-table` as a minimum. These would extend the
+    normal `figure` and `table` directives to avoid hassle. They would
+    just add a mixin that would add a couple of additional configuration
+    arguments:
+
+    1. `cache`: "yes" or "no" value. If "yes", check the output file for
+       date before running the generator. If the file exists and is
+       newer than the script file, use it as-is. If "no", always run the
+       script.
+    2. `generator`: The name of a python module, followed by `::` and a
+       function name. The default function name is generate_figure or
+       generate_table, as the case may be. The whole module is imported,
+       and the selected function is run with the name of the output file
+       as an input.
+    3. `source`: `auto-figure` would already require a file name to be
+       supplied, but `auto-table` would not. `auto-table` would
+       therefore require a `source` option to supply that. The default
+       could be to just replace itself with the text of the table and
+       go for another round of parsing instead of including a file.
+    """
+    from glob import glob
+    from os import getcwd
+    from os.path import abspath, join
+    from contextlib import contextmanager
+
+    @contextmanager
+    def path_context(location):
+        sys.path.insert(0, abspath(join(getcwd(), location)))
+        yield
+        del sys.path[0]
+
+    with path_context('..'):
+        from setup import import_file
+
+    for folder in globals().get('content_preprocess', []):
+        for file in glob(join(folder, '*.py')):
+            mod = import_file(file)
+
 
 def setup(app):
     """
     Add custom stylesheet(s).
     """
     app.add_stylesheet('css/custom.css')
+    preprocess_content()
