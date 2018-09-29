@@ -453,10 +453,9 @@ With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
 
 Here is a summary of the numerical computation:
 
-
 .. _reei1-sec3-alg:
 
-.. rst-class:: algorithm
+.. rst-class:: listing
 
 .. 
 
