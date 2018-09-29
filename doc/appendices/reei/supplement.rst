@@ -2,6 +2,71 @@
 Supplementary Materials
 =======================
 
+-------------------------
+Additional Considerations
+-------------------------
+
+The purpose of this translation was originally to motivate the writing of the
+scikit to which it is attached. As such, the calculations shown for linear
+regressions in the paper can be greatly simplified using the power of existing
+linear algebra solvers. The particular implementations discussed in this
+section are targeted towards `numpy`_ and `scipy`_ in particular. However, the
+formulation shown here will most likely be helpful for a number of other modern
+linear least-squares packages. This is especially true since many software
+packages, including `numpy`_ and `scipy`_, share `LAPACK`_ as a backend for
+performing the actual computations.
+
+With a linear algebra package such as `LAPACK`_, it is sufficient to compute
+the coefficient matrix :math:`A` and ordinate vector :math:`b`, without
+performing any further operations on them. A linear regression is generally
+solved as something equivalent to
+
+.. math::
+
+   x = \left( A^T * A \right)^{-1} \left( A^T * b \right)
+
+The formulae in the paper show how to compute the elements of :math:`A^T * A`
+and :math:`A^T * b`, which is usually done more efficiently by exiting packages
+when given the raw :math:`A` and :math:`b`.
+
+The following sections show how to construct such simplified solutions to the
+equations in the paper. Solutions are described conceptually, and presented
+concretely with Python code. The solutions here are for conceptual reference
+only. They are not a complete or exact reflection of how things are done in the
+scikit itself.
+
+In the code snippets below, ``x`` and ``y`` are assumed to be one-dimensional
+numpy arrays. Both arrays have an equal number of elements, ``n``. Numpy is
+implicitly imported under the conventional name ``np``.
+
+Gaussian
+========
+
+Algorithm originally presented in :ref:`reei1-sec3` and summarized
+:ref:`here <reei1-sec3-alg>`.
+
+:math:`A` is a matrix with the cumulative sums :math:`S` and :math:`T` as
+the columns. In numpy terms:
+
+.. code-block:: python
+
+   S = np.cumsum(0.5 * (y[1:] + y[:-1]) * np.diff(x))
+   S = np.insert(S, 0, 0)
+
+   xy = x * y
+   T = np.cumsum(0.5 * (xy[1:] + xy[:-1]) * np.diff(x))
+   T = np.insert(T, 0, 0)
+
+   A = np.stack((S, T), axis=1)
+
+:math:`b` is the vector of measured :math:`y` values decreased by its first
+element. In numpy terms:
+
+.. code-block:: python
+
+   b = y - y[0]
+
+
 ------
 Errata
 ------
@@ -81,71 +146,6 @@ link back to the corresponding location in the translated paper as footnotes.
 .. [errata-reei-7] The original paper lists equation [9]. There is no equation
    [9] in the paper, and contextually, it makes sense that the reference is in
    fact to equation [1].
-
-
--------------------------
-Additional Considerations
--------------------------
-
-The purpose of this translation was originally to motivate the writing of the
-scikit to which it is attached. As such, the calculations shown for linear
-regressions in the paper can be greatly simplified using the power of existing
-linear algebra solvers. The particular implementations discussed in this
-section are targeted towards `numpy`_ and `scipy`_ in particular. However, the
-formulation shown here will most likely be helpful for a number of other modern
-linear least-squares packages. This is especially true since many software
-packages, including `numpy`_ and `scipy`_, share `LAPACK`_ as a backend for
-performing the actual computations.
-
-With a linear algebra package such as `LAPACK`_, it is sufficient to compute
-the coefficient matrix :math:`A` and ordinate vector :math:`b`, without
-performing any further operations on them. A linear regression is generally
-solved as something equivalent to
-
-.. math::
-
-   x = \left( A^T * A \right)^{-1} \left( A^T * b \right)
-
-The formulae in the paper show how to compute the elements of :math:`A^T * A`
-and :math:`A^T * b`, which is usually done more efficiently by exiting packages
-when given the raw :math:`A` and :math:`b`.
-
-The following sections show how to construct such simplified solutions to the
-equations in the paper. Solutions are described conceptually, and presented
-concretely with Python code. The solutions here are for conceptual reference
-only. They are not a complete or exact reflection of how things are done in the
-scikit itself.
-
-In the code snippets below, ``x`` and ``y`` are assumed to be one-dimensional
-numpy arrays. Both arrays have an equal number of elements, ``n``. Numpy is
-implicitly imported under the conventional name ``np``.
-
-Gaussian
-========
-
-Algorithm originally presented in :ref:`reei1-sec3` and summarized
-:ref:`here <reei1-sec3-alg>`.
-
-:math:`A` is a concatenation of the cumulative sums :math:`S` and :math:`T` as
-the columns. In numpy terms:
-
-.. code-block:: python
-
-   S = np.cumsum(0.5 * (y[1:] + y[:-1]) * np.diff(x))
-   S = np.insert(S, 0, 0)
-
-   xy = x * y
-   T = np.cumsum(0.5 * (xy[1:] + xy[:-1]) * np.diff(x))
-   T = np.insert(T, 0, 0)
-
-   A = np.stack((S, T), axis=1)
-
-:math:`b` is the vector of measured :math:`y` values decreased by its first
-element. In numpy terms:
-
-.. code-block:: python
-
-   b = y - y[0]
 
 
 .. include:: /link-defs.rst

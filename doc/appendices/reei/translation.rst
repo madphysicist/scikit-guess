@@ -527,9 +527,10 @@ not uniformly distributed across the domain is also a significant complication.
 .. figure:: /generated/reei/gauss-plot.png
    :name: reei-gauss-plot
 
-   Gaussian probability density function, a sample regression.
+   A sample regression of the Gaussian probability density function.
 
-.. table:: Numerical values corresponding to the example in :numref:`reei-gauss-plot`.
+.. table:: Numerical values corresponding to the example in \
+   :numref:`reei-gauss-plot`.
    :name: reei-gauss-data
    :class: data-table
 
