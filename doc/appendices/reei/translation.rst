@@ -600,6 +600,91 @@ been the subject of this paper, whose essence is presented in
 Appendix 1: Review of Linear Regression
 =======================================
 
+When the function that we seek to optimize, :math:`y = F(a, b, c, ...; x)`, can
+be written in the form :math:`y = a f(x) + b g(x) + c h(x) + ...`, according to
+the number of parameters :math:`a, b, c, ...` and with the functions
+:math:`f(x), g(x), h(x), ...` being known, the process is linear with respect
+to the optimization parameters.
+
+Even more generally, if the function :math:`y = F(a, b, c, ...; x)` can be
+transformed into :math:`F(x, y) = A f(x, y) + B g(x, y) + C h(x, y)` with known
+functions :math:`F(x, y), f(x, y), g(x, y), h(x, y), ..., A(a, b, c, ...), B(a, b, c, ...), C(a, b, c, ...), ...`
+the process is again linear with respect to the coefficients :math:`A`,
+:math:`B` and :math:`C`, even if it is not linear with respect to
+:math:`a, b, c, ...`. But it always reverts to a linear regression. The method
+of "least squares" effectively consists of finding the minimum of:
+
+    .. math::
+
+       \begin{cases}
+           \varepsilon^2_{\left(A, B, C, ...\right)} =
+               \sum_{k=1}^n \left(F_k -
+                   \left(A f_k + B g_k + C h_k + ...\right)\right)^2 \\
+           F_k \equiv F(x_k, y_k) ; f_k \equiv f(x_k, y_k) ;
+               g_k \equiv g(x_k, y_k) ; h_k \equiv h(x_k, y_k)
+       \end{cases}
+
+The partial derivatives with respect to :math:`A, B, C, ...` determine a system
+of equations whose solutions, :math:`A_0, B_0, C_0, ...` are optimal:
+
+    .. math::
+
+       \begin{cases}
+           \left(\frac{\partial \left(\varepsilon^2\right)}{\partial A}\right)
+                   _{A_0, B_0, C_0, ...} = -\sum_{k=1}^n \left(F_k - \left(
+               A_0 f_k + B_0 g_k + C_0 h_k, ...\right)\right) f_k = 0 \\
+           \left(\frac{\partial \left(\varepsilon^2\right)}{\partial B}\right)
+                   _{A_0, B_0, C_0, ...} = -\sum_{k=1}^n \left(F_k - \left(
+               A_0 f_k + B_0 g_k + C_0 h_k, ...\right)\right) g_k = 0 \\
+           \left(\frac{\partial \left(\varepsilon^2\right)}{\partial C}\right)
+                   _{A_0, B_0, C_0, ...} = -\sum_{k=1}^n \left(F_k - \left(
+               A_0 f_k + B_0 g_k + C_0 h_k, ...\right)\right) h_k = 0 \\
+           ...
+       \end{cases}
+
+The solution to this system, conventionally written with
+:math:`\sum \equiv \sum_{k=1}^n` leads to:
+
+    .. math::
+
+       \begin{bmatrix}
+           A_0 \\ B_0 \\ C_0 \\ ...
+       \end{bmatrix} =
+       \begin{bmatrix}
+           \sum f_k^2   & \sum f_k g_k & \sum f_k h_k & ... \\
+           \sum f_k g_k & \sum g_k^2   & \sum g_k h_k & ... \\
+           \sum f_k h_k & \sum g_k h_k & \sum h_k^2   & ... \\
+           ...          & ...          & ...          & ...
+       \end{bmatrix}^{-1}
+       \begin{bmatrix}
+           \sum F_k f_k \\ \sum F_k g_k \\ \sum F_k h_k \\ ...
+       \end{bmatrix}
+
+Then we obtain the optimized values of :math:`a, b, c, ...` corresponding to
+the following system, where the unknowns are :math:`a_0, b_0, c_0, ...`:
+
+    .. math::
+
+       \begin{cases}
+           A(a_0, b_0, c_0, ...) = A_0 \\
+           B(a_0, b_0, c_0, ...) = B_0 \\
+           C(a_0, b_0, c_0, ...) = C_0 \\
+           ...
+       \end{cases}
+
+which is a system that is non-linear in the same measure that the functions
+:math:`A(a, b, c, ...), B(a, b, c, ...), C(a, b, c, ...), ...` are non-linear.
+But this does not prevent the regression that was performed from being linear,
+so even this case has its rightful place in this section.
+
+Of course, this can be extended by considering more variables, for example
+:math:`x, y, z, t, ...`, instead of just :math:`x, y`, and so we can work in
+3D, or 4D, ..., instead of 2D. Everything mentioned here figures in literature
+in much more detail and with better structure, with presentations adapted to
+the exposition of general theory. The purpose of this discussion was to present
+a brief review, with a specific consistent notation to be used throughout the
+rest of the work.
+
 
 .. rst-class:: center
 
