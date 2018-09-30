@@ -77,14 +77,14 @@ def gauss_pdf_fit(x, y, sorted=True):
 
     Return
     ------
-    fit : ~numpy.ndarray
-        An array of the same shape as `y`, with `axis` reduced to two
-        elements. The first element is the mean, the second the
-        standard deviation.
+    mu, sigma : ~numpy.ndarray
+        A two-element array containing the estimated mean and standard
+        deviation, in that order.
 
     References
     ----------
-    .. [1] Jacquelin, Jean. "\ :ref:`ref-reei`\ ", :ref:`pp. 6-8. <x1-sec3>`,
+    .. [1] Jacquelin, Jean. "\ :ref:`ref-reei`\ ",
+       :ref:`pp. 6-8. <reei1-sec3>`,
        https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
     x, y = preprocess(x, y, sorted)
