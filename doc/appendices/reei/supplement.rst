@@ -86,17 +86,17 @@ link back to the corresponding location in the translated paper as footnotes.
    which :math:`\alpha` and :math:`\beta` are definitely not. Subscripting them
    is probably an error.
 
-.. [errata-reei-2] The original equations :eq:`gauss-int` and :eq:`gauss-eq`
+.. [errata-reei-2] The original equations :eq:`gauss-pdf-int` and :eq:`gauss-pdf-eq`
    read:
 
    .. math::
-      :label: gauss-int-old
+      :label: gauss-pdf-int-old
 
       \int_{x_1}^x \left(t - \mu\right)f(t)dt =
           -\sqrt{\frac{\pi}{2}}\sigma\left(f(x) - f(x_1)\right)
 
    .. math::
-      :label: gauss-eq-old
+      :label: gauss-pdf-eq-old
 
       \begin{cases}
           f(x) - f(x_1) = A \int_{x_1}^x f(t)dt + B \int_{x_1}^x t f(t)dt \\
@@ -105,16 +105,16 @@ link back to the corresponding location in the translated paper as footnotes.
       \end{cases}
 
    Taking the integral :math:`\int_{x_1}^x \left(t - \mu\right) f(t)dt`, with
-   :math:`f(x)` given in :eq:`gauss-fx`, shows that the factor of
+   :math:`f(x)` given in :eq:`gauss-pdf-fx`, shows that the factor of
    :math:`\sqrt{\frac{\pi}{2}}` should actually be an additional factor of
    :math:`\sigma`. This factor then propagates to :math:`A` and :math:`B` as
    shown in the translated paper.
 
-.. [errata-reei-3] The original equation :eq:`gauss-lsq` had :math:`y - y_1`
-   in the rightmost matrix:
+.. [errata-reei-3] The original equation :eq:`gauss-pdf-lsq` had
+   :math:`y - y_1` in the rightmost matrix:
 
    .. math::
-      :label: gauss-lsq-old
+      :label: gauss-pdf-lsq-old
 
       \begin{bmatrix}
           \sum \left(y_k - y_1\right) S_k \\
@@ -122,20 +122,20 @@ link back to the corresponding location in the translated paper as footnotes.
       \end{bmatrix}
 
    This is inconsistent with the explicit note at the beginning of the
-   :ref:`section <reei1-sec3>`, and with equations :eq:`gauss-S`, :eq:`gauss-T`
-   and :eq:`gauss-resid`.
+   :ref:`section <reei1-sec3>`, and with equations :eq:`gauss-pdf-S`,
+   :eq:`gauss-pdf-T` and :eq:`gauss-pdf-resid`.
 
 .. [errata-reei-4] The original expression for :math:`\sigma_1` in
-   :eq:`gauss-solve` was:
+   :eq:`gauss-pdf-solve` was:
 
    .. math::
-      :label: gauss-solve-old
+      :label: gauss-pdf-solve-old
 
       \sigma_1 = -\frac{1}{B_1} \sqrt{\frac{2}{\pi}}
 
-   The correction is due to the error in the equations :eq:`gauss-eq` and
-   :eq:`gauss-int`\ [errata-reei-2]_. Notice that :math:`\mu_1` is unaffected
-   by the change in factor since it is a ratio.
+   The correction is due to the error in the equations :eq:`gauss-pdf-eq` and
+   :eq:`gauss-pdf-int`\ [errata-reei-2]_. Notice that :math:`\mu_1` is
+   unaffected by the change in factor since it is a ratio.
 
 .. [errata-reei-5] An extension of [errata-reei-3]_ to the summary section. The
    right-most matrix had :math:`y_k - y_1` replaced with :math:`f_k - f_1`.

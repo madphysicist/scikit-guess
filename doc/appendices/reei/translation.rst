@@ -359,7 +359,7 @@ We will consider a probability density function of two parameters,
 :math:`\sigma` and :math:`\mu`, defined by
 
     .. math::
-       :label: gauss-fx
+       :label: gauss-pdf-fx
 
        f(x) = \frac{1}{\sigma \sqrt{2 \pi}}
            exp\left(-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2\right)
@@ -367,17 +367,17 @@ We will consider a probability density function of two parameters,
 The general notation :math:`y(x)` of the previous sections is replaced with
 :math:`f(x)` here due to the specific nature of this case.
 
-The integration :eq:`gauss-int` leads to the integral equation :eq:`gauss-eq`,
-of which :math:`f(x)` is the solution\ [errata-reei-2]_:
+The integration :eq:`gauss-pdf-int` leads to the integral equation
+:eq:`gauss-pdf-eq`, of which :math:`f(x)` is the solution\ [errata-reei-2]_:
 
     .. math::
-       :label: gauss-int
+       :label: gauss-pdf-int
 
        \int_{x_1}^x \left(t - \mu\right)f(t)dt =
            -\sigma^2\left(f(x) - f(x_1)\right)
 
     .. math::
-       :label: gauss-eq
+       :label: gauss-pdf-eq
 
        \begin{cases}
            f(x) - f(x_1) = A \int_{x_1}^x f(t)dt + B \int_{x_1}^x t f(t)dt \\
@@ -391,7 +391,7 @@ the respective approximations, the first denoted :math:`S` with
 :math:`G(x) = 1`, and the second denoted :math:`T` with :math:`G(x) = x`:
 
     .. math::
-       :label: gauss-S
+       :label: gauss-pdf-S
 
        \begin{cases}
            S_1 = 0 \\
@@ -401,7 +401,7 @@ the respective approximations, the first denoted :math:`S` with
        \end{cases}
 
     .. math::
-       :label: gauss-T
+       :label: gauss-pdf-T
 
        \begin{cases}
            T_1 = 0 \\
@@ -412,11 +412,11 @@ the respective approximations, the first denoted :math:`S` with
 
 When we replace :math:`f(x_k)` with :math:`f_k`, :math:`f(x_1)` with
 :math:`f_1` and the integrals with :math:`S_k` and :math:`T_k`, respectively,
-equation :eq:`gauss-eq` no longer holds true. We seek to minimize the sum of
+equation :eq:`gauss-pdf-eq` no longer holds true. We seek to minimize the sum of
 the squares of the residuals:
 
     .. math::
-       :label: gauss-resid
+       :label: gauss-pdf-resid
 
        \sum_{k=1}^n \varepsilon_k^2 =
            \sum_{k=1}^n \left(-\left(f_k - f_1\right) + A S_k + B T_k\right)^2
@@ -426,12 +426,12 @@ Notice that if we had chosen a different lower limit for the integration than
 the numerical values of :math:`S_k` and :math:`T_k`, in a way that would cancel
 out the differences without changing the final result.
 
-The relationship :eq:`gauss-resid` is none other than the than the equation of
-a linear regression, which we know how to optimize for the parameters
+The relationship :eq:`gauss-pdf-resid` is none other than the than the equation
+of a linear regression, which we know how to optimize for the parameters
 :math:`A_1` and :math:`B_1`\ [errata-reei-3]_:
 
     .. math::
-       :label: gauss-lsq
+       :label: gauss-pdf-lsq
 
        \begin{bmatrix}A_1 \\ B_1\end{bmatrix} =
        \begin{bmatrix}
@@ -444,10 +444,10 @@ a linear regression, which we know how to optimize for the parameters
        \end{bmatrix}
 
 With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
-:math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-eq`\ [errata-reei-4]_:
+:math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-pdf-eq`\ [errata-reei-4]_:
 
      .. math::
-        :label: gauss-solve
+        :label: gauss-pdf-solve
 
         \sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}
 
@@ -511,9 +511,9 @@ To illustrate the calculation (:numref:`reei-gauss-pdf-plot`), numerical data
 values :math:`\sigma_e` and :math:`\mu_e` (defining the "exact" function
 :math:`f(x)`, whose representative curve is plotted as a dashed line in
 :numref:`reei-gauss-pdf-plot`), we computed the exact values of :math:`f(x_k)`
-given by equation :eq:`gauss-fx`\ [errata-reei-7]_. Then we added deviations
-randomly drawn from a range - to +10% of :math:`f(x_k)`, which gave us the
-numerical values of :math:`f_k` in :numref:`reei-gauss-pdf-data`, after
+given by equation :eq:`gauss-pdf-fx`\ [errata-reei-7]_. Then we added
+deviations randomly drawn from a range - to +10% of :math:`f(x_k)`, which gave
+us the numerical values of :math:`f_k` in :numref:`reei-gauss-pdf-data`, after
 rounding.
 
 The outrageous error modeling is motivated by the need for legibility in the
