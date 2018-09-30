@@ -1,10 +1,10 @@
 """
-Tests for the :func:`skg.gauss_fit` function.
+Tests for the :func:`skg.gauss_pdf_fit` function.
 """
 
 import numpy as np
 
-from skg.gauss import gauss_fit
+from skg.gauss_pdf import gauss_pdf_fit
 
 
 def test_paper():
@@ -21,7 +21,7 @@ def test_paper():
          0.755, 0.589, 0.34, 0.193, 0.083]
 
     mu_1, sigma_1 = -0.289356, 0.383915
-    mu, sigma = gauss_fit(x, y)
+    mu, sigma = gauss_pdf_fit(x, y)
 
     assert np.isclose(mu, mu_1, atol=5e-7, rtol=0.0)
     assert np.isclose(sigma, sigma_1, atol=5e-7, rtol=0.0)

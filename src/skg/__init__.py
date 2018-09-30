@@ -11,18 +11,18 @@ refers to the model function being fitted. Each fitting routine has a
    :toctree: generated/
 
    exp_fit
-   gauss_fit
+   gauss_pdf_fit
    pow_fit
 """
 
-from .gauss import gauss_fit
+from .gauss_pdf import gauss_pdf_fit
 from .exp import exp_fit
 from .pow import pow_fit
 
 from .version import __version__
 
 
-__all__ = ['gauss_fit', 'exp_fit', 'pow_fit']
+__all__ = ['gauss_pdf_fit', 'exp_fit', 'pow_fit']
 
 
 def test(*args, **kwargs):

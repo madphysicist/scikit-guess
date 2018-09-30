@@ -1,5 +1,16 @@
 """
-Gaussian distribution fit.
+Gaussian probability density fit.
+
+The function in this module is normalized to one, as a PDF should be:
+
+.. math::
+
+   f(x) = \frac{1}{\sigma \sqrt{2 \pi}}
+       e^{-\frac{1}{2} \left(\frac{x - \mu}{\sigma}\right)^2} \quad
+   \int_{-\infty}^{+\infty} f(t)dt = 1
+
+For for the unnormalized Gaussian (with an additional amplitude
+parameter), see :mod:`gauss`. For the CDF, see :mod:`gauss_cdf`.
 
 .. todo::
 
@@ -38,12 +49,12 @@ from scipy.linalg import lstsq
 from ._util import preprocess
 
 
-__all__ = ['gauss_fit']
+__all__ = ['gauss_pdf_fit']
 
 
-def gauss_fit(x, y, sorted=True):
+def gauss_pdf_fit(x, y, sorted=True):
     r"""
-    Gaussian fit of the form
+    Gaussian PDF fit of the form
 
     .. math::
 
@@ -121,5 +132,5 @@ def model(x, mu, sigma):
     return exp(-0.5 * ((x - mu) / sigma)**2) / (sigma * sqrt(2 * pi))
 
 
-gauss_fit.model = model
+gauss_pdf_fit.model = model
 
