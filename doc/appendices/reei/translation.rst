@@ -691,8 +691,43 @@ remainder of the work.
 
 .. _reei1-appendix2:
 
-Appendix 2: Linear Regression of the Gaussian Probability Density Function
-==========================================================================
+Appendix 2: Linear Regression of the Gaussian Cumulative Distribution Function
+==============================================================================
+
+We consider the cumulative Gaussian distribution function of two parameters,
+:math:`\sigma` and :math:`\mu`, defined by\ [errata-reei-8]_:
+
+    .. math::
+       :label: gauss-cdf-fx
+
+       F(x) = \frac{1}{\sqrt{2 \pi} \sigma} \int_{-\inf}^x exp\left(
+           -\frac{1}{2}\left(\frac{t - \mu}{\sigma}\right)^2\right)dt
+
+An example is shown in :numref:`reei-gauss-cdf-plot` (the dashed curve).
+
+.. figure:: /generated/reei/gauss-cdf-plot.png
+   :name: reei-gauss-cdf-plot
+
+   Sample regression illustrating the Gaussian cumulative distribution function.
+
+.. table:: Numerical values corresponding to the example in \
+   :numref:`reei-gauss-cdf-plot`\ [errata-reei-9]_.
+   :name: reei-gauss-cdf-data
+   :class: data-table
+
+   .. include:: /generated/reei/gauss-cdf-data.rst
+
+The data are the points that we call "experimental":
+:math:`(x_1, F_1), (x_2, F_2), ..., (x_k, F_k), ..., (x_n, F_n)`, which, in
+:numref:`reei-gauss-cdf-plot`\ [errata-reei-10]_ have a particular dispersion
+relative to their respective nominal positions :math:`\left(x_k, F(x_k)\right)`
+on the dashed curve representing :math:`F(x)`.
+
+
+.. _reei1-appendix2-listings:
+
+Listings for the functions Erf and argErf
+-----------------------------------------
 
 
 .. rst-class:: center
