@@ -48,6 +48,10 @@ CurveFit
 Input Parameters
     Each input parameter should be tested individually.
 
+If the source material on wich a the algorithm is based provides a sample, a
+"Paper Test" may be added to verify the results against what should be an
+independent implementation.
+
 
 .. include:: /link-defs.rst
 """
