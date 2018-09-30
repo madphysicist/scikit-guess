@@ -2,6 +2,9 @@
 Supplementary Materials
 =======================
 
+.. contents::
+   :local:
+
 -------------------------
 Additional Considerations
 -------------------------
@@ -39,8 +42,8 @@ In the code snippets below, ``x`` and ``y`` are assumed to be one-dimensional
 numpy arrays. Both arrays have an equal number of elements, ``n``. Numpy is
 implicitly imported under the conventional name ``np``.
 
-Gaussian
-========
+Gaussian PDF
+============
 
 Algorithm originally presented in :ref:`reei1-sec3` and summarized
 :ref:`here <reei1-sec3-alg>`.
@@ -65,6 +68,88 @@ element. In numpy terms:
 .. code-block:: python
 
    b = y - y[0]
+
+Gaussian CDF
+============
+
+.. include:: ../page_break.rst
+
+
+---------------------
+Extended Applications
+---------------------
+
+There are a few additional common functions and modifications that can be added
+to the suite presented in the paper without stretching the imagination much.
+
+
+.. _reei-supplement-gauss3:
+
+Three-Parameter Gaussian
+========================
+
+In the real world, data often comes out as an unnormalized Gaussian of three,
+rather than two parameters, with the third parameter being the amplitude or
+normalization. The normalization constant of the Gaussian PDF is chosen so that
+the total area under the curve is unity:
+
+.. math::
+
+   \frac{1}{\sigma \sqrt{2 \pi}} \int_{-\infty}^{+\infty}
+       e^{-\frac{1}{2} \left(\frac{t - \mu}{\sigma} \right)^2}dt = 1
+
+The amplitude of the PDF at the peak :math:`x = \mu` is therefore
+:math:`\frac{1}{\sigma \sqrt{2 \pi}}`. An unnormalized Gaussian can be
+conveniently parametrized either in terms of its total area :math:`A`, or peak
+amplitude :math:`a`, in addition to :math:`\mu` and :math:`\sigma`. We have the
+relationship:
+
+.. math::
+
+   a = \frac{A}{\sigma \sqrt{2 \pi}}
+
+Either is a valid choice for the third parameter. The scikit uses the amplitude
+:math:`a` because it is easier to visualize, and makes the computation just a
+little easier. We therefore wish to use the methodology presented in the
+original paper to find the parameters :math:`a`, :math:`\mu` and :math:`\sigma`
+which optimize the fit to some set of data points
+:math:`(x_1, y_1), (x_2, y_2), ..., (x_k, y_k), ..., (x_n, y_n)` of our
+function:
+
+.. math::
+
+   f(x) = a e^{-\frac{1}{2} \left(\frac{x - \mu}{\sigma} \right)^2}
+
+The formulation of the integral equation :eq:`gauss-pdf-eq` is still
+applicable because the amplitude parameter is not resolvable from those
+equations. We are able to solve for the approximations :math:`\mu_1` and
+:math:`\sigma_1` as before (but with a different :math:`f(x)`, which absorbs
+the multiplicative constant).
+
+Optimizing :math:`a` will require an additional step. Fortunately, with
+:math:`\mu` and :math:`\sigma` fixed, the minimization of residuals in terms of
+:math:`a` is already a linear problem:
+
+.. math::
+
+   \sum_{k=1}^n \varepsilon_k^2 = \sum_{k=1}^n \left(y_k - a E_k)\right)^2 \\
+   \text{where} \quad E_k =
+       e^{-\frac{1}{2} \left(\frac{x_k - \mu_1}{\sigma_1} \right)^2}
+
+Setting the partial derivative of the sum of squared errors with respect to
+:math:`a` to zero:
+
+.. math::
+
+   \sum_{k=1}^n \left( y_k - a E_k \right) E_k = 0
+
+Since we are solving for only one unknown, a single equation is produced:
+
+.. math::
+
+   a = \frac{\sum_{k=1}^n y_k E_k}{\sum_{k=1}^n E_k^2}
+
+.. include:: ../page_break.rst
 
 
 ------
@@ -146,6 +231,19 @@ link back to the corresponding location in the translated paper as footnotes.
 .. [errata-reei-7] The original paper lists equation [9]. There is no equation
    [9] in the paper, and contextually, it makes sense that the reference is in
    fact to equation [1].
+
+.. [errata-reei-8] The equation numbers have been moved back by two. The number
+   in the appendix of the original paper starts with 11. However, numbers 9 and
+   10 are missing from the last numbered equation (which was
+   :eq:`gauss-pdf-solve`). There are four unlabeled equations in Appendix 1,
+   not 2.
+
+.. [errata-reei-9] The table was extracted from the original figure and added
+   as a separate entity. A caption was added to reflect the caption of
+   :numref:`reei-gauss-pdf-data`.
+
+.. [errata-reei-10] The figure is listed as 11 in the original paper. I am
+   pretty sure that is an outright typo.
 
 
 .. include:: /link-defs.rst
