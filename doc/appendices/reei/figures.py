@@ -268,20 +268,37 @@ def gauss_cdf():
         ]
     )
 
+############
+# Erf Test #
+############
+
+def erf_test():
+    x = [0.001, 0.1, 1.0, 2.0, 2.699, 2.701, 4.0, 5.0]
+    y = [0.001128378791, 0.112462916, 0.8427007929, 0.995322265,
+         0.9998648953, 0.998664351, 0.9999999846, 0.9999999999984]
+    return None, gen_table(
+        cols=[x, y], specs=['{:0.4g}', '{:0.13g}'],
+        heading=[':math:`x = argErf(y)`', ':math:`Erf(x) = y`']
+    )
+
 
 if __name__ != '__main__':
     makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-for func in [gauss_pdf, gauss_cdf]:
+for func in [gauss_pdf, gauss_cdf, erf_test]:
     name = func.__name__.replace('_', '-')
     title = name.replace('-', ' ').upper()
     figure, table = func()
     if __name__ == '__main__':
-        print(title, table, sep='\n\n')
-        figure.suptitle(title)
+        if table:
+            print(title, table, sep='\n\n')
+        if figure:
+            figure.suptitle(title)
     else:
-        save_fig('{}-plot'.format(name), figure)
-        save_table('{}-data'.format(name), table)
+        if figure:
+            save_fig('{}-plot'.format(name), figure)
+        if table:
+            save_table('{}-data'.format(name), table)
 
 if __name__ == '__main__':
     plt.show()

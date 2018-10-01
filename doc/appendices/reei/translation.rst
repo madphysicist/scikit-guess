@@ -867,6 +867,95 @@ of the main text).
 Listings for the functions Erf and argErf
 -----------------------------------------
 
+The approximate values of Erf(x) are obtained with a minimum of eight
+significant digits of precision. We use the following series expansion:
+
+    .. math::
+
+       Erf(x) \simeq \frac{2x}{\sqrt{\pi}}
+           \sum_{k=0}^{30} \frac{(-1)^k x^{2k}}{k!(2k + 1)}
+       \begin{cases}
+           \left| x \right| < 2.7 \\
+           \left| Erf(x) \right| < 0.999866
+       \end{cases}
+
+completed by the asymptotic expansion:
+
+.. math::
+
+   Erf(x) \simeq \pm 1 - \frac{e^{-x^2}}{x \sqrt{\pi}}
+       \sum_{k=0}^5 \frac{(-1)^k (2k + 1)!!}{x^{2k}}
+   \begin{cases}
+       + \enspace \text{if} \enspace x > 2.7 \enspace ;
+           \enspace - \enspace \text{if} \enspace x < 2.7 \\
+       (2k + 1)!! = 1 * 3 * ... * (2k + 1) \\
+       0.999865 < \left| Erf(x) \right| < 1
+   \end{cases}
+
+The inverse function argErf(y) is calculated using Newton-Raphson's method. The
+result is obtained to at least eight significant digits of precision if
+:math:`\left| y \right| < 0.999999999998 \rightarrow \left| argErf(y) \right| < 5`.
+Outside that domain, the result is insignificant.
+
+The following listing is written in Pascal, and uses only the most elementary
+contructs and syntax. It should not be difficult to translate into any other
+language of choice.
+
+.. code-block:: pascal
+
+   Function Erf(x:extended):extended;
+   var
+      y,p:extended;
+      k:integer;
+   begin
+        y:=0;
+        p:=1;
+        if ((x>-2.7)and(x<2.7)) then
+        begin
+             for k:=0 to 30 do
+             begin
+                  y:=y+p/(2*k+1);
+                  p:=-p*x*x/(k+1);
+             end;
+             y:=y*2*x/sqrt(pi);
+        end else
+        begin
+             for k:= 0 to 5 do
+             begin
+                  y:=y+p;
+                  p:=-p*(2*k+1)/(2*x*x);
+             end;
+             y:=y*exp(-x*x)/(x*sqrt(pi));
+             if x>0 then y:=1-y else y:=-1-y;
+        end;
+        Erf:=y;
+   end;
+
+.. code-block:: pascal
+
+   Function argErf(y:extended):extended;
+   var
+      x:extended;
+      k:integer;
+   begin
+        x:=0;
+        for k:=1 to 30 do
+        begin
+             x:=x+exp(x*x)*sqrt(pi)*(y-Erf(x))/2;
+        end;
+        argErf:=x;
+   end;
+
+We can test the computation by comparing against the values in the table below
+(as well as the negatives of the same values):
+
+.. table::
+   :class: data-table
+
+   .. include:: /generated/reei/erf-test-data.rst
+
+.. include:: ../page_break.rst
+
 
 .. rst-class:: center
 
