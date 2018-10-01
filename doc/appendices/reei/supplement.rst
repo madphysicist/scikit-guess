@@ -245,5 +245,8 @@ link back to the corresponding location in the translated paper as footnotes.
 .. [errata-reei-10] The figure is listed as 11 in the original paper. I am
    pretty sure that is an outright typo.
 
+.. [errata-reei-11] The original paper has the figure number listed as 1 here,
+   but should be 2.
+
 
 .. include:: /link-defs.rst

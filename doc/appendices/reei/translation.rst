@@ -329,10 +329,10 @@ equation:
 
 This function is the solution to the differential equation:
 
-     .. math::
+    .. math::
 
-        y(x) = A + B \frac{d^2y}{dx^2} \quad \text{with} \quad
-            A = a \quad \text{and} \quad B = -\frac{1}{\omega^2}
+       y(x) = A + B \frac{d^2y}{dx^2} \quad \text{with} \quad
+           A = a \quad \text{and} \quad B = -\frac{1}{\omega^2}
 
 This is a linear equation with respect to :math:`A` and :math:`B`, which are
 themselves (very simple) functions of :math:`a` and :math:`\omega`. Moreover,
@@ -446,10 +446,10 @@ of a linear regression, which we know how to optimize for the parameters
 With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
 :math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-pdf-eq`\ [errata-reei-4]_:
 
-     .. math::
-        :label: gauss-pdf-solve
+    .. math::
+       :label: gauss-pdf-solve
 
-        \sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}
+       \sigma_1 = \sqrt{-\frac{1}{B_1}} \quad ; \quad \mu_1 = -\frac{A_1}{B_1}
 
 Here is a summary of the numerical computation:
 
@@ -708,7 +708,7 @@ An example is shown in :numref:`reei-gauss-cdf-plot` (the dashed curve).
 .. figure:: /generated/reei/gauss-cdf-plot.png
    :name: reei-gauss-cdf-plot
 
-   Sample regression illustrating the Gaussian cumulative distribution function.
+   Sample regression of the Gaussian cumulative distribution function.
 
 .. table:: Numerical values corresponding to the example in \
    :numref:`reei-gauss-cdf-plot`\ [errata-reei-9]_.
@@ -722,6 +722,139 @@ The data are the points that we call "experimental":
 :numref:`reei-gauss-cdf-plot`\ [errata-reei-10]_ have a particular dispersion
 relative to their respective nominal positions :math:`\left(x_k, F(x_k)\right)`
 on the dashed curve representing :math:`F(x)`.
+
+We can write :math:`F(x)` equivalently in terms of the Erf funcion, pronounced
+"error function" and defined by:
+
+    .. math::
+       :label: gauss-cdf-erf
+
+       erf(z) = \frac{2}{\sqrt{\pi}} \int_0^z exp \left( -\tau^2 \right) d\tau
+
+The changing variable :math:`t = \mu + \sqrt{2}\sigma\tau in :eq:`gauss-cdf-fx`
+gives the relationship:
+
+    .. math::
+       :label: gauss-cdf-fx2
+
+       F(x) = \frac{1}{\sqrt{\pi}}
+           \int_{-\infty}^{\frac{x - \mu}{\sqrt{2} \sigma}}
+               exp \left( -\tau^2 \right) d\tau = \frac{1}{2} +
+           \frac{1}{2} erf \left( \frac{x - \mu}{\sqrt{2} \sigma} \right)
+
+The inverse function to Erf is designated Erf\ :sup:`(-1)`, or Erfinv or
+argErf. We will use the last notation.
+
+Thus, the inverse relationship to :eq:`gauss-cdf-fx2` can be written:
+
+    .. math::
+       :label: gauss-cdf-inv
+
+       \frac{x - \mu}{\sqrt{2} \sigma} = argErf(2F(x) - 1)
+
+Which in turn leads to a linear relationship in :math:`A` and :math:`B`,
+defined by:
+
+    .. math::
+       :label: gauss-cdf-ab
+
+       y(x) = argErf(2F(x) - 1) = Ax + B \quad \begin{cases}
+           A = \frac{1}{\sqrt{2} \sigma} \\
+           B = -\frac{\mu}{\sqrt{2} \sigma}
+       \end{cases}
+
+This reduces to the most elementary form of linear regression, relative to the
+points :math:`(x_k, y_k)` with :math:`y_k` previously calculated from:
+
+    .. math::
+       :label: gauss-cdf-y
+
+       y_k = argErf(2F_k - 1)
+
+The optimal values of :math:`A_1` and :math:`B_1` are the solutions to the
+following system:
+
+    .. math::
+       :label: gauss-cdf-lsq
+
+       \begin{bmatrix} A_1 \\ B_1 \end{bmatrix} =
+       \begin{bmatrix}
+           \sum \left(x_k\right)^2 & \sum x_k
+           \sum x_k                & n
+       \end{bmatrix}^{-1}
+       \begin{bmatrix}
+           \sum y_k x_k \\
+           \sum y_k
+       \end{bmatrix}
+
+with the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
+:math:`sigma_1` and :math:`mu_1` from :eq:`gauss-cdf-ab`:
+
+    .. math::
+       :label: gauss-cdf-solve
+
+       \sigma_1 = \frac{1}{\sqrt{2} A_1} \quad ; \quad \mu_1 = -\frac{B_1}{A_1}
+
+For the example shown, the numerical values of :math:`\sigma_1` and
+:math:`\mu_1` that we obtain are shown in :numref:`reei-gauss-cdf-data`
+[errata-reei-9]_. The curve of the corresponding function is marked with a
+solid line in :numref:`reei-gauss-cdf-plot` [errata-reei-11]_. It neighbors the
+"theoretical" curve, which is dashed.
+
+In fact, the example was intentionally chosen to have a very small number of
+widely dispersed points, so as to make the two curves clearly distinct from
+each other. This is depreciative rather than representative of the quality of
+fit that can usually be obtained.
+
+Here is a summary of the very simple numerical computation:
+
+.. _reei1-appendix2-alg:
+
+.. rst-class:: listing
+
+..
+
+   **Data:** :math:`(x_1, F_1), (x_2, F_2), ..., (x_k, F_k), ..., (x_n, F_n)`
+
+   - Compute :math:`y_k`: :math:`y_k = argErf(2F_k - 1)`
+
+   - Compute :math:`\sum x_k`, :math:`\sum \left(x_k\right)^2`,
+     :math:`\sum y_k`, :math:`\sum y_k x_k`
+
+   - Compute :math:`A_1` and :math:`B_1`:
+
+     .. math::
+
+        \begin{bmatrix} A_1 \\ B_1 \end{bmatrix} =
+        \begin{bmatrix}
+            \sum \left(x_k\right)^2 & \sum x_k
+            \sum x_k                & n
+        \end{bmatrix}^{-1}
+        \begin{bmatrix}
+            \sum y_k x_k \\
+            \sum y_k
+        \end{bmatrix}
+
+   - Compute :math:`\sigma_1` and :math:`\mu_1`:
+     :math:`\sigma_1 = \frac{1}{\sqrt{2} A_1} \quad ; \quad \mu_1 = -\frac{B_1}{A_1}`
+
+   **Result:** :math:`\sigma_1` and :math:`\mu_1` are the approximations of
+   :math:`\sigma` and :math:`\mu`.
+
+If a software package implementing argErf is not readily available, a sample
+listing for the functions Erf and argErf is shown in the next section.
+
+.. rst-class:: red listing
+
+Note: The material in Appendices 1 and 2 is well known. All the same, it was
+useful to highlight the fundamental differences between the regression problems
+reviewed in :ref:`Appendix 1 <reei1-appendix1>` and those in
+:ref:`Section 2 <reei1-sec2>` of the main paper. It is equally useful to
+provide examples that showcase the noteworthy differences between the
+application of regression to the Gaussian distribution, on one hand to the
+cumulative function (:ref:`Appendix 2 <reei1-appendix2>`) and on the other to
+the more difficult case of the density function (:ref:`Section 3 <reei1-sec3>`
+of the main text).
 
 
 .. _reei1-appendix2-listings:

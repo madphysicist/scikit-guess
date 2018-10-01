@@ -27,7 +27,11 @@ img.math {
 .listing {
     border-style: solid;
     border-width: 1px;
-    background-color: lightgray;
+    background-color: whitesmoke;
+}
+
+.red {
+    color: red;
 }
 
 .caption {
