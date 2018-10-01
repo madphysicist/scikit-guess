@@ -8,8 +8,8 @@ for the two-parameter PDF version.
 
    f(x) = a e^{-\frac{1}{2} \left(\frac{x - \mu}{\sigma}\right)^2}
 
-The third fitting parameter is the amplitude of the Gaussian at
-:math:`x = \mu`. This is equivalent, up to a scaling factor, to
+The third fitting parameter, :math:`a`, is the amplitude of the Gaussian
+at :math:`x = \mu`. This is equivalent, up to a scaling factor, to
 normalizing the area under the curve, as the PDF version does.
 
 The conversion between amplitude :math:`a` and normalization :math:`A`
@@ -68,6 +68,10 @@ def gauss_fit(x, y, sorted=True):
     Gaussian bell curve fit of the form
     :math:`a e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}`.
 
+    This implementation is based on an extentsion the approximate
+    solution to integral equation :eq:`gauss-pdf-eq`, presented in
+    :ref:`ref-reei` and extended in :ref:`reei-supplement-extended`.
+
     Parameters
     ----------
     x : array-like
@@ -124,11 +128,7 @@ def gauss_fit(x, y, sorted=True):
 
 def model(x, a, mu, sigma):
     r"""
-    Compute
-
-    .. math::
-
-       y = a e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}
+    Compute :math:`y = a e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}`.
 
     Parameters
     ----------

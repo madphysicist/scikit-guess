@@ -58,6 +58,9 @@ def gauss_pdf_fit(x, y, sorted=True):
     Gaussian PDF fit of the form
     :math:`\frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}`.
 
+    This implementation is based on the approximate solution to integral
+    equation :eq:`gauss-pdf-eq`, presented in :ref:`ref-reei`.
+
     Parameters
     ----------
     x : array-like
@@ -104,12 +107,7 @@ def gauss_pdf_fit(x, y, sorted=True):
 
 def model(x, mu, sigma):
     r"""
-    Compute
-
-    .. math::
-
-       y = \frac{1}{\sigma \sqrt{2 \pi}}
-           e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}
+    Compute :math:`y = \frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}`.
 
     Parameters
     ----------

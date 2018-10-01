@@ -1,5 +1,10 @@
 """
-Power fit with additive bias.
+Power fit with additive bias of the form :math:`A + Bx^C`.
+
+As a general rule, ``pow_fit(x, y, ...)`` is equivalent to
+``exp_fit(log(x), y, ...)`` since
+:math:`A + Be^{Cx} = A + B \left( e^x \right)^C`.
+
 
 .. todo::
 
@@ -28,6 +33,11 @@ def pow_fit(x, y, sorted=True):
     """
     Power fit of the form :math:`A + Bx^C`.
 
+    This implementation is based on the approximate solution to integral
+    equation :eq:`exp-eq`, presented in :ref:`ref-reei`. A power fit is
+    regarded as an exponential fit with a logarithmically scaled x-axis
+    in this algorightm.
+
     Parameters
     ----------
     x : array-like
@@ -48,12 +58,6 @@ def pow_fit(x, y, sorted=True):
         A three-element array containing the estimated additive and
         multiplicative biases and power, in that order.
 
-    Notes
-    -----
-    ``pow_fit(x, y, sorted)`` is equivalent to
-    ``exp_fit(log(x), y, sorted)`` since
-    :math:`A + Be^{Cx} = A + B(e^x)^C`
-
     References
     ----------
     .. [1] Jacquelin, Jean. "\ :ref:`ref-reei`\ ",
@@ -65,11 +69,7 @@ def pow_fit(x, y, sorted=True):
 
 def model(x, a, b, c):
     """
-    Compute
-
-    .. math::
-
-       y = A + Bx^C
+    Compute :math:`y = A + Bx^C`.
 
     Parameters
     ----------
