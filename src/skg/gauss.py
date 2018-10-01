@@ -1,4 +1,4 @@
-"""
+r"""
 Unnormalized Gaussian bell curve fit.
 
 The amplitude of this function is one of the fitting parameters, unlike
@@ -9,8 +9,8 @@ for the two-parameter PDF version.
    f(x) = a e^{-\frac{1}{2} \left(\frac{x - \mu}{\sigma}\right)^2}
 
 The third fitting parameter is the amplitude of the Gaussian at
-:math:`x = \mu`. This is equivalent to normalizing the area under the
-curve, as the PDF version does.
+:math:`x = \mu`. This is equivalent, up to a scaling factor, to
+normalizing the area under the curve, as the PDF version does.
 
 The conversion between amplitude :math:`a` and normalization :math:`A`
 is given in :ref:`reei-supplement-gauss3` as
@@ -20,7 +20,8 @@ is given in :ref:`reei-supplement-gauss3` as
    a = \frac{A}{\sigma \sqrt{2 \pi}}
 
 For for the normalized (two parameter) Gaussian probability density
-function, see :mod:`gauss_pdf`. For the CDF, see :mod:`gauss_cdf`.
+function, see :mod:`~skg.gauss_pdf`. For the CDF, see
+:mod:`~skg.gauss_cdf`.
 
 .. todo::
 
@@ -65,10 +66,7 @@ __all__ = ['gauss_fit']
 def gauss_fit(x, y, sorted=True):
     r"""
     Gaussian bell curve fit of the form
-
-    .. math::
-
-       a e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}
+    :math:`a e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}`.
 
     Parameters
     ----------
@@ -103,6 +101,7 @@ def gauss_fit(x, y, sorted=True):
     d = 0.5 * diff(x)
     xy = x * y
 
+    # TODO: Timeit against other options. There's gotta be a better way
     a1 = empty(xy.shape + (2,), dtype=xy.dtype)
     a1[0, :] = 0
     a1[1:, 0] = cumsum((y[1:] + y[:-1]) * d)
@@ -124,7 +123,7 @@ def gauss_fit(x, y, sorted=True):
 
 
 def model(x, a, mu, sigma):
-    """
+    r"""
     Compute
 
     .. math::
@@ -145,7 +144,7 @@ def model(x, a, mu, sigma):
     Return
     ------
     y : array-like
-        An array of the same shape as ``x``, containing the model
+        An array of the same shape as `x`, containing the model
         computed for the given parameters.
     """
     return a * exp(-0.5 * ((x - mu) / sigma)**2)

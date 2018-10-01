@@ -186,7 +186,7 @@ def gauss_pdf():
     ax.text(1.1, -0.1, '$x$', fontdict={'size': 14})
 
     # f(x) = 1/(sigma sqrt(2 * pi) * exp(-1/2 * ((x - mu) / sigma)**2))
-    ax.plot(x, y, 'k+', markersize=10)
+    ax.plot(x, y, '+', markersize=10)
     ax.plot(domain, gauss_pdf_fit.model(domain, *exact), '--')
     ax.plot(domain, gauss_pdf_fit.model(domain, *fit), '-')
     annotate(ax, '$f_k$', xy=(x[7], y[7]), xytext=(0.42, 0.45))

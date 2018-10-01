@@ -123,7 +123,7 @@ def model(x, a, b, c):
     Return
     ------
     y : array-like
-        An array of the same shape as ``x``, containing the model
+        An array of the same shape as `x`, containing the model
         computed for the given parameters.
     """
     return a + b * exp(c * x)

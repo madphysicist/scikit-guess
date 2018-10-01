@@ -1,4 +1,4 @@
-"""
+r"""
 Gaussian probability density fit.
 
 The function in this module is normalized to one, as a PDF should be:
@@ -10,7 +10,8 @@ The function in this module is normalized to one, as a PDF should be:
    \int_{-\infty}^{+\infty} f(t)dt = 1
 
 For for the unnormalized Gaussian (with an additional amplitude
-parameter), see :mod:`gauss`. For the CDF, see :mod:`gauss_cdf`.
+parameter), see :mod:`~skg.gauss`. For the CDF, see
+:mod:`~skg.gauss_cdf`.
 
 .. todo::
 
@@ -55,11 +56,7 @@ __all__ = ['gauss_pdf_fit']
 def gauss_pdf_fit(x, y, sorted=True):
     r"""
     Gaussian PDF fit of the form
-
-    .. math::
-
-       \frac{1}{\sigma \sqrt{2 \pi}}
-           e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}
+    :math:`\frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}`.
 
     Parameters
     ----------
@@ -106,7 +103,7 @@ def gauss_pdf_fit(x, y, sorted=True):
 
 
 def model(x, mu, sigma):
-    """
+    r"""
     Compute
 
     .. math::
@@ -126,7 +123,7 @@ def model(x, mu, sigma):
     Return
     ------
     y : array-like
-        An array of the same shape as ``x``, containing the model
+        An array of the same shape as `x`, containing the model
         computed for the given parameters.
     """
     return exp(-0.5 * ((x - mu) / sigma)**2) / (sigma * sqrt(2 * pi))

@@ -529,6 +529,9 @@ not uniformly distributed across the domain is also a significant complication.
 
    A sample regression of the Gaussian probability density function.
 
+.. todo:: Fix the duplicate misplaced axis zeros. ask on SO
+.. todo:: Also ask how to make proper axis labels
+
 .. table:: Numerical values corresponding to the example in \
    :numref:`reei-gauss-pdf-plot`.
    :name: reei-gauss-pdf-data

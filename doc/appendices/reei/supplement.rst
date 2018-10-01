@@ -72,15 +72,33 @@ element. In numpy terms:
 Gaussian CDF
 ============
 
+Algorithm originally presented in :ref:`reei1-appendix2` and summarized
+:ref:`here <reei1-appendix2-alg>`.
+
+:math:`A` is a matrix with just the :math:`x` values and ones as the columns.
+In numpy terms:
+
+.. code-block:: python
+
+   A = np.stack((x, np.ones_like(x)), axis=1)
+
+:math:`b` is a more complicated function of :math:`y` in this case:
+
+.. code-block:: python
+
+   b = scipy.special.erfinv(2 * y - 1)
+
 .. include:: ../page_break.rst
 
+
+.. _reei-supplement-extended:
 
 ---------------------
 Extended Applications
 ---------------------
 
-There are a few additional common functions and modifications that can be added
-to the suite presented in the paper without stretching the imagination much.
+Some additional common functions and modifications that can be added to the
+suite presented in the paper are presented here.
 
 
 .. _reei-supplement-gauss3:
