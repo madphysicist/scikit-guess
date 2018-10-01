@@ -1,8 +1,12 @@
 """
 This file implements the code used to generate figures for the paper.
+
+When imported, the figures and tables are saved to files. When run as a
+script, they are displayed as Matplotlib interactive figures and
+terminal output, respectively.
 """
 
-from itertools import zip_longest
+from itertools import chain, repeat, starmap
 from os import makedirs
 from os.path import join
 
@@ -12,18 +16,16 @@ from scipy.special import erf
 from matplotlib import pyplot as plt
 from matplotlib import ticker, rc, cycler
 
-from skg import gauss_fit
+from skg import gauss_pdf_fit
 
 
-SAVE = True
-OUTPUT = 'generated/reei'
+OUTPUT_FOLDER = 'generated/reei'
 
 
 #############
 # Utilities #
 #############
 
-rc('text', usetex=True)
 
 def format_plot(fig, ax):
     ax.set_aspect('equal')
@@ -39,182 +41,194 @@ def format_plot(fig, ax):
 
     ax.set_prop_cycle(cycler('color', 'k'))
 
+
 def annotate(ax, text, xy, xytext):    
     ax.annotate(text, xy=xy, xytext=xytext, fontsize=14,
                 arrowprops=dict(facecolor='k', arrowstyle='->'))
 
-def save_fig(fig, name):
-    fig.savefig(join(OUTPUT, name), figsize=(6, 4.5),
+
+def save_fig(name, fig):
+    fig.savefig(join(OUTPUT_FOLDER, name + '.png'), figsize=(6, 4.5),
                 dpi=300, bbox_inches='tight')
 
-def write_line(file, indent, line):
-    file.write(' ' * indent)
-    file.write(line)
-    file.write('\n')
 
+def save_table(name, string):
+    with open(join(OUTPUT_FOLDER, name + '.rst'), 'w') as file:
+        file.write(string)
+
+
+def gen_table(cols, specs=None, heading=None):
+    """
+    Generate a sphinx table of the selected data.
+
+    Tables may contain a heading, which will be filled in from the first
+    element of each column in `cols`. Headings will always be treated as
+    strings.
+
+    Parameters
+    ----------
+    cols : list[Sequence]
+        A matrix of columns containing data. Each element should be a
+        sequence of fixed (but not necessarily equal) length.
+    specs : list or None
+        A sequence of the same length as `cols`, or None to indicate
+        default formatting. The elements are format specs that will be
+        applied to the elements of the column they correspond to.
+    heading : list or None
+        A list of heading elements to prepend to the list.
+
+    Return
+    ------
+    table : str
+        A string containing an rsT/sphinx compatible table of the data
+        in `cols`. The output always ends with a newline.
+    """
+    def filler(fill='-'):
+        return tr((fill * w for w in widths), '+', fill)
+
+    def tr(items, sep='|', fill=' '):
+        mid = '{1}{0}{1}'.format(sep, fill).join(items)
+        return '{0}{1}{2}{1}{0}\n'.format(sep, fill, mid)
+
+    def pad(row):
+        return starmap('{:<{}}'.format, zip(row, widths))
+
+    def format(item, spec):
+        if item in (None, ''):
+            return ''
+        try:
+            if isinstance(item, tuple):
+                return spec.format(*item)
+            return spec.format(item)
+        except (ValueError, TypeError):
+            return str(item)
+
+    # First format the content
+    if specs is None:
+        specs = repeat('{}', len(cols))
+    elif isinstance(specs, str):
+        specs = repeat(specs, len(cols))
+    else:
+        specs = ('{}' if spec is None else spec for spec in specs)
+    height = len(max(cols, key=len))
+
+    content = [[format(item, spec)
+                    for item in chain(col, repeat('', height - len(col)))]
+               for col, spec in zip(cols, specs)]
+
+    # Make sure the headings are formatted too when computing widths
+    if heading:
+        heading = list(map(str, heading))
+        widths = [max(len(h), max(map(len, col)))
+                      for h, col in zip(heading, content)]
+    else:
+        widths = [max(map(len, col)) for col in content]
+
+    # Pad all the cells out and transpose the list
+    rows = [pad(row) for row in zip(*content)]
+
+    prefix = filler()
+    if heading:
+        prefix += tr(pad(heading)) + filler('=')
+    table = filler().join(map(tr, rows))
+    suffix = filler()
+    return prefix + table + suffix
+
+
+####################
+# Matplotlib Setup #
+####################
+
+rc('text', usetex=True)
 plt.ioff()
 
-if SAVE:
-    makedirs(OUTPUT, exist_ok=True)
+
+#############
+# Gauss PDF #
+#############
+
+def gauss_pdf():
+    """
+    Generates a figure and table for the Gauss PDF data in the paper.
+    """
+    def Smodel(x, mu, sigma):
+        return 0.5 * erf((x - mu) / (np.sqrt(2) * sigma))
+
+    def Tmodel(x, mu, sigma):
+        return mu * Smodel(x, mu, sigma) - \
+            sigma**2 * gauss_pdf_fit.model(x, mu, sigma)
+
+    exact = -0.3, 0.4
+
+    x = np.array([-0.992, -0.935, -0.836, -0.404, -0.326,
+                  -0.042,  0.068,  0.302,  0.439,  0.58])
+    y = np.array([0.238, 0.262, 0.38, 1.041, 0.922,
+                  0.755, 0.589, 0.34, 0.193, 0.083])
+
+    S = np.cumsum(0.5 * (y[1:] + y[:-1]) * np.diff(x))
+    S = np.insert(S, 0, 0)
+
+    xy = x * y
+    T = np.cumsum(0.5 * (xy[1:] + xy[:-1]) * np.diff(x))
+    T = np.insert(T, 0, 0)
+
+    A = np.stack((S, T), axis=1)
+    b = y - y[0]
+
+    (A1, B1), *_ = lstsq(A, b, overwrite_a=True, overwrite_b=True)
+    fit = np.array([-A1 / B1, np.sqrt(-1.0 / B1)])
+
+    domain = np.linspace(-1.0, 1.0, 1000)
+    fig, ax = plt.subplots()
+    format_plot(fig, ax)
+
+    ax.text(-0.2, 1.1, '$f(x)$', fontdict={'size': 14})
+    ax.text(1.1, -0.1, '$x$', fontdict={'size': 14})
+
+    # f(x) = 1/(sigma sqrt(2 * pi) * exp(-1/2 * ((x - mu) / sigma)**2))
+    ax.plot(x, y, 'k+', markersize=10)
+    ax.plot(domain, gauss_pdf_fit.model(domain, *exact), '--')
+    ax.plot(domain, gauss_pdf_fit.model(domain, *fit), '-')
+    annotate(ax, '$f_k$', xy=(x[7], y[7]), xytext=(0.42, 0.45))
+
+    # S(x) = mu * erf((x - mu) / (sqrt(2) * sigma)) / (2 * sigma**2)
+    ax.plot(x, S, 's-', markersize=7, markerfacecolor='none')
+    ax.plot(domain, Smodel(domain, *exact) - Smodel(x[0], *exact), '--')
+    #ax.plot(domain, Sk(domain, *fit) - Sk(x[0], *fit), '-')
+    annotate(ax, '$S_k$', xy=(x[7], S[7]), xytext=(0.42, 0.72))
+
+    # T(x) = mu * S(x) - sigma**2 * f(x)
+    ax.plot(x, T, 'D-', markersize=7, markerfacecolor='none')
+    ax.plot(domain, Tmodel(domain, *exact) - Tmodel(x[0], *exact), '--')
+    #ax.plot(domain, Tk(domain, *fit) - Tk(x[0], *fit), '-')
+    annotate(ax, '$T_k$', xy=(x[7], T[7]), xytext=(0.42, -0.18))
+
+    extra = ['', ('sigma_e', exact[1]), ('mu_e', exact[0]),
+             '', ('sigma_1', fit[1]), ('mu_1', fit[0])]
+    return fig, gen_table(
+        cols=[np.arange(x.size) + 1, x, y, S, T, extra], specs=[
+            '{:d}', ' {: 0.3g}', '{: 0.3g}', '{: 0.6g}', '{: 0.6g}',
+            ':math:`\\{}` = {:< 0.6g}'
+        ], heading=[
+            ':math:`k`', ':math:`x_k`', ':math:`f_k`',
+            ':math:`arfErf(2 F_k - 1)`', ''
+        ]
+    )
 
 
-############
-# Figure 1 #
-############
+if __name__ != '__main__':
+    makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-exact = -0.3, 0.4
+for func in [gauss_pdf]:
+    name = func.__name__.replace('_', '-')
+    title = name.replace('-', ' ').upper()
+    figure, table = func()
+    if __name__ == '__main__':
+        print(title, table, sep='\n\n')
+        figure.suptitle(title)
+    else:
+        save_fig('{}-plot'.format(name), figure)
+        save_table('{}-data'.format(name), table)
 
-x = np.array([-0.992, -0.935, -0.836, -0.404, -0.326,
-              -0.042,  0.068,  0.302,  0.439,  0.58])
-y = np.array([0.238, 0.262, 0.38, 1.041, 0.922,
-              0.755, 0.589, 0.34, 0.193, 0.083])
-
-S = np.cumsum(0.5 * (y[1:] + y[:-1]) * np.diff(x))
-S = np.insert(S, 0, 0)
-
-xy = x * y
-T = np.cumsum(0.5 * (xy[1:] + xy[:-1]) * np.diff(x))
-T = np.insert(T, 0, 0)
-
-A = np.stack((S, T), axis=1)
-b = y - y[0]
-
-(A1, B1), *_ = lstsq(A, b, overwrite_a=True, overwrite_b=True)
-fit = np.array([-A1 / B1, np.sqrt(-1.0 / B1)])
-
-domain = np.linspace(-1.0, 1.0, 1000)
-fig1, ax1 = plt.subplots()
-format_plot(fig1, ax1)
-
-ax1.text(-0.2, 1.1, '$f(x)$', fontdict={'size': 14})
-ax1.text(1.1, -0.1, '$x$', fontdict={'size': 14})
-
-# f(x) = 1/(sigma sqrt(2 * pi) * exp(-1/2 * ((x - mu) / sigma)**2))
-ax1.plot(x, y, 'k+', markersize=10)
-ax1.plot(domain, gauss_fit.model(domain, *exact), '--')
-ax1.plot(domain, gauss_fit.model(domain, *fit), '-')
-annotate(ax1, '$f_k$', xy=(x[7], y[7]), xytext=(0.42, 0.45))
-
-# S(x) = mu * erf((x - mu) / (sqrt(2) * sigma)) / (2 * sigma**2)
-def Smodel(x, mu, sigma):
-    return 0.5 * erf((x - mu) / (np.sqrt(2) * sigma))
-ax1.plot(x, S, 's-', markersize=7, markerfacecolor='none')
-ax1.plot(domain, Smodel(domain, *exact) - Smodel(x[0], *exact), '--')
-#ax1.plot(domain, Sk(domain, *fit) - Sk(x[0], *fit), '-')
-annotate(ax1, '$S_k$', xy=(x[7], S[7]), xytext=(0.42, 0.72))
-
-# T(x) = mu * S(x) - sigma**2 * f(x)
-def Tmodel(x, mu, sigma):
-    return mu * Smodel(x, mu, sigma) - sigma**2 * gauss_fit.model(x, mu, sigma)
-ax1.plot(x, T, 'D-', markersize=7, markerfacecolor='none')
-ax1.plot(domain, Tmodel(domain, *exact) - Tmodel(x[0], *exact), '--')
-#ax1.plot(domain, Tk(domain, *fit) - Tk(x[0], *fit), '-')
-annotate(ax1, '$T_k$', xy=(x[7], T[7]), xytext=(0.42, -0.18))
-
-if SAVE:
-    save_fig(fig1, 'gauss-pdf-plot.png')
-    def ex_fmt(name, value):
-        return ':math:`{}` = {:< 0.6g}'.format(name, value)
-    extra = ['', ex_fmt(r'\sigma_e', exact[1]), ex_fmt(r'\mu_e', exact[0]), '',
-             ex_fmt(r'\sigma_1', fit[1]), ex_fmt(r'\mu_1', fit[0])]
-    with open(join(OUTPUT, 'gauss-pdf-data.rst'), 'w') as table:
-        write_line(table, 0,
-                   '+-----------+-------------+-------------+-------------+'
-                   '-------------+-------------------------------+')
-        write_line(table, 0,
-                   '| :math:`k` | :math:`x_k` | :math:`f_k` | :math:`S_k` |'
-                   ' :math:`T_k` |                               |')
-        write_line(table, 0,
-                   '+===========+=============+=============+=============+'
-                   '=============+===============================+')
-        for k, items in enumerate(zip_longest(x, y, S, T, extra, fillvalue=''),
-                                  start=1):
-            write_line(table, 0,
-                       '| {:<9d} | {:< 11.3g} | {:< 11.3g} | {:< 11.6g} |'
-                       ' {:< 11.6g} | {:<29s} |'.format(k, *items))
-            write_line(table, 0,
-                       '+-----------+-------------+-------------+-----------'
-                       '--+-------------+-------------------------------+')
-
-
-############
-# Figure 2 #
-############
-
-exact = -0.3, 0.4
-
-x = np.array([-0.914, -0.556, -0.49, -0.195, 0.019,
-               0.045,  0.587,  0.764,  0.81, 0.884])
-y = np.array([0.001, 0.017, 0.021, 0.097, 0.258,
-              0.258, 0.704, 0.911, 0.911, 0.979])
-
-S = np.cumsum(0.5 * (y[1:] + y[:-1]) * np.diff(x))
-S = np.insert(S, 0, 0)
-
-xy = x * y
-T = np.cumsum(0.5 * (xy[1:] + xy[:-1]) * np.diff(x))
-T = np.insert(T, 0, 0)
-
-A = np.stack((S, T), axis=1)
-b = y - y[0]
-
-(A1, B1), *_ = lstsq(A, b, overwrite_a=True, overwrite_b=True)
-fit = np.array([-A1 / B1, np.sqrt(-1.0 / B1)])
-
-domain = np.linspace(-1.0, 1.0, 1000)
-fig2, ax2 = plt.subplots()
-format_plot(fig2, ax2)
-
-ax2.text(-0.2, 1.1, '$f(x)$', fontdict={'size': 14})
-ax2.text(1.1, -0.1, '$x$', fontdict={'size': 14})
-
-# f(x) = 1/(sigma sqrt(2 * pi) * exp(-1/2 * ((x - mu) / sigma)**2))
-ax2.plot(x, y, 'k+', markersize=10)
-ax2.plot(domain, gauss_fit.model(domain, *exact), '--')
-ax2.plot(domain, gauss_fit.model(domain, *fit), '-')
-annotate(ax2, '$f_k$', xy=(x[7], y[7]), xytext=(0.42, 0.45))
-
-# S(x) = mu * erf((x - mu) / (sqrt(2) * sigma)) / (2 * sigma**2)
-def Smodel(x, mu, sigma):
-    return 0.5 * erf((x - mu) / (np.sqrt(2) * sigma))
-ax2.plot(x, S, 's-', markersize=7, markerfacecolor='none')
-ax2.plot(domain, Smodel(domain, *exact) - Smodel(x[0], *exact), '--')
-#ax1.plot(domain, Sk(domain, *fit) - Sk(x[0], *fit), '-')
-annotate(ax2, '$S_k$', xy=(x[7], S[7]), xytext=(0.42, 0.72))
-
-# T(x) = mu * S(x) - sigma**2 * f(x)
-def Tmodel(x, mu, sigma):
-    return mu * Smodel(x, mu, sigma) - sigma**2 * gauss_fit.model(x, mu, sigma)
-ax2.plot(x, T, 'D-', markersize=7, markerfacecolor='none')
-ax2.plot(domain, Tmodel(domain, *exact) - Tmodel(x[0], *exact), '--')
-#ax2.plot(domain, Tk(domain, *fit) - Tk(x[0], *fit), '-')
-annotate(ax2, '$T_k$', xy=(x[7], T[7]), xytext=(0.42, -0.18))
-
-if SAVE:
-    save_fig(fig2, 'gauss-cdf-plot.png')
-    def ex_fmt(name, value):
-        return ':math:`{}` = {:< 0.6g}'.format(name, value)
-    extra = ['', ex_fmt(r'\sigma_e', exact[1]), ex_fmt(r'\mu_e', exact[0]), '',
-             ex_fmt(r'\sigma_1', fit[1]), ex_fmt(r'\mu_1', fit[0])]
-    with open(join(OUTPUT, 'gauss-cdf-data.rst'), 'w') as table:
-        write_line(table, 0,
-                   '+-----------+-------------+-------------+-------------+'
-                   '-------------+-------------------------------+')
-        write_line(table, 0,
-                   '| :math:`k` | :math:`x_k` | :math:`f_k` | :math:`S_k` |'
-                   ' :math:`T_k` |                               |')
-        write_line(table, 0,
-                   '+===========+=============+=============+=============+'
-                   '=============+===============================+')
-        for k, items in enumerate(zip_longest(x, y, S, T, extra, fillvalue=''),
-                                  start=1):
-            write_line(table, 0,
-                       '| {:<9d} | {:< 11.3g} | {:< 11.3g} | {:< 11.6g} |'
-                       ' {:< 11.6g} | {:<29s} |'.format(k, *items))
-            write_line(table, 0,
-                       '+-----------+-------------+-------------+-----------'
-                       '--+-------------+-------------------------------+')
-
-
-if not SAVE:
+if __name__ == '__main__':
     plt.show()
