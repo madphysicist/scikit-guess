@@ -1,14 +1,17 @@
-{{fullname}}
-{{underline}}
+{{fullname | escape | underline }}
 
 .. automodule:: {{fullname}}
 
-   .. rubric:: Functions
+{% if functions %}
+.. rubric:: Functions
 
-   .. autofunction::
-   
-      {{functions}}
-   
-   
+.. autosummary::
+    {% for function in functions %}
+    {{ function }}
+    {% endfor %}
 
-   
+{% for function in functions %}
+.. autofunction:: {{ function }}
+{% endfor %}
+
+{% endif %}
