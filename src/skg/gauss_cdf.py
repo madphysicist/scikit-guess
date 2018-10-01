@@ -62,6 +62,9 @@ def gauss_cdf_fit(x, y, sorted=True):
     Gaussian CDF fit of the form
     :math:`\frac{1}{2}+\frac{1}{2}erf\left(\frac{x-\mu}{\sqrt{2}\sigma}\right)`.
 
+    This implementation is based on the approximate solution to integral
+    equation :eq:`gauss-cdf-fx2`, presented in :ref:`ref-reei`.
+
     Parameters
     ----------
     x : array-like
@@ -101,12 +104,7 @@ def gauss_cdf_fit(x, y, sorted=True):
 
 def model(x, mu, sigma):
     r"""
-    Compute
-
-    .. math::
-
-       y = \frac{1}{2} +
-           \frac{1}{2} erf \left( \frac{x - \mu}{\sqrt{2} \sigma} \right)
+    Compute :math:`y = \frac{1}{2} + \frac{1}{2} erf \left( \frac{x - \mu}{\sqrt{2} \sigma} \right)`.
 
     Parameters
     ----------

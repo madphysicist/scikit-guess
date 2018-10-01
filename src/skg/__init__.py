@@ -1,11 +1,13 @@
 """
-The namespace of scikit-guess is called `skg`. It exports all of the
-parameter estimation functions provided by the scikit.
+The namespace of scikit-guess is called :mod:`skg`. It exports all of
+the parameter estimation functions provided by the scikit.
 
 The functions themselves live in individual sub-modules. Each module
 containing a fitting function also defines a `model` attribute, which
 refers to the model function being fitted. Each fitting routine has a
 `model` attribute pointing to the module-level `model`.
+
+.. rubric:: Sub-modules
 
 .. autosummary::
    :toctree: generated/
@@ -15,6 +17,17 @@ refers to the model function being fitted. Each fitting routine has a
    gauss_pdf
    gauss
    pow
+
+.. rubric:: Exported Functions
+
+.. autosummary::
+   :toctree: generated/
+
+   exp_fit
+   gauss_cdf_fit
+   gauss_pdf_fit
+   gauss_fit
+   pow_fit
 """
 
 from .gauss_cdf import gauss_cdf_fit

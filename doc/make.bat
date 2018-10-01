@@ -11,6 +11,7 @@ set SOURCEDIR=.
 set BUILDDIR=_build
 set SPHINXPROJ=scikit-guess
 set SPHINXOPTS=-n
+set GENDIR=./generated
 
 if "%1" == "" goto help
 
@@ -27,6 +28,7 @@ if errorlevel 9009 (
 	exit /b 1
 )
 
+if "%1" == "clean-gen" echo "Removing everything under '%GENDIR%'" & delete /f "%GENDIR%"
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS%
 goto end
 

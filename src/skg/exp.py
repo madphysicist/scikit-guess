@@ -1,5 +1,5 @@
 """
-Exponential fit with additive bias.
+Exponential fit with and additive bias of the form :math:`A + Be^{Cx}`.
 
 .. todo::
 
@@ -39,8 +39,11 @@ __all__ = ['exp_fit']
 
 
 def exp_fit(x, y, sorted=True):
-    """
+    r"""
     Exponential fit of the form :math:`A + Be^{Cx}`.
+
+    This implementation is based on the approximate solution to integral
+    equation :eq:`exp-eq`, presented in :ref:`ref-reei`.
 
     Parameters
     ----------
@@ -65,7 +68,8 @@ def exp_fit(x, y, sorted=True):
 
     References
     ----------
-    .. [1] Jacquelin, Jean. "REGRESSIONS Et EQUATIONS INTEGRALES", pp. 15-18.,
+    .. [1] Jacquelin, Jean. "\ :ref:`ref-reei`\ ",
+       :ref:`pp. 15-18. <reei2-sec2>`,
        https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
     x, y = preprocess(x, y, sorted)
@@ -103,11 +107,7 @@ def exp_fit(x, y, sorted=True):
 
 def model(x, a, b, c):
     """
-    Compute
-
-    .. math::
-
-       y = A + Be^{Cx}
+    Compute :math:`y = A + Be^{Cx}`.
 
     Parameters
     ----------
