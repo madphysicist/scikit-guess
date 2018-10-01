@@ -25,7 +25,7 @@ REGRESSIONS et EQUATIONS INTEGRALES
    :scale: 90%
    :class: center
 
-[ First Draft : 14 January 2009 - Published : 3 January 2014 ]
+[ First Edition : 14 January 2009 - Updated : 3 January 2014 ]
 
 
 .. include:: ../page_break.rst
@@ -117,7 +117,7 @@ distributions commonly found in statistical applications.
 
 | The first revision of the paper *Regressions and Integral Equations* was
   dated 01/14/2009.
-| The current version was published on 04/27/2009.
+| The current version was updated on 04/27/2009.
 
 
 .. _reei1-sec1:
@@ -437,7 +437,7 @@ of a linear regression, which we know how to optimize for the parameters
        \begin{bmatrix}
            \sum \left(S_k\right)^2 & \sum S_k T_k \\
            \sum S_k T_k            & \sum \left(T_k\right)^2
-       \end{bmatrix}
+       \end{bmatrix}^{-1}
        \begin{bmatrix}
            \sum \left(f_k - f_1\right) S_k \\
            \sum \left(f_k - f_1\right) T_k
@@ -961,13 +961,18 @@ We can test the computation by comparing against the values in the table below
 
 .. _reei2:
 
-------------------------------------------------------------------------------
-Non-Linear Regression of Power, Exponential, Logarithmic and Weibull Functions
-------------------------------------------------------------------------------
+----------------------------------------------------------------------------
+Non-Linear Regression of the Types: Power, Exponential, Logarithmic, Weibull
+----------------------------------------------------------------------------
 
 .. rst-class:: center
 
 **Jean Jacquelin**
+
+.. rst-class:: center
+
+| The first revision of this paper was dated 01/18/2009.
+| The current version was updated on 04/23/2009.
 
 
 .. _reei2-abstract:
@@ -975,16 +980,17 @@ Non-Linear Regression of Power, Exponential, Logarithmic and Weibull Functions
 Abstract
 ========
 
-We demonstrate the application of a well-chosen integral equation to produce a
-non-iterative optimization of the parameters of power, exponential, logarithmic
-and Weibull functions.
+The parameters of power, exponential, logarithmic and Weibull functions are
+optimized by a non-iterative regression method based on an appropriate integral
+equation.
+
+.. include:: ../page_break.rst
 
 
-.. rubric:: Non-Linear Regression of Power, Exponential, Logarithmic and
-            Weibull Functions
+.. rubric:: Non-Linear Regression of the Types: Power, Exponential, \
+   Logarithmic, Weibull
    :name: reei2-paper
    :class: center
-
 
 .. rst-class:: center
 
@@ -996,11 +1002,130 @@ and Weibull functions.
 1. Introduction
 ===============
 
+The following two examples of regression will be treated simultaneously:
+
+    .. math::
+       :label: pow-fx
+
+       y = a + b X^c \quad (X > 0)
+
+    .. math::
+       :label: exp-fx
+
+       y = a + b \; exp(c \; x)
+
+Indeed, if we take formula :eq:`pow-fx`, with data points
+:math:`(X_1, y_1), ..., (X_k, y_k), ..., (X_n, y_n)`, we can pre-calculate
+
+    .. math::
+       :label: exp-pow-conv
+
+       x_k = ln(X_k)
+
+which will revert it to :eq:`exp-fx` with the data points
+:math:`(x_1, y_1), ..., (x_k, y_k), ..., (x_n, y_n)`.
+
+Various other equations revert to the same formulae:
+
+- The equation :math:`y = a + b' exp(c(x - \mu))` is identical to :eq:`exp-fx`
+  by substituting :math:`b = b' exp(-c \mu)`.
+- The equation :math:`y = \alpha + \beta \; ln(x - \gamma)` reverts to
+  :eq:`exp-fx` when we invert the :math:`x` and :math:`y` values. This
+  motivates the regression of logarithmic functions of three parameters.
+- And so on. In particular, the case of the Weibull function of three
+  parameters will be treated in :ref:`Section 3 <reei2-sec3>`.
+
+The method to be used was described in :ref:`Section 2 <reei1-sec2>` of the
+article :ref:`reei1-paper`.
+
 
 .. _reei2-sec2:
 
-2. Regression of Functions of the Form :math:`y(x) = a + b exp(c x)`
-====================================================================
+2. Regression of Functions of the Form :math:`y(x) = a + b \; exp(c \; x)`
+==========================================================================
+
+Integating the function :math:`y(x)` gives us:
+
+    .. math::
+       :label: exp-int1
+
+       \int_{x1}^x y(u)du = a \; (x - x_1) +
+           \frac{b}{c} \; exp(c x) - \frac{b}{c} \; exp(c x_1)
+
+Replacing :math:`exp(c x)` with :eq:`exp-fx`:
+
+    .. math::
+       :label: exp-int2
+
+       \int_{x1}^x y(u)du = a \; (x - x_1) +
+           \frac{1}{c} \; (y - a) - \frac{b}{c} \; exp(c \; x_1)
+
+From which we have the integral equation to be used:
+
+    .. math::
+       :label: exp-eq
+
+       y - (a + b \; exp(c \; x_1)) =
+           -a \; c \; (x - x_1) + c \int_{x_1}^x y(u)du
+
+The numerical approximations of the integral for :math:`x = x_k` are calculated
+with:
+
+    .. math::
+       :label: exp-S
+
+       \begin{cases}
+           S_1 = 0 \quad \text{and for} \enspace
+               k = 2 \rightarrow n \enspace \text{:} \\
+           S_k = S_{k-1} + \frac{1}{2}(y_k + y_{k-1})(x_k - x_{k-1})
+       \end{cases}
+
+When we replace the exact unknowns in :eq:`exp-eq` with their respective
+approxmations, the equation no longer holds true:
+
+    .. math::
+       :label: exp-ineq
+
+       y_k - y_1 \simeq -a \; c \; (x_k - x_1) + c \; S_k
+
+We seek to minimize the sum of the squared residuals:
+
+    .. math::
+       :label: exp-resid
+
+       \sum_{k=1}^n \varepsilon_k^2 = \sum_{k=1}^n
+           \left( A \; (x_k - x_1) + B \; S_k - (y_k - y_1) \right)^2
+
+with
+
+    .. math::
+       :label: exp-param
+
+       A = -a \; c \quad ; \quad B = c
+
+We have then a linear regression with respect to the coefficients :math:`A` and
+:math:`B`, whose optimal values :math:`A_1` and :math:`B_1` can be obtained in
+the usual manner (with the convention that :math:`\sum \equiv \sum_{k=1}^n`):
+
+    .. math::
+       :label: exp-lsq
+
+       \begin{bmatrix}A_1 \\ B_1\end{bmatrix} =
+       \begin{bmatrix}
+           \sum \left((x_k - x_1)^2\right) & \sum (x_k - x_1) \; S_k \\
+           \sum (x_k - x_1) \; S_k         & \sum \left(S_k^2\right)
+       \end{bmatrix}^{-1}
+       \begin{bmatrix}
+           & \sum (y_k - y_1)(x_k - x_1) \\
+           & \sum (y_k - y_1) S_k
+       \end{bmatrix}
+
+:eq:`exp-param` then gives us the optimal values :math:`a_1` and :math:`c_1`:
+
+    .. math::
+       :label: exp-solve1
+
+       a_1 = -\frac{A_1}{B_1} \quad ; \quad c_1 = B_1
 
 
 .. _reei2-sec3:
