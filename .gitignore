@@ -16,3 +16,5 @@ doc/generated/
 .skg_test/
 pytestdebug.log
 
+# Merge artifacts
+*.orig
