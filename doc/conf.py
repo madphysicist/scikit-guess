@@ -235,7 +235,7 @@ def preprocess_content():
     """
     from glob import glob
     from os import getcwd
-    from os.path import abspath, join
+    from os.path import abspath, basename, join, splitext
     from contextlib import contextmanager
 
     @contextmanager
@@ -249,7 +249,8 @@ def preprocess_content():
 
     for folder in globals().get('content_preprocess', []):
         for file in glob(join(folder, '*.py')):
-            mod = import_file(file)
+            name = splitext(basename(file))[0]
+            import_file(name, file)
 
 
 def setup(app):

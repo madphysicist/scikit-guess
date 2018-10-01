@@ -86,7 +86,7 @@ except ImportError:
     pass
 
 
-def import_file(location):
+def import_file(name, location):
     """
     Imports the specified python file as a module, without explicitly
     registering it to `sys.modules`.
@@ -94,15 +94,15 @@ def import_file(location):
     if sys.version_info[0] == 2:
         # Python 2.7-
         from imp import load_source
-        mod = load_source('version', location)
+        mod = load_source(name, location)
     elif sys.version_info < (3, 5, 0):
         # Python 3.4-
         from importlib.machinery import SourceFileLoader
-        mod = SourceFileLoader("version", location).load_module()
+        mod = SourceFileLoader(name, location).load_module()
     else:
         # Python 3.5+
         from importlib.util import spec_from_file_location, module_from_spec
-        spec = spec_from_file_location('version', location)
+        spec = spec_from_file_location(name, location)
         mod = module_from_spec(spec)
         spec.loader.exec_module(mod)
     return mod
@@ -116,7 +116,7 @@ def version_info():
     https://stackoverflow.com/a/67692/2988730
     """
     location = join(dirname(__file__) or '.', 'src', 'skg', 'version.py')
-    mod = import_file(location)
+    mod = import_file('version', location)
     return mod.__version__
 
 
