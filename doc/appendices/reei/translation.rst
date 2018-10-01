@@ -713,6 +713,8 @@ An example is shown in :numref:`reei-gauss-cdf-plot` (the dashed curve).
 
    Sample regression of the Gaussian cumulative distribution function.
 
+.. todo:: Fix the duplicate misplaced axis zeros. Text with u-r corner at 0, 0
+
 .. table:: Numerical values corresponding to the example in \
    :numref:`reei-gauss-cdf-plot`\ [errata-reei-9]_.
    :name: reei-gauss-cdf-data

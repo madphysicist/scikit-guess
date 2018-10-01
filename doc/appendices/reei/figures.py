@@ -12,10 +12,11 @@ from os.path import join
 
 import numpy as np
 from scipy.linalg import lstsq
-from scipy.special import erf
+from scipy.special import erf, erfinv
 from matplotlib import pyplot as plt
 from matplotlib import ticker, rc, cycler
 
+from skg import gauss_cdf_fit
 from skg import gauss_pdf_fit
 
 
@@ -216,10 +217,62 @@ def gauss_pdf():
     )
 
 
+#############
+# Gauss CDF #
+#############
+
+def gauss_cdf():
+    """
+    Generates a figure and table for the Gauss CDF data in the paper.
+    """
+    exact = 0.3, 0.4
+
+    x = np.array([-0.914, -0.556, -0.49, -0.195, 0.019,
+                   0.045,  0.587,  0.764,  0.81, 0.884])
+    y = np.array([0.001, 0.017, 0.021, 0.097, 0.258,
+                  0.258, 0.704, 0.911, 0.911, 0.979])
+
+    a = np.stack((x, np.ones_like(x)), axis=1)
+    b = erfinv(2 * y - 1)
+
+    (A, B), *_ = lstsq(a, b, overwrite_a=True, overwrite_b=True)
+    fit = np.array([-B / A, 1 / (np.sqrt(2.0) * A)])
+
+    domain = np.linspace(-1.0, 1.0, 1000)
+    fig, ax = plt.subplots()
+    format_plot(fig, ax)
+
+    ax.text(-0.2, 1.1, '$F(x)$', fontdict={'size': 14})
+    ax.text(1.1, -0.1, '$x$', fontdict={'size': 14})
+
+    # F(x) = 1/2 (1 + erf((x - mu) / (sqrt(2) * sigma))
+    ax.plot(x, y, '+', markersize=10)
+    ax.plot(domain, gauss_cdf_fit.model(domain, *exact), '--')
+    ax.plot(domain, gauss_cdf_fit.model(domain, *fit), '-')
+
+    # asymptote
+    ax.plot([0, 1], [1, 1], 'k-', linewidth=0.5)
+
+    # y(x) = erfinv(2F(x) - 1)
+    b = erfinv(2.0 * y - 1)
+
+    extra = ['', ('sigma_e', exact[1]), ('mu_e', exact[0]),
+             '', ('sigma_1', fit[1]), ('mu_1', fit[0])]
+    return fig, gen_table(
+        cols=[np.arange(x.size) + 1, x, y, b, extra], specs=[
+            '{:d}', '{: 0.3g}', '{: 0.3g}', '{: 0.6g}',
+            ':math:`\\{}` = {: 0.6g}'
+        ], heading=[
+            ':math:`k`', ':math:`x_k`', ':math:`F_k`',
+            ':math:`argErf(2 F_k - 1)`', ''
+        ]
+    )
+
+
 if __name__ != '__main__':
     makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-for func in [gauss_pdf]:
+for func in [gauss_pdf, gauss_cdf]:
     name = func.__name__.replace('_', '-')
     title = name.replace('-', ' ').upper()
     figure, table = func()
