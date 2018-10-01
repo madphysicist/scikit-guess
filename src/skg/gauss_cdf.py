@@ -93,10 +93,10 @@ def gauss_cdf_fit(x, y, sorted=True):
     """
     x, y = preprocess(x, y, sorted)
 
-    a = stack((x, ones_like(x)), axis=1)
-    b = erfinv(2 * y - 1)
+    M = stack((x, ones_like(x)), axis=1)
+    Y = erfinv(2 * y - 1)
 
-    (A, B), *_ = lstsq(a, b, overwrite_a=True, overwrite_b=True)
+    (A, B), *_ = lstsq(M, Y, overwrite_a=True, overwrite_b=True)
     out = array([-B / A, 1 / (sqrt(2.0) * A)])
 
     return out

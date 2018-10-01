@@ -92,14 +92,14 @@ def gauss_pdf_fit(x, y, sorted=True):
     d = 0.5 * diff(x)
     xy = x * y
 
-    a = empty(xy.shape + (2,), dtype=xy.dtype)
-    a[0, :] = 0
-    a[1:, 0] = cumsum((y[1:] + y[:-1]) * d)
-    a[1:, 1] = cumsum((xy[1:] + xy[:-1]) * d)
+    M = empty(xy.shape + (2,), dtype=xy.dtype)
+    M[0, :] = 0
+    M[1:, 0] = cumsum((y[1:] + y[:-1]) * d)
+    M[1:, 1] = cumsum((xy[1:] + xy[:-1]) * d)
 
-    b = y - y[0]
+    Y = y - y[0]
 
-    (A, B), *_ = lstsq(a, b, overwrite_a=True, overwrite_b=True)
+    (A, B), *_ = lstsq(M, Y, overwrite_a=True, overwrite_b=True)
     out = array([-A / B, sqrt(-1.0 / B)])
 
     return out

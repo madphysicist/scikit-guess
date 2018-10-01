@@ -106,20 +106,20 @@ def gauss_fit(x, y, sorted=True):
     xy = x * y
 
     # TODO: Timeit against other options. There's gotta be a better way
-    a1 = empty(xy.shape + (2,), dtype=xy.dtype)
-    a1[0, :] = 0
-    a1[1:, 0] = cumsum((y[1:] + y[:-1]) * d)
-    a1[1:, 1] = cumsum((xy[1:] + xy[:-1]) * d)
+    M = empty(xy.shape + (2,), dtype=xy.dtype)
+    M[0, :] = 0
+    M[1:, 0] = cumsum((y[1:] + y[:-1]) * d)
+    M[1:, 1] = cumsum((xy[1:] + xy[:-1]) * d)
 
-    b1 = y - y[0]
+    Y = y - y[0]
 
-    (A, B), *_ = lstsq(a1, b1, overwrite_a=True, overwrite_b=True)
+    (A, B), *_ = lstsq(M, Y, overwrite_a=True, overwrite_b=True)
 
     mu, sigma = -A / B, sqrt(-1.0 / B)
 
     # Timeit shows that this is faster than a2 = model(x, 1.0, mu, sigma)
-    a2 = exp(-0.5 * ((x - mu) / sigma)**2)
-    amp = y.dot(a2) / a2.dot(a2)
+    m = exp(-0.5 * ((x - mu) / sigma)**2)
+    amp = y.dot(m) / m.dot(m)
 
     out = array([amp, mu, sigma])
 

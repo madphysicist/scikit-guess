@@ -15,11 +15,6 @@ Exponential fit with and additive bias of the form :math:`A + Be^{Cx}`.
 
 .. todo::
 
-   Simplify matrix accumulation and solving to use least squares to setup
-   the matrix for you.
-
-.. todo::
-
    Add PEP8 check to formal tests.
 
 .. todo::
@@ -29,8 +24,8 @@ Exponential fit with and additive bias of the form :math:`A + Be^{Cx}`.
 
 from __future__ import absolute_import, division
 
-from numpy import cumsum, diff, empty, empty_like, exp, square
-from numpy.linalg import solve
+from numpy import array, concatenate, cumsum, diff, exp, ones_like, stack
+from scipy.linalg import lstsq
 
 from ._util import preprocess
 
@@ -73,34 +68,22 @@ def exp_fit(x, y, sorted=True):
        https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
     x, y = preprocess(x, y, sorted)
+    d = diff(x)
 
-    s = empty_like(y)
-    s[0] = 0
-    s[1:] = cumsum(0.5 * (y[1:] + y[:-1]) * diff(x))
+    s = concatenate(([0], cumsum(0.5 * (y[1:] + y[:-1]) * d)))
 
-    xn = x - x[0]
-    yn = y - y[0]
+    M = stack((x - x[0], s), axis=1)
+    Y = y - y[0]
 
-    # Recast this as a simple least-squares projection
-    sx2 = square(xn).sum()
-    sxs = (xn * s).sum()
-    sys = (yn * s).sum()
-    ss2 = square(s).sum()
-    sxy = (xn * yn).sum()
+    (A, B), *_ = lstsq(M, Y, overwrite_a=True, overwrite_b=True)
 
-    out = empty(3, dtype=float)
+    a, c = -A / B, B
 
-    _, out[2] = solve([[sx2, sxs], [sxs, ss2]], [sxy, sys])
+    m = stack((ones_like(x), exp(c * x)), axis=1)
 
-    ex = exp(out[2] * x)
+    (a, b), *_ = lstsq(m, y, overwrite_a=True, overwrite_b=False)
 
-    # Recast this as a simple least-squares projection
-    se1 = ex.sum()
-    se2 = square(ex).sum()
-    sy0 = y.sum()
-    sye = (y * ex).sum()
-
-    out[0], out[1] = solve([[x.size, se1], [se1, se2]], [sy0, sye])
+    out = array([a, b, c])
 
     return out
 
