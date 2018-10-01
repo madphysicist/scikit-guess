@@ -39,7 +39,7 @@ __all__ = ['exp_fit']
 
 
 def exp_fit(x, y, sorted=True):
-    """
+    r"""
     Exponential fit of the form :math:`A + Be^{Cx}`.
 
     This implementation is based on the approximate solution to integral

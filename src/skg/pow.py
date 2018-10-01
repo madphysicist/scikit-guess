@@ -1,4 +1,4 @@
-"""
+r"""
 Power fit with additive bias of the form :math:`A + Bx^C`.
 
 As a general rule, ``pow_fit(x, y, ...)`` is equivalent to
@@ -30,7 +30,7 @@ __all__ = ['pow_fit']
 
 
 def pow_fit(x, y, sorted=True):
-    """
+    r"""
     Power fit of the form :math:`A + Bx^C`.
 
     This implementation is based on the approximate solution to integral
