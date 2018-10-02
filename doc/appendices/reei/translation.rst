@@ -1091,7 +1091,7 @@ approxmations, the equation no longer holds true:
 We seek to minimize the sum of the squared residuals:
 
     .. math::
-       :label: exp-resid
+       :label: exp-resid1
 
        \sum_{k=1}^n \varepsilon_k^2 = \sum_{k=1}^n
            \left( A \; (x_k - x_1) + B \; S_k - (y_k - y_1) \right)^2
@@ -1099,7 +1099,7 @@ We seek to minimize the sum of the squared residuals:
 with
 
     .. math::
-       :label: exp-param
+       :label: exp-param1
 
        A = -a \; c \quad ; \quad B = c
 
@@ -1108,7 +1108,7 @@ We have then a linear regression with respect to the coefficients :math:`A` and
 the usual manner (with the convention that :math:`\sum \equiv \sum_{k=1}^n`):
 
     .. math::
-       :label: exp-lsq
+       :label: exp-lsq1
 
        \begin{bmatrix}A_1 \\ B_1\end{bmatrix} =
        \begin{bmatrix}
@@ -1116,16 +1116,113 @@ the usual manner (with the convention that :math:`\sum \equiv \sum_{k=1}^n`):
            \sum (x_k - x_1) \; S_k         & \sum \left(S_k^2\right)
        \end{bmatrix}^{-1}
        \begin{bmatrix}
-           & \sum (y_k - y_1)(x_k - x_1) \\
-           & \sum (y_k - y_1) S_k
+           \sum (y_k - y_1)(x_k - x_1) \\
+           \sum (y_k - y_1) S_k
        \end{bmatrix}
 
-:eq:`exp-param` then gives us the optimal values :math:`a_1` and :math:`c_1`:
+We the get the optimal values :math:`a_1` and :math:`c_1` according to
+:eq:`exp-param1`:
 
     .. math::
        :label: exp-solve1
 
        a_1 = -\frac{A_1}{B_1} \quad ; \quad c_1 = B_1
+
+The form of integral chosen is suitable to resolve only two parameters. The
+third appears in the numerical calculations, but not directly in the equation.
+Another regression is necessary to find it. ???? :eq:`exp-fx` ???
+:math:`a` and :math:`b`:
+
+    .. math::
+       :label: exp-resid2
+
+       \sum_{k=1}^n \varepsilon_k^2 =
+           \sum_{k=1}^n (a + b \; exp(c_1 \; x_k) - y_k)^2
+
+Positing
+
+    .. math:: 
+       :label: exp-param2
+
+       c_2 = c_1 \quad ; \quad \theta_k = exp(c_2 \; x_k)
+
+    .. math::
+       :label: exp-lsq2
+
+       \begin{bmatrix}a_2 \\ b_2\end{bmatrix} =
+       \begin{bmatrix}
+           n             & \sum \theta_k \\
+           \sum \theta_k & \sum \theta_k^2
+       \end{bmatrix}^{-1}
+       \begin{bmatrix}
+           \sum y_k \\
+           \sum y_k \theta_k
+       \end{bmatrix}
+
+Here is a summary of the computation:
+
+.. _reei2-sec2-alg:
+
+.. rst-class:: listing
+
+..
+
+   **Data in the case** :math:`y = a + b \; X^c`
+
+       .. math:: (X_1, y_1), (X_2, y_2), ..., (X_k, y_k), ..., (X_n, y_n)
+
+   - Compute :math:`x_k = ln(X_k)`
+
+   **Data in the case** :math:`y = a + b \; exp(c \; x)`
+
+       .. math:: (X_1, y_1), (X_2, y_2), ..., (X_k, y_k), ..., (X_n, y_n)
+
+   - Rank points in increasing order of :math:`x_k`
+
+   - Compute :math:`S_k` according to :eq:`exp-S`.
+
+   - Compute :math:`\sum (x_k - x_1)^2, \sum (x_k - x_1) \; S_k, \sum S_k^2, \\ \sum (y_k - y_1)(x_k - x_1), \sum (y_k - y_1) \; S_k`
+
+   - Compute :math:`B1` from system :eq:`exp-lsq1`
+
+   - With :math:`c_1 = c_2 = B_1`, compute :math:`\theta_k`
+     (from relationships in :eq:`exp-solve1` and :eq:`exp-param2`)
+
+   - Compute :math:`\sum \theta_k, \sum \left(\theta_k\right)^2, \sum y_k, \sum y_k \theta_k`
+
+   - Compute :math:`a_2` and :math:`b_2` from system :eq:`exp-lsq2`.
+
+   **Result:** :math:`a_2`, :math:`b_2` and :math:`c_2` are the approximations
+   of :math:`a`, :math:`b` and :math:`c`.
+
+
+To illustrate the calculation (:numref:`reei-exp-plot`), numerical data was
+generated in the following manner: :math:`x_k` were drawn randomly from the
+domain under consideration. Initially, "exact" values :math:`a_e`, :math:`b_e`
+and :math:`c_e` define the function :math:`y(x)`, which we call the "true" form
+of equation :eq:`exp-fx`, and whose curve is traced by a dotted line in the
+figure. We compute exact values of :math:`y(x_k)`. We then subject them to
+deviations whose amplitude is chosen at random from a range between - and +10%
+of :math:`y-k`, which, after rounding, gives us the numrical values of
+:math:`y_k` in :numref:`reei-exp-data`, represented by crosses in the figure.
+
+Finally, the result :math:`(a_2, b_2, c_2)` is plugged into equation
+:eq:`exp-fx`, to obtain the fitted curve, drawn in a solid line.
+
+.. figure:: /generated/reei/exp-plot.png
+   :name: reei-exp-plot
+
+   A sample regression for the function :math:`y = a + b \; exp(c \; x)`
+
+.. todo:: Fix the duplicate misplaced axis zeros. ask on SO
+.. todo:: Also ask how to make proper axis labels
+
+.. table:: Numerical values corresponding to the example in \
+   :numref:`reei-exp-plot`.
+   :name: reei-exp-data
+   :class: data-table
+
+   .. include:: /generated/reei/exp-data.rst
 
 
 .. _reei2-sec3:
