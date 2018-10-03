@@ -288,10 +288,73 @@ def erf_test():
     )
 
 
+#######
+# Exp #
+#######
+
+def exp():
+    """
+    Generates a figure and table for the exponential data in the paper.
+    """
+    exact = 0.3, 0.6, 1.7
+
+    x = np.array([
+        -0.99, -0.945, -0.874, -0.859, -0.64,
+        -0.573, -0.433, -0.042, -0.007, 0.054,
+        0.088, 0.222, 0.401, 0.465, 0.633,
+        0.637, 0.735, 0.762, 0.791, 0.981,
+    ])
+    y = np.array([
+        0.418, 0.412, 0.452, 0.48, 0.453,
+        0.501, 0.619, 0.9, 0.911, 0.966,
+        0.966, 1.123, 1.414, 1.683, 2.101,
+        1.94, 2.473, 2.276, 2.352, 3.544,
+    ])
+
+    s = np.concatenate(([0], np.cumsum(0.5 * (y[1:] + y[:-1]) * np.diff(x))))
+
+    M = np.stack((x - x[0], s), axis=1)
+    Y = y - y[0]
+
+    (A, B), *_ = lstsq(M, Y, overwrite_a=True, overwrite_b=True)
+
+    a, c = -A / B, B
+
+    m = np.stack((np.ones_like(x), np.exp(c * x)), axis=1)
+
+    (a, b), *_ = lstsq(m, y, overwrite_a=True, overwrite_b=False)
+
+    fit = np.array([a, b, c])
+
+    domain = np.linspace(-1.0, 1.0, 1000)
+    fig, ax = format_plot(aspect=0.5)
+
+    ax.text(-0.1, 4.0, '$y$', fontdict={'size': 14})
+    ax.text(1.1, -0.2, '$x$', fontdict={'size': 14})
+
+    # y(x) = a + b * exp(c * x)
+    ax.plot(x, y, '+', markersize=8)
+    ax.plot(domain, exp_fit.model(domain, *exact), '--')
+    ax.plot(domain, exp_fit.model(domain, *fit), '-')
+
+    extra = [
+        '', ('a_e', exact[0], 1), ('b_e', exact[1], 1), ('c_e', exact[2], 2),
+        '', ('a_2', fit[0], 6), ('b_2', fit[1], 6), ('c_2', fit[2], 7)
+    ]
+    return fig, gen_table(
+        cols=[np.arange(x.size) + 1, x, y, s, extra], specs=[
+            '{:d}', '{: 0.3g}', '{: 0.3g}', '{: 0.6g}',
+            ':math:`{}` = {: 0.{}g}'
+        ], heading=[
+            ':math:`k`', ':math:`x_k`', ':math:`y_k`', ':math:`S_k`', ''
+        ]
+    )
+
+
 if __name__ != '__main__':
     makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-for func in [gauss_pdf, gauss_cdf, erf_test]:
+for func in [gauss_pdf, gauss_cdf, erf_test, exp]:
     name = func.__name__.replace('_', '-')
     title = name.replace('-', ' ').upper()
     figure, table = func()
