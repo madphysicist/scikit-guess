@@ -1022,14 +1022,14 @@ Indeed, if we take formula :eq:`pow-fx`, with data points
 
        x_k = ln(X_k)
 
-which will revert it to :eq:`exp-fx` with the data points
+which turns into :eq:`exp-fx` with the data points
 :math:`(x_1, y_1), ..., (x_k, y_k), ..., (x_n, y_n)`.
 
-Various other equations revert to the same formulae:
+Various other equations can be transformed into these two formulae:
 
 - The equation :math:`y = a + b' exp(c(x - \mu))` is identical to :eq:`exp-fx`
   by substituting :math:`b = b' exp(-c \mu)`.
-- The equation :math:`y = \alpha + \beta \; ln(x - \gamma)` reverts to
+- The equation :math:`y = \alpha + \beta \; ln(x - \gamma)` turns into
   :eq:`exp-fx` when we invert the :math:`x` and :math:`y` values. This
   motivates the regression of logarithmic functions of three parameters.
 - And so on. In particular, the case of the Weibull function of three
@@ -1044,7 +1044,7 @@ article :ref:`reei1-paper`.
 2. Regression of Functions of the Form :math:`y(x) = a + b \; exp(c \; x)`
 ==========================================================================
 
-Integating the function :math:`y(x)` gives us:
+Integating the function :math:`y(x)` results in:
 
     .. math::
        :label: exp-int1
@@ -1052,7 +1052,7 @@ Integating the function :math:`y(x)` gives us:
        \int_{x1}^x y(u)du = a \; (x - x_1) +
            \frac{b}{c} \; exp(c x) - \frac{b}{c} \; exp(c x_1)
 
-Replacing :math:`exp(c x)` with :eq:`exp-fx`:
+Replacing :math:`exp(c \; x)` with :eq:`exp-fx`:
 
     .. math::
        :label: exp-int2
@@ -1088,7 +1088,7 @@ approxmations, the equation no longer holds true:
 
        y_k - y_1 \simeq -a \; c \; (x_k - x_1) + c \; S_k
 
-We seek to minimize the sum of the squared residuals:
+Minimizing the sum of the squared residuals:
 
     .. math::
        :label: exp-resid1
@@ -1103,7 +1103,7 @@ with
 
        A = -a \; c \quad ; \quad B = c
 
-We have then a linear regression with respect to the coefficients :math:`A` and
+results in a linear regression with respect to the coefficients :math:`A` and
 :math:`B`, whose optimal values :math:`A_1` and :math:`B_1` can be obtained in
 the usual manner (with the convention that :math:`\sum \equiv \sum_{k=1}^n`):
 
@@ -1128,10 +1128,11 @@ We the get the optimal values :math:`a_1` and :math:`c_1` according to
 
        a_1 = -\frac{A_1}{B_1} \quad ; \quad c_1 = B_1
 
-The form of integral chosen is suitable to resolve only two parameters. The
-third appears in the numerical calculations, but not directly in the equation.
-Another regression is necessary to find it. ???? :eq:`exp-fx` ???
-:math:`a` and :math:`b`:
+Only two parameters are resolvable from the chosen form of our integral
+equation. The third parameter appears in the numerical calculations, but not
+directly in the equation, so another regression is necessary to obtain it. In
+fact, considering :eq:`exp-fx`, the result would be further improved by
+computing the regression on both :math:`a` and :math:`b`:
 
     .. math::
        :label: exp-resid2
@@ -1139,12 +1140,14 @@ Another regression is necessary to find it. ???? :eq:`exp-fx` ???
        \sum_{k=1}^n \varepsilon_k^2 =
            \sum_{k=1}^n (a + b \; exp(c_1 \; x_k) - y_k)^2
 
-Positing
+Assigning:
 
     .. math:: 
        :label: exp-param2
 
        c_2 = c_1 \quad ; \quad \theta_k = exp(c_2 \; x_k)
+
+the resulting regression is:
 
     .. math::
        :label: exp-lsq2
@@ -1183,7 +1186,7 @@ Here is a summary of the computation:
 
    - Compute :math:`\sum (x_k - x_1)^2, \sum (x_k - x_1) \; S_k, \sum S_k^2, \\ \sum (y_k - y_1)(x_k - x_1), \sum (y_k - y_1) \; S_k`
 
-   - Compute :math:`B1` from system :eq:`exp-lsq1`
+   - Compute :math:`B_1` from system :eq:`exp-lsq1`
 
    - With :math:`c_1 = c_2 = B_1`, compute :math:`\theta_k`
      (from relationships in :eq:`exp-solve1` and :eq:`exp-param2`)
@@ -1196,14 +1199,14 @@ Here is a summary of the computation:
    of :math:`a`, :math:`b` and :math:`c`.
 
 
-To illustrate the calculation (:numref:`reei-exp-plot`), numerical data was
-generated in the following manner: :math:`x_k` were drawn randomly from the
+To illustrate this calculation (:numref:`reei-exp-plot`), numerical data were
+generated in the following manner: :math:`x_k` were drawn at random from the
 domain under consideration. Initially, "exact" values :math:`a_e`, :math:`b_e`
-and :math:`c_e` define the function :math:`y(x)`, which we call the "true" form
-of equation :eq:`exp-fx`, and whose curve is traced by a dotted line in the
-figure. We compute exact values of :math:`y(x_k)`. We then subject them to
-deviations whose amplitude is chosen at random from a range between - and +10%
-of :math:`y-k`, which, after rounding, gives us the numrical values of
+and :math:`c_e` defined the function :math:`y(x)`, which we call the "true"
+form of equation :eq:`exp-fx`, and whose curve is traced by a dotted line in
+the figure. The exact values of :math:`y(x_k)` were then assigned deviations
+whose amplitude is drawn at random from a range between - and +10% of
+:math:`y(x_k)`, which produced, after rounding, the numrical values of
 :math:`y_k` in :numref:`reei-exp-data`, represented by crosses in the figure.
 
 Finally, the result :math:`(a_2, b_2, c_2)` is plugged into equation
@@ -1224,6 +1227,12 @@ Finally, the result :math:`(a_2, b_2, c_2)` is plugged into equation
    :class: data-table
 
    .. include:: /generated/reei/exp-data.rst
+
+To form an objective opinion of the qualities and defects of the method
+presented here, it would be necessary to perform a systematic study of a very
+large number of cases and examples. It is certain even now that the deviations
+caused by errors in numerical integration would be considerably reduced as the
+number of points increased and their spacing became more regular.
 
 
 .. _reei2-sec3:
