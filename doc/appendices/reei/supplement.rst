@@ -44,7 +44,7 @@ scikit itself.
 In the code snippets below, ``x`` and ``y`` are assumed to be one-dimensional
 numpy arrays. Both arrays have an equal number of elements, ``n``. Numpy is
 implicitly imported under the conventional name ``np``. The solution to each
-regression can be obtained by running one of the following two functions:
+regression can be obtained by running one of the following two function calls:
 
 .. code-block:: python
 
@@ -120,8 +120,9 @@ element. In numpy terms:
 
    p1 = y - y[0]
 
-Once we find a fixed value for :math:`c_1`, we can fit the remaining parameters
-with :math:`M` constructed from :math:`c_1` and :math:`x`. In numpy terms:
+Once we find a fixed value for :math:`c_1` (as the variable ``c1``), we can fit
+the remaining parameters with :math:`M` constructed from :math:`c_1` and
+:math:`x`. In numpy terms:
 
 .. code-block:: python
 
