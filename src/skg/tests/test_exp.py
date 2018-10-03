@@ -145,3 +145,25 @@ def test_exp_clean(x_data, clean_data):
 def test_exp_noisy(x_data, noisy_data):
     y_data, fitting_param = noisy_data
     print('OK')
+
+
+def test_paper():
+    """
+    Verifies the results of the example in :ref:`reei` in Section
+    :ref:`reei2-sec2`.
+
+    x/y-values and expected results are copied from
+    :ref:`reei-exp-data`. Results are displayed in :ref:`reei-exp-plot`.
+    """
+    x = [-0.99, -0.945, -0.874, -0.859, -0.64, -0.573, -0.433, -0.042,
+         -0.007, 0.054, 0.088, 0.222, 0.401, 0.465, 0.633, 0.637, 0.735,
+         0.762, 0.791, 0.981]
+    y = [0.418, 0.412, 0.452, 0.48, 0.453, 0.501, 0.619, 0.9, 0.911, 0.966,
+         0.966, 1.123, 1.414, 1.683, 2.101, 1.94, 2.473, 2.276, 2.352, 3.544]
+
+    a_2, b_2, c_2 = 0.313648, 0.574447, 1.716029
+    a, b, c = exp_fit(x, y)
+
+    assert np.isclose(a, a_2, atol=5e-7, rtol=0.0)
+    assert np.isclose(b, b_2, atol=5e-7, rtol=0.0)
+    assert np.isclose(c, c_2, atol=5e-7, rtol=0.0)

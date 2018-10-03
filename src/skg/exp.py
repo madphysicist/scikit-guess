@@ -24,7 +24,7 @@ Exponential fit with and additive bias of the form :math:`A + Be^{Cx}`.
 
 from __future__ import absolute_import, division
 
-from numpy import array, concatenate, cumsum, diff, exp, ones_like, stack
+from numpy import array, cumsum, diff, empty, exp, subtract
 from scipy.linalg import lstsq
 
 from ._util import preprocess
@@ -68,20 +68,22 @@ def exp_fit(x, y, sorted=True):
        https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
     x, y = preprocess(x, y, sorted)
-    d = diff(x)
 
-    s = concatenate(([0], cumsum(0.5 * (y[1:] + y[:-1]) * d)))
+    M = empty(y.shape + (2,), dtype=y.dtype)
+    subtract(x, x[0], out=M[:, 0])
+    M[0, 1] = 0
+    cumsum(0.5 * diff(x) * (y[1:] + y[:-1]), out=M[1:, 1])
 
-    M = stack((x - x[0], s), axis=1)
     Y = y - y[0]
 
     (A, B), *_ = lstsq(M, Y, overwrite_a=True, overwrite_b=True)
 
     a, c = -A / B, B
 
-    m = stack((ones_like(x), exp(c * x)), axis=1)
+    M[:, 0].fill(1.0)
+    exp(c * x, out=M[:, 1])
 
-    (a, b), *_ = lstsq(m, y, overwrite_a=True, overwrite_b=False)
+    (a, b), *_ = lstsq(M, y, overwrite_a=True, overwrite_b=False)
 
     out = array([a, b, c])
 
