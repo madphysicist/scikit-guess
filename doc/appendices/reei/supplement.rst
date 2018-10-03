@@ -29,11 +29,11 @@ solved as something equivalent to
    x = \left( M^T * M \right)^{-1} \left( M^T * p \right)
 
 The formulae in the paper show how to compute the elements of :math:`M^T * M`
-and :math:`M^T * p`, which is usually done more efficiently by exiting packages
-when given the raw :math:`M` and :math:`p`. These variable names were chosen to
-avoid conflict with the names :math:`A`, :math:`B`, :math:`a`, :math:`b`, etc,
-which are used heavily by the paper and software package documentation for
-different things.
+and :math:`M^T * p`, which is usually done more efficiently by existing
+packages when given the raw :math:`M` and :math:`p`. These variable names were
+chosen to avoid conflict with the names :math:`A`, :math:`B`, :math:`a`,
+:math:`b`, etc, which are used heavily by the paper and software package
+documentation for different things.
 
 The following sections show how to construct such simplified solutions to the
 equations in the paper. Solutions are described briefly, and presented
@@ -43,7 +43,13 @@ scikit itself.
 
 In the code snippets below, ``x`` and ``y`` are assumed to be one-dimensional
 numpy arrays. Both arrays have an equal number of elements, ``n``. Numpy is
-implicitly imported under the conventional name ``np``.
+implicitly imported under the conventional name ``np``. The solution to each
+regression can be obtained by running one of the following two functions:
+
+.. code-block:: python
+
+   params, *_ = scipy.linalg.lstsq(M, p)
+   params, *_ = numpy.linalg.lstsq(M, p)
 
 Gaussian PDF
 ============
