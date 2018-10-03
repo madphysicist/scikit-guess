@@ -12,8 +12,9 @@ def test_paper():
     Verifies the results of the example in :ref:`reei` in Section
     :ref:`reei1-appendix2`.
 
-    x- and y-values are copied from :ref:`reei-tab2`. Expected results
-    are copied from :ref:`reei-fig2`.
+    x/y-values and expected results are copied from
+    :ref:`reei-gauss-cdf-data`. Results are displayed in
+    :ref:`reei-gauss-cdf-plot`.
     """
     x = [-0.914, -0.556, -0.49, -0.195, 0.019,
          0.045,  0.587,  0.764,  0.81, 0.884]

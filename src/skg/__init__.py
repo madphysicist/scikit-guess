@@ -30,10 +30,10 @@ refers to the model function being fitted. Each fitting routine has a
    pow_fit
 """
 
+from .exp import exp_fit
 from .gauss_cdf import gauss_cdf_fit
 from .gauss_pdf import gauss_pdf_fit
 from .gauss import gauss_fit
-from .exp import exp_fit
 from .pow import pow_fit
 
 from .version import __version__

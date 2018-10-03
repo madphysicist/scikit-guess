@@ -105,11 +105,11 @@ def gauss_fit(x, y, sorted=True):
     d = 0.5 * diff(x)
     xy = x * y
 
-    # TODO: Timeit against other options. There's gotta be a better way
+    # Did a timeit. This is the fastest way I could find to fill the matrix
     M = empty(xy.shape + (2,), dtype=xy.dtype)
     M[0, :] = 0
-    M[1:, 0] = cumsum((y[1:] + y[:-1]) * d)
-    M[1:, 1] = cumsum((xy[1:] + xy[:-1]) * d)
+    cumsum((y[1:] + y[:-1]) * d, out=M[1:, 0])
+    cumsum((xy[1:] + xy[:-1]) * d, out=M[1:, 1])
 
     Y = y - y[0]
 
