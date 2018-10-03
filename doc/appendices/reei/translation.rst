@@ -1216,6 +1216,7 @@ Finally, the result :math:`(a_2, b_2, c_2)` is plugged into equation
 
 .. todo:: Fix the duplicate misplaced axis zeros. ask on SO
 .. todo:: Also ask how to make proper axis labels
+.. todo:: Make the y-axis reach all the way up and down. Seems like a bug.
 
 .. table:: Numerical values corresponding to the example in \
    :numref:`reei-exp-plot`.

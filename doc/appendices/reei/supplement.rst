@@ -26,14 +26,17 @@ solved as something equivalent to
 
 .. math::
 
-   x = \left( A^T * A \right)^{-1} \left( A^T * b \right)
+   x = \left( M^T * M \right)^{-1} \left( M^T * p \right)
 
-The formulae in the paper show how to compute the elements of :math:`A^T * A`
-and :math:`A^T * b`, which is usually done more efficiently by exiting packages
-when given the raw :math:`A` and :math:`b`.
+The formulae in the paper show how to compute the elements of :math:`M^T * M`
+and :math:`M^T * p`, which is usually done more efficiently by exiting packages
+when given the raw :math:`M` and :math:`p`. These variable names were chosen to
+avoid conflict with the names :math:`A`, :math:`B`, :math:`a`, :math:`b`, etc,
+which are used heavily by the paper and software package documentation for
+different things.
 
 The following sections show how to construct such simplified solutions to the
-equations in the paper. Solutions are described conceptually, and presented
+equations in the paper. Solutions are described briefly, and presented
 concretely with Python code. The solutions here are for conceptual reference
 only. They are not a complete or exact reflection of how things are done in the
 scikit itself.
@@ -48,7 +51,7 @@ Gaussian PDF
 Algorithm originally presented in :ref:`reei1-sec3` and summarized
 :ref:`here <reei1-sec3-alg>`.
 
-:math:`A` is a matrix with the cumulative sums :math:`S` and :math:`T` as
+:math:`M` is a matrix with the cumulative sums :math:`S` and :math:`T` as
 the columns. In numpy terms:
 
 .. code-block:: python
@@ -60,14 +63,14 @@ the columns. In numpy terms:
    T = np.cumsum(0.5 * (xy[1:] + xy[:-1]) * np.diff(x))
    T = np.insert(T, 0, 0)
 
-   A = np.stack((S, T), axis=1)
+   M = np.stack((S, T), axis=1)
 
-:math:`b` is the vector of measured :math:`y` values decreased by its first
+:math:`p` is the vector of measured :math:`y` values decreased by its first
 element. In numpy terms:
 
 .. code-block:: python
 
-   b = y - y[0]
+   p = y - y[0]
 
 Gaussian CDF
 ============
@@ -75,18 +78,54 @@ Gaussian CDF
 Algorithm originally presented in :ref:`reei1-appendix2` and summarized
 :ref:`here <reei1-appendix2-alg>`.
 
-:math:`A` is a matrix with just the :math:`x` values and ones as the columns.
+:math:`M` is a matrix with just the :math:`x` values and ones as the columns.
 In numpy terms:
 
 .. code-block:: python
 
    A = np.stack((x, np.ones_like(x)), axis=1)
 
-:math:`b` is a more complicated function of :math:`y` in this case:
+:math:`p` is a more complicated function of :math:`y` in this case:
 
 .. code-block:: python
 
-   b = scipy.special.erfinv(2 * y - 1)
+   p = scipy.special.erfinv(2 * y - 1)
+
+Exponential
+===========
+
+Algorithm originally presented in :ref:`reei2-sec2` and summarized
+:ref:`here <reei2-sec2-alg>`.
+
+In the first regression to obtain the parameter :math:`c`, we have for
+:math:`M`:
+
+.. code-block:: python
+
+   S = np.cumsum(0.5 * (y[1:] + y[:-1]) * np.diff(x))
+   S = np.insert(S, 0, 0)
+
+   M1 = np.stack((x - x[0], S), axis=1)
+
+:math:`p` is the vector of measured :math:`y` values decreased by its first
+element. In numpy terms:
+
+.. code-block:: python
+
+   p1 = y - y[0]
+
+Once we find a fixed value for :math:`c_1`, we can fit the remaining parameters
+with :math:`M` constructed from :math:`c_1` and :math:`x`. In numpy terms:
+
+.. code-block:: python
+
+   M2 = np.stack((np.ones_like(x), np.exp(c1 * x)), axis=1)
+
+:math:`p` is just the raw :math:`y` values for this regression. In numpy terms:
+
+.. code-block:: python
+
+   p2 = y
 
 .. include:: ../page_break.rst
 
