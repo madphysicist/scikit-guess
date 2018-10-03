@@ -16,8 +16,7 @@ from scipy.special import erf, erfinv
 from matplotlib import pyplot as plt
 from matplotlib import ticker, rc, cycler
 
-from skg import gauss_cdf_fit
-from skg import gauss_pdf_fit
+from skg import exp_fit, gauss_cdf_fit, gauss_pdf_fit
 
 
 OUTPUT_FOLDER = 'generated/reei'
@@ -28,8 +27,9 @@ OUTPUT_FOLDER = 'generated/reei'
 #############
 
 
-def format_plot(fig, ax):
-    ax.set_aspect('equal')
+def format_plot(aspect='equal'):
+    fig, ax = plt.subplots()
+    ax.set_aspect(aspect)
     ax.spines['left'].set_position('zero')
     ax.spines['bottom'].set_position('zero')
     ax.spines['right'].set_visible(False)
@@ -41,6 +41,7 @@ def format_plot(fig, ax):
     ax.yaxis.set_major_locator(ticker.MultipleLocator(0.5))
 
     ax.set_prop_cycle(cycler('color', 'k'))
+    return fig, ax
 
 
 def annotate(ax, text, xy, xytext):    
@@ -180,8 +181,7 @@ def gauss_pdf():
     fit = np.array([-A1 / B1, np.sqrt(-1.0 / B1)])
 
     domain = np.linspace(-1.0, 1.0, 1000)
-    fig, ax = plt.subplots()
-    format_plot(fig, ax)
+    fig, ax = format_plot()
 
     ax.text(-0.2, 1.1, '$f(x)$', fontdict={'size': 14})
     ax.text(1.1, -0.1, '$x$', fontdict={'size': 14})
@@ -239,8 +239,7 @@ def gauss_cdf():
     fit = np.array([-B / A, 1 / (np.sqrt(2.0) * A)])
 
     domain = np.linspace(-1.0, 1.0, 1000)
-    fig, ax = plt.subplots()
-    format_plot(fig, ax)
+    fig, ax = format_plot()
 
     ax.text(-0.2, 1.1, '$F(x)$', fontdict={'size': 14})
     ax.text(1.1, -0.1, '$x$', fontdict={'size': 14})
@@ -268,11 +267,18 @@ def gauss_cdf():
         ]
     )
 
+
 ############
 # Erf Test #
 ############
 
 def erf_test():
+    """
+    Generates a table of test data for the Erf and argErf listings in
+    the paper.
+
+    Does not generate a figure.
+    """
     x = [0.001, 0.1, 1.0, 2.0, 2.699, 2.701, 4.0, 5.0]
     y = [0.001128378791, 0.112462916, 0.8427007929, 0.995322265,
          0.9998648953, 0.998664351, 0.9999999846, 0.9999999999984]
