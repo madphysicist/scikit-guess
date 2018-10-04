@@ -1246,14 +1246,16 @@ The Weibull cumulative distribution function of three parameters
     .. math::
        :label: weibull-cdf-fx
 
-       F(t) = 1 - exp\left( -\left( \frac{t - \mu}{beta} \right)^\alpha \right)
+       F(t) = 1 - exp\left(
+           -\left( \frac{t - \mu}{\beta} \right)^\alpha
+       \right)
 
 For data given as :math:`(t_1, F_1), ..., (t_k, F_k), ..., (t_n, F_n)`, we seek
 to optimize :math:`\mu`, :math:`\beta`, and :math:`\alpha` in such a way that
-relationship :eq:`weibull-fx` is approximately and optimally satisfied across
-the :math:`n` points.
+relationship :eq:`weibull-cdf-fx` is approximately and optimally satisfied
+across the :math:`n` points.
 
-The inverse function of :eq:`weibull-fx` is:
+The inverse function of :eq:`weibull-cdf-fx` is:
 
     .. math::
        :label: weibull-cdf-inv
@@ -1302,8 +1304,8 @@ The algorithm is deduced immediately as we transpose the notation:
      .. math::
 
         \begin{cases}
-            S_1 = 0 \quad \text{and for} k = 2 \rightarrow n \; :
-            S_k = S_{k-1} + \frac{1}{2}(t_k + t{k-1})(x_k - x_{k-1})
+            S_1 = 0 \quad \text{and for} \quad k = 2 \rightarrow n \; : \\
+            S_k = S_{k-1} + \frac{1}{2}(t_k + t_{k-1})(x_k - x_{k-1})
         \end{cases}
 
    - Compute :math:`B`
@@ -1312,15 +1314,15 @@ The algorithm is deduced immediately as we transpose the notation:
 
         \begin{bmatrix} A \\ B \end{bmatrix} =
         \begin{bmatrix}
-            \sum \left((x_k - x_1)^2\right) & \sum (x_k - x_1) \; S_k \\
-            \sum (x_k - x_1) \; S_k         & \sum \left(S_k^2\right)
+            \sum \left((x_k - x_1)^2\right) & \sum \left(x_k - x_1\right) S_k \\
+            \sum \left(x_k - x_1\right) S_k & \sum \left( S_k^2 \right)
         \end{bmatrix}^{-1}
         \begin{bmatrix}
             \sum (t_k - t_1)(x_k - x_1) \\
             \sum (t_k - t_1) S_k
         \end{bmatrix}
 
-   - We obtain :math:`\alpha_c = \frac{1}{B}`
+   - Obtain :math:`\alpha_c = \frac{1}{B}`
 
    - Compute :math:`\theta_k = exp(B \; x_k)`
 
@@ -1330,11 +1332,67 @@ The algorithm is deduced immediately as we transpose the notation:
    **Result:** :math:`\alpha_c`, :math:`\beta_c` and :math:`\mu_c` are the
    approximations of :math:`\alpha`, :math:`\beta` and :math:`\mu`
 
+In graphical representations, it is customary to display :math:`ln(t_k)` as
+the abscissa and :math:`ln(-ln(1 - F_k))` as the ordinate. This is a legacy of
+the graphical linearization method used for the case where :math:`\mu = 0`.
+In order to respect this tradition, we will swap the axes and display
+:math:`ln(t_k)` as the abscissa and :math:`x_k` as the ordinate.
+
+Weibull's law applies generally to the failure of materials and objects. Since
+the variable :math:`t` is time, the :math:`t_k` and :math:`F_k` are effectively
+sorted in ascending order.
+
+A sample regression is shown in :numref:`reei-weibull-cdf-plot`. To simulate an
+experiment, numerical data :math:`(t_k, F_k)` were generated from "exact"
+values :math:`\alpha_e`, :math:`\beta_e`, :math:`\mu_e`, defining the "true"
+:math:`F(t)` according to :eq:`weibull-cdf-fx`, whose curve is shown as a
+dashed line in the figure. A value of :math:`t_k` calculated from
+:eq:`weibull-cdf-inv` corresponds to each :math:`F_k`. These values of
+:math:`t` are subjected to random deviations, simulating experimental
+uncertainty, which gives us the values of :math:`t_k` in
+:numref:`reei-weibull-cdf-data`. Finally, the result (:math:`\alpha_c`,
+:math:`\beta_c`, and :math:`\mu_c`) substituted into :eq:`weibull-cdf-fx` gives
+the "fitted" function :math:`F_c(t)` (whose curve is plotted as a solid line):
+
+    .. math::
+       :label: weibull-cdf-solved
+
+       F_c(t) = 1 - exp \left(
+           - \left( \frac{t - \mu_c}{\beta_c} \right)^{\alpha_c}
+       \right)
+
+.. figure:: /generated/reei/weibull-cdf-plot.png
+   :name: reei-weibull-cdf-plot
+
+   A sample regression of a Weibull cumulative distribution function of three
+   parameters.
+
+.. todo:: Fix the duplicate misplaced axis zeros. ask on SO
+.. todo:: Also ask how to make proper axis labels
+
+.. table:: Numerical values corresponding to the example in \
+   :numref:`reei-weibull-cdf-plot`.
+   :name: reei-weibull-cdf-data
+   :class: data-table
+
+   .. include:: /generated/reei/weibull-cdf-data.rst
+
+The representation along the traditionally used system of axes shows that the
+presence of a non-zero :math:`\mu_c` parameter prevents the usual graphical
+linearization, which is naturally to be expected. Carrying out the regression
+through an integral equation allows us to linearize and obtain a curve which
+may be substituted for the traditional method, appreciably improving the fit.
+
 
 .. _reei2-sec4:
 
 4. Conclusion
 =============
+
+The preceding examples (:ref:`Section 2 <reei2-sec2>` and
+:ref:`Section 3 <reei2-sec3>`), show how a non-linear regression can be reduced
+to a linear one given the appropriate integral equation. In this manner, the
+usual iterative procedures can be relpaced by a simple linear calculation.
 
 
 .. rst-class:: center
@@ -1382,20 +1440,20 @@ Regression of Sinusoids
 
 .. _reei3-sec4-1:
 
-4.1 "Equidistant" Distribution of Abscissae and Non-dispersion of Ordinals
---------------------------------------------------------------------------
+4.1 "Equidistant" Distribution of Abscissae and Non-dispersion of Ordinates
+---------------------------------------------------------------------------
 
 
 .. _reei3-sec4-2:
 
-4.2 Aleatory Distribution of Point Abscissae Without Ordinal Dispersion
------------------------------------------------------------------------
+4.2 Aleatory Distribution of Point Abscissae Without Ordinate Dispersion
+------------------------------------------------------------------------
 
 
 .. _reei3-sec4-3:
 
-4.3 Aleatory Distribution of Point Abscissae With Dispersed Ordinals
---------------------------------------------------------------------
+4.3 Aleatory Distribution of Point Abscissae With Dispersed Ordinates
+---------------------------------------------------------------------
 
 
 .. _reei3-sec5:
