@@ -1,5 +1,5 @@
 """
-Tests for the :func:`skg.gauss_pdf_fit` function.
+Tests for the :func:`skg.gauss_cdf_fit` function.
 """
 
 import numpy as np

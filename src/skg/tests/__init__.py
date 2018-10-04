@@ -39,7 +39,8 @@ Pathological Cases
     properly. Tests for each function should be included on a
     case-by-case basis to ensure the contractal behavior in these cases.
     For example, exponential fits can not be made to colinear data,
-    unless it is horizontal.
+    unless it is horizontal. All distributions run into issues when they
+    are no longer over-determined.
 CurveFit
     An implicit test of :func:`~scipy.optimize.curve_fit` is done with
     each dataset, to ensure that the RMS of the data about the fit is
@@ -47,15 +48,18 @@ CurveFit
     parameters (only for noisy datasets).
 Input Parameters
     Each input parameter should be tested individually to check for
-    contracual behavior.
-
-If the source material on wich a the algorithm is based provides a sample, a
-"Paper Test" may be added to verify the results against what should be an
-independent implementation.
+    contracual behavior. Specifically, Weibull and power fits need to be
+    careful about negative numbers in the input.
+Paper
+    If the source material on wich a the algorithm is based provides a
+    sample, a "Paper Test" may be added to verify the results against
+    what should be an independent implementation.
 
 
 .. todo:: Add a partial domain test. E.g., Gaussian without the peak portion,
-   etc. Not always valid, e.g. exponential.
+   etc. Not always valid, e.g. for exponential, which has no partial domain.
+
+.. todo:: Add test to show that it works with sorted=True and x-data reversed.
 
 .. include:: /link-defs.rst
 """

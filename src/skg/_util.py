@@ -2,8 +2,7 @@
 Shared utility functions used by the fitting routines.
 """
 
-from numpy import argsort, asfarray, swapaxes
-from numpy.core.multiarray import normalize_axis_index
+from numpy import argsort, asfarray
 
 
 def preprocess(x, y, sorted=True):
