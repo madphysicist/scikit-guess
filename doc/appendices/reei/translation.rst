@@ -202,7 +202,7 @@ calculate approximations for the following derivatives and integrals with
     And do on, for subsequent integrals, as necessary.
 
 It goes without saying that the points must first be ranked in order of
-increasing :math:`x_k`.
+ascending :math:`x_k`.
 
 It is possible to use more sophisticated approximations for numerical
 differentiation and integration. Nothing prevents us from selecting a lower
@@ -1180,7 +1180,7 @@ Here is a summary of the computation:
 
        .. math:: (X_1, y_1), (X_2, y_2), ..., (X_k, y_k), ..., (X_n, y_n)
 
-   - Rank points in increasing order of :math:`x_k`
+   - Rank points in order of ascending :math:`x_k`
 
    - Compute :math:`S_k` according to :eq:`exp-S`.
 
@@ -1209,7 +1209,7 @@ whose amplitude is drawn at random from a range between - and +10% of
 :math:`y(x_k)`, which produced, after rounding, the numrical values of
 :math:`y_k` in :numref:`reei-exp-data`, represented by crosses in the figure.
 
-Finally, the result :math:`(a_2, b_2, c_2)` is plugged into equation
+Finally, the result :math:`(a_2, b_2, c_2)` is substituted into equation
 :eq:`exp-fx`, to obtain the fitted curve, drawn in a solid line.
 
 .. figure:: /generated/reei/exp-plot.png
@@ -1237,8 +1237,98 @@ number of points increased and their spacing became more regular.
 
 .. _reei2-sec3:
 
-3. Regression of the Three-Parameter Weibull Distribution
-=========================================================
+3. Regression of the Three-Parameter Weibull Cumulative Distribution Function
+=============================================================================
+
+The Weibull cumulative distribution function of three parameters
+(:math:`\alpha`, :math:`\beta`, and :math:`\mu`) is defined by:
+
+    .. math::
+       :label: weibull-cdf-fx
+
+       F(t) = 1 - exp\left( -\left( \frac{t - \mu}{beta} \right)^\alpha \right)
+
+For data given as :math:`(t_1, F_1), ..., (t_k, F_k), ..., (t_n, F_n)`, we seek
+to optimize :math:`\mu`, :math:`\beta`, and :math:`\alpha` in such a way that
+relationship :eq:`weibull-fx` is approximately and optimally satisfied across
+the :math:`n` points.
+
+The inverse function of :eq:`weibull-fx` is:
+
+    .. math::
+       :label: weibull-cdf-inv
+
+       t = \mu + \beta \left( -ln(1 - F) \right)^{\frac{1}{\alpha}}
+
+Setting:
+
+    .. math::
+       :label: weibull-cdf-subst
+
+       x = ln \left( -ln(1 - F) \right)
+
+and:
+
+    .. math::
+       :label: weibull-cdf-param
+
+       y = t \quad ; \quad a = \mu \quad ; \quad b = \beta \quad ;
+           \quad c = \frac{1}{\alpha}
+
+We can see immediately that we have transformed the problem into :eq:`exp-fx`,
+shown above: :math:`y = a + b \; exp(c \; x)`.
+
+The algorithm is deduced immediately as we transpose the notation:
+
+
+.. _reei2-sec3-alg:
+
+.. rst-class:: listing
+
+..
+
+   **Data**
+
+       .. math:: (t_1, F_1), ..., (t_k, F_k), ..., (t_n, F_n)
+
+   **Procedure**
+
+   - Rank points in order of ascending :math:`F_k`
+
+   - Compute :math:`x_k = ln\left(-ln(1 - F_k)\right)`
+
+   - Compute :math:`S_k`:
+
+     .. math::
+
+        \begin{cases}
+            S_1 = 0 \quad \text{and for} k = 2 \rightarrow n \; :
+            S_k = S_{k-1} + \frac{1}{2}(t_k + t{k-1})(x_k - x_{k-1})
+        \end{cases}
+
+   - Compute :math:`B`
+
+     .. math::
+
+        \begin{bmatrix} A \\ B \end{bmatrix} =
+        \begin{bmatrix}
+            \sum \left((x_k - x_1)^2\right) & \sum (x_k - x_1) \; S_k \\
+            \sum (x_k - x_1) \; S_k         & \sum \left(S_k^2\right)
+        \end{bmatrix}^{-1}
+        \begin{bmatrix}
+            \sum (t_k - t_1)(x_k - x_1) \\
+            \sum (t_k - t_1) S_k
+        \end{bmatrix}
+
+   - We obtain :math:`\alpha_c = \frac{1}{B}`
+
+   - Compute :math:`\theta_k = exp(B \; x_k)`
+
+   - Compute :math:`\beta_c` and :math:`\mu_c`:
+     :math:`\begin{bmatrix}\mu_c \\ \beta_c\end{bmatrix} = \begin{bmatrix}n & \sum \theta_k \\ \sum \theta_k & \sum \theta_k^2 \end{bmatrix}^{-1} \begin{bmatrix}\sum t_k \\ \sum t_k \theta_k\end{bmatrix}`
+
+   **Result:** :math:`\alpha_c`, :math:`\beta_c` and :math:`\mu_c` are the
+   approximations of :math:`\alpha`, :math:`\beta` and :math:`\mu`
 
 
 .. _reei2-sec4:
