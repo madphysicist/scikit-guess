@@ -17,6 +17,7 @@ refers to the model function being fitted. Each fitting routine has a
    gauss_pdf
    gauss
    pow
+   weibull_cdf
 
 .. rubric:: Exported Functions
 
@@ -28,6 +29,7 @@ refers to the model function being fitted. Each fitting routine has a
    gauss_pdf_fit
    gauss_fit
    pow_fit
+   weibull_cdf_fit
 """
 
 from .exp import exp_fit
@@ -35,12 +37,14 @@ from .gauss_cdf import gauss_cdf_fit
 from .gauss_pdf import gauss_pdf_fit
 from .gauss import gauss_fit
 from .pow import pow_fit
+from .weibull_cdf import weibull_cdf_fit
 
 from .version import __version__
 
 
 __all__ = [
-    'gauss_cdf_fit', 'gauss_pdf_fit', 'gauss_fit', 'exp_fit', 'pow_fit'
+    'gauss_cdf_fit', 'gauss_pdf_fit', 'gauss_fit', 'exp_fit', 'pow_fit',
+    'weibull_cdf_fit'
 ]
 
 
