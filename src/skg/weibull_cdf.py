@@ -111,7 +111,7 @@ def model(x, alpha, beta, mu):
         computed for the given parameters.
     """
     # TODO: Check if in-place operations are really faster here
-    return -expm1(((x - mu) / beta)**alpha)
+    return -expm1(-((x - mu) / beta)**alpha)
 
 
 weibull_cdf_fit.model = model
