@@ -81,9 +81,10 @@ def weibull_cdf_fit(x, y, sorted=True):
        :ref:`pp. 19-20. <reei2-sec3>`,
        https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
     """
-    y, x = preprocess(y, x, sorted)
+    F, y = preprocess(y, x, sorted)
 
-    a, b, c = exp_fit(log(-log(1 - y)), x, sorted=True)
+    x = log(-log(1.0 - F))
+    a, b, c = exp_fit(x, y, sorted=True)
 
     out = array([1.0 / c, b, a])
     return out
