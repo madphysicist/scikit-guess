@@ -14,7 +14,7 @@ import numpy as np
 from scipy.linalg import lstsq
 from scipy.special import erf, erfinv
 from matplotlib import pyplot as plt
-from matplotlib import ticker, rc, cycler
+from matplotlib import ticker, rc, cycler, transforms
 
 from skg import exp_fit, gauss_cdf_fit, gauss_pdf_fit
 
@@ -27,21 +27,80 @@ OUTPUT_FOLDER = 'generated/reei'
 #############
 
 
-def format_plot(aspect='equal'):
+def format_plot(aspect='equal', x_zero=True, y_zero=True,
+                majx=0.5, majy=0.5, minx=0.1, miny=0.1):
     fig, ax = plt.subplots()
     ax.set_aspect(aspect)
-    ax.spines['left'].set_position('zero')
-    ax.spines['bottom'].set_position('zero')
+    if y_zero:
+        ax.spines['left'].set_position('zero')
+    if x_zero:
+        ax.spines['bottom'].set_position('zero')
+
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
 
-    ax.xaxis.set_minor_locator(ticker.MultipleLocator(0.1))
-    ax.xaxis.set_major_locator(ticker.MultipleLocator(0.5))
-    ax.yaxis.set_minor_locator(ticker.MultipleLocator(0.1))
-    ax.yaxis.set_major_locator(ticker.MultipleLocator(0.5))
+    ax.xaxis.set_minor_locator(ticker.MultipleLocator(minx))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(majx))
+    ax.yaxis.set_minor_locator(ticker.MultipleLocator(miny))
+    ax.yaxis.set_major_locator(ticker.MultipleLocator(majy))
 
     ax.set_prop_cycle(cycler('color', 'k'))
     return fig, ax
+
+
+def fix_plot_zeros(ax, offset=25):
+    """
+    Remove the zero on the y-axis, and shift the x-axiz zero label to
+    the left.
+    """
+    ax.figure.canvas.draw()
+
+    class XFormatter(ticker.ScalarFormatter):
+        def __init__(self, z='$0$'):
+            super().__init__()
+            self.z = z
+        def __call__(self, x, pos=None):
+            if x == 0:
+                return self.z
+            return super().__call__(x, pos)
+
+    base_trans = ax.get_xticklabels()[0].get_transform()
+    def movelabel(evt=None):
+        for tick in ax.xaxis.get_major_ticks():
+            if tick.get_loc() == 0:
+                if isinstance(offset, str):
+                    ha = offset
+                    trans = base_trans
+                else:
+                    ha = 'right'
+                    trans = base_trans + \
+                        transforms.Affine2D().translate(-offset, 0.0)
+            else:
+                trans = base_trans
+                ha = 'center'
+            plt.setp(tick.label, transform=trans, ha=ha)
+
+    ax.xaxis.set_major_formatter(XFormatter(z='0'))
+    ax.yaxis.set_major_formatter(XFormatter(z=''))
+    movelabel()
+    ax.callbacks.connect('xlim_changed', movelabel)
+
+
+def xlabel(ax, label, adjust=50):
+    ax.set_xlabel(label, x=1.0, ha='center', va='top', labelpad=0, fontsize=12)
+    ax.xaxis.get_label().set_transform(
+        ax.xaxis.get_label().get_transform() +
+        transforms.Affine2D().translate(0, adjust)
+    )
+
+
+def ylabel(ax, label, adjust=50):
+    ax.set_ylabel(label, rotation=0, y=1.0, ha='right', va='center',
+                  labelpad=0, fontsize=12)
+    ax.yaxis.get_label().set_transform(
+        ax.yaxis.get_label().get_transform() +
+        transforms.Affine2D().translate(adjust, 0.0)
+    )
 
 
 def annotate(ax, text, xy, xytext):    
@@ -182,37 +241,38 @@ def gauss_pdf():
 
     domain = np.linspace(-1.0, 1.0, 1000)
     fig, ax = format_plot()
-
-    ax.text(-0.2, 1.1, '$f(x)$', fontdict={'size': 14})
-    ax.text(1.1, -0.1, '$x$', fontdict={'size': 14})
+    xlabel(ax, '$x$')
+    ylabel(ax, '$f(x)$', adjust=55)
 
     # f(x) = 1/(sigma sqrt(2 * pi) * exp(-1/2 * ((x - mu) / sigma)**2))
-    ax.plot(x, y, '+', markersize=10)
-    ax.plot(domain, gauss_pdf_fit.model(domain, *exact), '--')
-    ax.plot(domain, gauss_pdf_fit.model(domain, *fit), '-')
+    ax.plot(x, y, '+', markersize=8)
+    ax.plot(domain, gauss_pdf_fit.model(domain, *exact), '--', lw=0.5)
+    ax.plot(domain, gauss_pdf_fit.model(domain, *fit), '-', lw=0.5)
     annotate(ax, '$f_k$', xy=(x[7], y[7]), xytext=(0.42, 0.45))
 
     # S(x) = mu * erf((x - mu) / (sqrt(2) * sigma)) / (2 * sigma**2)
-    ax.plot(x, S, 's-', markersize=7, markerfacecolor='none')
-    ax.plot(domain, Smodel(domain, *exact) - Smodel(x[0], *exact), '--')
+    ax.plot(x, S, 's-', markersize=7, markerfacecolor='none', lw=0.5)
+    ax.plot(domain, Smodel(domain, *exact) - Smodel(x[0], *exact), '--', lw=0.5)
     #ax.plot(domain, Sk(domain, *fit) - Sk(x[0], *fit), '-')
     annotate(ax, '$S_k$', xy=(x[7], S[7]), xytext=(0.42, 0.72))
 
     # T(x) = mu * S(x) - sigma**2 * f(x)
-    ax.plot(x, T, 'D-', markersize=7, markerfacecolor='none')
-    ax.plot(domain, Tmodel(domain, *exact) - Tmodel(x[0], *exact), '--')
+    ax.plot(x, T, 'D-', markersize=7, markerfacecolor='none', lw=0.5)
+    ax.plot(domain, Tmodel(domain, *exact) - Tmodel(x[0], *exact), '--', lw=0.5)
     #ax.plot(domain, Tk(domain, *fit) - Tk(x[0], *fit), '-')
     annotate(ax, '$T_k$', xy=(x[7], T[7]), xytext=(0.42, -0.18))
 
+    fix_plot_zeros(ax)
+
     extra = ['', ('sigma_e', exact[1]), ('mu_e', exact[0]),
-             '', ('sigma_1', fit[1]), ('mu_1', fit[0])]
+             '', ('sigma_1', fit[1]),   ('mu_1', fit[0])]
     return fig, gen_table(
         cols=[np.arange(x.size) + 1, x, y, S, T, extra], specs=[
             '{:d}', ' {: 0.3g}', '{: 0.3g}', '{: 0.6g}', '{: 0.6g}',
             ':math:`\\{}` = {:< 0.6g}'
         ], heading=[
             ':math:`k`', ':math:`x_k`', ':math:`f_k`',
-            ':math:`arfErf(2 F_k - 1)`', ''
+            ':math:`S_k`', ':math:`T_k`', ''
         ]
     )
 
@@ -240,20 +300,22 @@ def gauss_cdf():
 
     domain = np.linspace(-1.0, 1.0, 1000)
     fig, ax = format_plot()
-
-    ax.text(-0.2, 1.1, '$F(x)$', fontdict={'size': 14})
-    ax.text(1.1, -0.1, '$x$', fontdict={'size': 14})
+    ax.set_ylim(0, 1.1)
+    xlabel(ax, '$x$')
+    ylabel(ax, '$F(x)$', adjust=60)
 
     # F(x) = 1/2 (1 + erf((x - mu) / (sqrt(2) * sigma))
-    ax.plot(x, y, '+', markersize=10)
-    ax.plot(domain, gauss_cdf_fit.model(domain, *exact), '--')
-    ax.plot(domain, gauss_cdf_fit.model(domain, *fit), '-')
+    ax.plot(x, y, '+', markersize=6)
+    ax.plot(domain, gauss_cdf_fit.model(domain, *exact), '--', lw=0.5)
+    ax.plot(domain, gauss_cdf_fit.model(domain, *fit), '-', lw=0.5)
 
     # asymptote
     ax.plot([0, 1], [1, 1], 'k-', linewidth=0.5)
 
     # y(x) = erfinv(2F(x) - 1)
     b = erfinv(2.0 * y - 1)
+
+    fix_plot_zeros(ax, offset='center')
 
     extra = ['', ('sigma_e', exact[1]), ('mu_e', exact[0]),
              '', ('sigma_1', fit[1]), ('mu_1', fit[0])]
@@ -327,23 +389,29 @@ def exp():
     fit = np.array([a, b, c])
 
     domain = np.linspace(-1.0, 1.0, 1000)
-    fig, ax = format_plot(aspect=0.5)
-
-    ax.text(-0.1, 4.0, '$y$', fontdict={'size': 14})
-    ax.text(1.1, -0.2, '$x$', fontdict={'size': 14})
+    fig, ax = format_plot(aspect=0.5, majy=1, miny=0.5)
+    ax.set_ylim(0, 4)
+    xlabel(ax, '$x$')
+    ylabel(ax, '$y$', adjust=15)
 
     # y(x) = a + b * exp(c * x)
-    ax.plot(x, y, '+', markersize=8)
-    ax.plot(domain, exp_fit.model(domain, *exact), '--')
-    ax.plot(domain, exp_fit.model(domain, *fit), '-')
+    ax.plot(x, y, '+', markersize=6)
+    ax.plot(domain, exp_fit.model(domain, *exact), '--', lw=0.5)
+    ax.plot(domain, exp_fit.model(domain, *fit), '-', lw=0.5)
+
+    fix_plot_zeros(ax, offset='center')
+    next(tick for tick in ax.yaxis.get_major_ticks()
+         if tick.get_loc() == 4.0).set_visible(False)
 
     extra = [
         '', ('a_e', exact[0], 1), ('b_e', exact[1], 1), ('c_e', exact[2], 2),
         '', ('a_2', fit[0], 6), ('b_2', fit[1], 6), ('c_2', fit[2], 7)
     ]
     return fig, gen_table(
-        cols=[np.arange(x.size) + 1, x, y, s, extra], specs=[
-            '{:d}', '{: 0.3g}', '{: 0.3g}', '{: 0.6g}',
+        cols=[
+            np.arange(x.size) + 1, x, list(zip(y, 3 + (y >= 1))), s, extra
+        ], specs=[
+            '{:d}', '{: 0.3g}', '{: 0.{}g}', '{: 0.6g}',
             ':math:`{}` = {: 0.{}g}'
         ], heading=[
             ':math:`k`', ':math:`x_k`', ':math:`y_k`', ':math:`S_k`', ''

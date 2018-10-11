@@ -529,9 +529,6 @@ not uniformly distributed across the domain is also a significant complication.
 
    A sample regression of the Gaussian probability density function.
 
-.. todo:: Fix the duplicate misplaced axis zeros. ask on SO
-.. todo:: Also ask how to make proper axis labels
-
 .. table:: Numerical values corresponding to the example in \
    :numref:`reei-gauss-pdf-plot`.
    :name: reei-gauss-pdf-data
@@ -712,8 +709,6 @@ An example is shown in :numref:`reei-gauss-cdf-plot` (the dashed curve).
    :name: reei-gauss-cdf-plot
 
    Sample regression of the Gaussian cumulative distribution function.
-
-.. todo:: Fix the duplicate misplaced axis zeros. Text with u-r corner at 0, 0
 
 .. table:: Numerical values corresponding to the example in \
    :numref:`reei-gauss-cdf-plot`\ [errata-reei-9]_.
@@ -1217,10 +1212,6 @@ Finally, the result :math:`(a_2, b_2, c_2)` is substituted into equation
 
    A sample regression for the function :math:`y = a + b \; exp(c \; x)`
 
-.. todo:: Fix the duplicate misplaced axis zeros. ask on SO
-.. todo:: Also ask how to make proper axis labels
-.. todo:: Make the y-axis reach all the way up and down. Seems like a bug.
-
 .. table:: Numerical values corresponding to the example in \
    :numref:`reei-exp-plot`.
    :name: reei-exp-data
@@ -1366,9 +1357,6 @@ the "fitted" function :math:`F_c(t)` (whose curve is plotted as a solid line):
 
    A sample regression of a Weibull cumulative distribution function of three
    parameters.
-
-.. todo:: Fix the duplicate misplaced axis zeros. ask on SO
-.. todo:: Also ask how to make proper axis labels
 
 .. table:: Numerical values corresponding to the example in \
    :numref:`reei-weibull-cdf-plot`.
