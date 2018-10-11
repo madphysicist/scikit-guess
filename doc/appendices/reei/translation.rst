@@ -50,6 +50,11 @@ material is in French and some in English. I have attempted to translate the
 French as faithfully as I could. I have also attempted to conform the English
 portions to what I consider to be modern American usage.
 
+There are going to be plenty of imperfections and probably outright errors in
+the translation. The translation is not meant to be a monolith. It is presented
+on GitHub so that readers so inclined can easily submit corrections and
+improvements.
+
 A small number of technical corrections were made to the content of this paper
 throughout the translation. In all cases, the errata are clearly marked with
 footnotes with detailed descriptions of the fix in question. Errata are to be
@@ -1365,8 +1370,8 @@ the "fitted" function :math:`F_c(t)` (whose curve is plotted as a solid line):
 
    .. include:: /generated/reei/weibull-cdf-data.rst
 
-The representation along the traditionally used system of axes shows that the
-presence of a non-zero :math:`\mu_c` parameter prevents the usual graphical
+The representation in the traditional coordinate system shows that the presence
+of a non-zero :math:`\mu_c` parameter prevents the usual graphical
 linearization, which is naturally to be expected. Carrying out the regression
 through an integral equation allows us to linearize and obtain a curve which
 may be substituted for the traditional method, appreciably improving the fit.
@@ -1434,14 +1439,14 @@ Regression of Sinusoids
 
 .. _reei3-sec4-2:
 
-4.2 Aleatory Distribution of Point Abscissae Without Ordinate Dispersion
-------------------------------------------------------------------------
+4.2 Random Distribution of Point Abscissae Without Ordinate Dispersion
+----------------------------------------------------------------------
 
 
 .. _reei3-sec4-3:
 
-4.3 Aleatory Distribution of Point Abscissae With Dispersed Ordinates
----------------------------------------------------------------------
+4.3 Random Distribution of Point Abscissae With Dispersed Ordinates
+-------------------------------------------------------------------
 
 
 .. _reei3-sec5:

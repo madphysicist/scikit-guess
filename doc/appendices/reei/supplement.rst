@@ -20,7 +20,7 @@ packages, including `numpy`_ and `scipy`_, share `LAPACK`_ as a backend for
 performing the actual computations.
 
 With a linear algebra package such as `LAPACK`_, it is sufficient to compute
-the coefficient matrix :math:`A` and ordinate vector :math:`b`, without
+the coefficient matrix :math:`M` and ordinate vector :math:`p`, without
 performing any further operations on them. A linear regression is generally
 solved as something equivalent to
 
@@ -62,11 +62,13 @@ the columns. In numpy terms:
 
 .. code-block:: python
 
-   S = np.cumsum(0.5 * (y[1:] + y[:-1]) * np.diff(x))
+   d = 0.5 * np.diff(x)
+
+   S = np.cumsum((y[1:] + y[:-1]) * d)
    S = np.insert(S, 0, 0)
 
    xy = x * y
-   T = np.cumsum(0.5 * (xy[1:] + xy[:-1]) * np.diff(x))
+   T = np.cumsum((xy[1:] + xy[:-1]) * d)
    T = np.insert(T, 0, 0)
 
    M = np.stack((S, T), axis=1)
@@ -89,7 +91,7 @@ In numpy terms:
 
 .. code-block:: python
 
-   A = np.stack((x, np.ones_like(x)), axis=1)
+   M = np.stack((x, np.ones_like(x)), axis=1)
 
 :math:`p` is a more complicated function of :math:`y` in this case:
 
@@ -108,7 +110,9 @@ In the first regression to obtain the parameter :math:`c`, we have for
 
 .. code-block:: python
 
-   S = np.cumsum(0.5 * (y[1:] + y[:-1]) * np.diff(x))
+   d = 0.5 * np.diff(x)
+
+   S = np.cumsum((y[1:] + y[:-1]) * d)
    S = np.insert(S, 0, 0)
 
    M1 = np.stack((x - x[0], S), axis=1)
