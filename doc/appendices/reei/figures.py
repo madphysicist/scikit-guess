@@ -14,9 +14,9 @@ import numpy as np
 from scipy.linalg import lstsq
 from scipy.special import erf, erfinv
 from matplotlib import pyplot as plt
-from matplotlib import ticker, rc, cycler, transforms
+from matplotlib import axis, ticker, rc, cycler, transforms
 
-from skg import exp_fit, gauss_cdf_fit, gauss_pdf_fit
+from skg import exp_fit, gauss_cdf_fit, gauss_pdf_fit, weibull_cdf_fit
 
 
 OUTPUT_FOLDER = 'generated/reei'
@@ -30,7 +30,8 @@ OUTPUT_FOLDER = 'generated/reei'
 def format_plot(aspect='equal', x_zero=True, y_zero=True,
                 majx=0.5, majy=0.5, minx=0.1, miny=0.1):
     fig, ax = plt.subplots()
-    ax.set_aspect(aspect)
+    if aspect is not None:
+        ax.set_aspect(aspect)
     if y_zero:
         ax.spines['left'].set_position('zero')
     if x_zero:
@@ -94,8 +95,8 @@ def xlabel(ax, label, adjust=50):
     )
 
 
-def ylabel(ax, label, adjust=50):
-    ax.set_ylabel(label, rotation=0, y=1.0, ha='right', va='center',
+def ylabel(ax, label, adjust=50, va='center'):
+    ax.set_ylabel(label, rotation=0, y=1.0, ha='right', va=va,
                   labelpad=0, fontsize=12)
     ax.yaxis.get_label().set_transform(
         ax.yaxis.get_label().get_transform() +
@@ -419,10 +420,95 @@ def exp():
     )
 
 
+###############
+# Weibull CDF #
+###############
+
+def weibull_cdf():
+    """
+    Generates a figure and table for the Weibull CDF data in the paper.
+    """
+    exact = 2.4, 1.6, 0.8
+
+    t = np.array([
+        1.202, 1.397, 1.537, 1.57, 1.768, 1.856, 1.87, 1.889, 1.918, 2.098,
+        2.212, 2.349, 2.453, 2.557, 2.596, 2.602, 2.678, 2.706, 3.089, 3.441
+    ])
+    F = np.array([
+        0.033, 0.082, 0.131, 0.181, 0.23, 0.279, 0.328, 0.377, 0.426, 0.475,
+        0.524, 0.573, 0.622, 0.671, 0.72, 0.769, 0.818, 0.867, 0.916, 0.965
+    ])
+
+    x = np.log(-np.log(1.0 - F))
+    y = np.log(t)
+    s = np.concatenate(([0], np.cumsum(0.5 * (t[1:] + t[:-1]) * np.diff(x))))
+
+    a, b, c = exp_fit(x, t, sorted=True)
+
+    fit = np.array([1.0 / c, b, a])
+
+    domain_e = np.linspace(1.125, 3.5, 1000)
+    domain_f = np.linspace(1.15, 3.5, 1000)
+
+    fig, ax = format_plot(aspect=None, x_zero=False,
+                          majy=1.0, miny=1.0, majx=0.5, minx=0.1)
+    ax.set_xlim(0, 1.7)
+    ax.set_ylim(-4, 1.5)
+    xlabel(ax, '$ln(t)$')
+    ylabel(ax, '$ln(-ln(1-F))$', va='bottom', adjust=300)
+
+    # Add parasite axes
+    fig.subplots_adjust(left=0.25, bottom=0.25)
+    par_x = ax.twinx()
+    par_y = ax.twiny()
+    par_x.xaxis.set_ticks_position('bottom')
+    # Turn off spines and y-axis
+    plt.setp([*par_x.spines.values(), par_x.yaxis], visible=False)
+    # Turn on and offset lower spine
+    plt.setp(par_x.spines['bottom'], position=('axes', -0.15), visible=True)
+    # Turn off spines and x-axis
+    plt.setp([*par_y.spines.values(), par_y.xaxis], visible=False)
+    # Turn on and offset left spine
+    plt.setp(par_y.spines['left'], position=('axes', -0.15), visible=True)
+
+    # Can't seem to turn on the ticks here
+    par_x.xaxis.major = axis.Ticker()
+    par_x.xaxis.set_major_locator(ticker.FixedLocator([1, 2, 3, 4]))
+    par_x.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos=None: '{:0.2g}'.format(np.exp(x))))
+
+
+
+    def xtrans(t):
+        return np.log(t)
+    def ytrans(F):
+        return np.log(-np.log(1 - F))
+
+    ax.plot(y, x, '+', markersize=6)
+    ax.plot(xtrans(domain_e), ytrans(weibull_cdf_fit.model(domain_e, *exact)),
+            '--', lw=0.5)
+    ax.plot(xtrans(domain_f), ytrans(weibull_cdf_fit.model(domain_f, *fit)),
+            '-', lw=0.5)
+
+    extra = [
+        '', ('alpha_e', exact[0], 2), ('beta_e', exact[1], 2),
+            ('mu_e', exact[2], 1),
+        '', ('alpha_c', fit[0], 6), ('beta_c', fit[1], 6), ('mu_c', fit[2], 6)
+    ]
+    return fig, gen_table(
+        cols=[np.arange(x.size) + 1, t, F, x, s, extra], specs=[
+            '{:d}', '{: 0.4g}', '{: 0.3g}', '{: 0.6g}', '{: 0.6g}',
+            ':math:`\\{}` = {: 0.{}g}'
+        ], heading=[
+            ':math:`k`', ':math:`t_k`', ':math:`F_k`',
+            ':math:`ln(-ln(1 - F_k))`', ':math:`S_k`', ''
+        ]
+    )
+
+
 if __name__ != '__main__':
     makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-for func in [gauss_pdf, gauss_cdf, erf_test, exp]:
+for func in [gauss_pdf, gauss_cdf, erf_test, exp, weibull_cdf]:
     name = func.__name__.replace('_', '-')
     title = name.replace('-', ' ').upper()
     figure, table = func()

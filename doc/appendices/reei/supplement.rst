@@ -138,6 +138,18 @@ the remaining parameters with :math:`M` constructed from :math:`c_1` and
 
    p2 = y
 
+Weibull CDF
+===========
+
+This is just a transposed and transformed version of the :ref:`Exponential`
+case. The input :math:`x` and :math:`y` are first swapped, and then the new
+:math:`x` values are transformed according to :eq:`weibull-cdf-subst`. In numpy
+terms:
+
+.. code-block:: python
+
+   x, y = np.log(-np.log(1.0 - y)), x
+
 .. include:: ../page_break.rst
 
 

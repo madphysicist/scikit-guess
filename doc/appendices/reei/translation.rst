@@ -1363,6 +1363,8 @@ the "fitted" function :math:`F_c(t)` (whose curve is plotted as a solid line):
    A sample regression of a Weibull cumulative distribution function of three
    parameters.
 
+.. todo:: Make the parasite axis ticks show up.
+
 .. table:: Numerical values corresponding to the example in \
    :numref:`reei-weibull-cdf-plot`.
    :name: reei-weibull-cdf-data
