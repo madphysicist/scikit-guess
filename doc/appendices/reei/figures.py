@@ -14,7 +14,13 @@ import numpy as np
 from scipy.linalg import lstsq
 from scipy.special import erf, erfinv
 from matplotlib import pyplot as plt
-from matplotlib import axis, ticker, rc, cycler, transforms
+from matplotlib.axis import Ticker
+from matplotlib.ticker import (
+    FuncFormatter, FixedLocator, MultipleLocator, NullFormatter, NullLocator,
+    ScalarFormatter
+)
+from matplotlib.transforms import Affine2D
+from matplotlib import rc, cycler
 
 from skg import exp_fit, gauss_cdf_fit, gauss_pdf_fit, weibull_cdf_fit
 
@@ -28,8 +34,8 @@ OUTPUT_FOLDER = 'generated/reei'
 
 
 def format_plot(aspect='equal', x_zero=True, y_zero=True,
-                majx=0.5, majy=0.5, minx=0.1, miny=0.1):
-    fig, ax = plt.subplots()
+                majx=0.5, majy=0.5, minx=0.1, miny=0.1, figsize=(6.0, 4.5)):
+    fig, ax = plt.subplots(figsize=figsize)
     if aspect is not None:
         ax.set_aspect(aspect)
     if y_zero:
@@ -40,10 +46,10 @@ def format_plot(aspect='equal', x_zero=True, y_zero=True,
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
 
-    ax.xaxis.set_minor_locator(ticker.MultipleLocator(minx))
-    ax.xaxis.set_major_locator(ticker.MultipleLocator(majx))
-    ax.yaxis.set_minor_locator(ticker.MultipleLocator(miny))
-    ax.yaxis.set_major_locator(ticker.MultipleLocator(majy))
+    ax.xaxis.set_minor_locator(MultipleLocator(minx))
+    ax.xaxis.set_major_locator(MultipleLocator(majx))
+    ax.yaxis.set_minor_locator(MultipleLocator(miny))
+    ax.yaxis.set_major_locator(MultipleLocator(majy))
 
     ax.set_prop_cycle(cycler('color', 'k'))
     return fig, ax
@@ -56,7 +62,7 @@ def fix_plot_zeros(ax, offset=25):
     """
     ax.figure.canvas.draw()
 
-    class XFormatter(ticker.ScalarFormatter):
+    class XFormatter(ScalarFormatter):
         def __init__(self, z='$0$'):
             super().__init__()
             self.z = z
@@ -74,8 +80,7 @@ def fix_plot_zeros(ax, offset=25):
                     trans = base_trans
                 else:
                     ha = 'right'
-                    trans = base_trans + \
-                        transforms.Affine2D().translate(-offset, 0.0)
+                    trans = base_trans + Affine2D().translate(-offset, 0.0)
             else:
                 trans = base_trans
                 ha = 'center'
@@ -87,20 +92,19 @@ def fix_plot_zeros(ax, offset=25):
     ax.callbacks.connect('xlim_changed', movelabel)
 
 
-def xlabel(ax, label, adjust=50):
-    ax.set_xlabel(label, x=1.0, ha='center', va='top', labelpad=0, fontsize=12)
+def xlabel(ax, label, adjust=50, xloc=1.0):
+    ax.set_xlabel(label, x=xloc, ha='center', va='top', labelpad=0, fontsize=12)
     ax.xaxis.get_label().set_transform(
-        ax.xaxis.get_label().get_transform() +
-        transforms.Affine2D().translate(0, adjust)
+        ax.xaxis.get_label().get_transform() + Affine2D().translate(0, adjust)
     )
 
 
-def ylabel(ax, label, adjust=50, va='center'):
-    ax.set_ylabel(label, rotation=0, y=1.0, ha='right', va=va,
+def ylabel(ax, label, adjust=50, yloc=1.0, va='center'):
+    ax.set_ylabel(label, rotation=0, y=yloc, ha='right', va=va,
                   labelpad=0, fontsize=12)
     ax.yaxis.get_label().set_transform(
         ax.yaxis.get_label().get_transform() +
-        transforms.Affine2D().translate(adjust, 0.0)
+        Affine2D().translate(adjust, 0.0)
     )
 
 
@@ -110,7 +114,7 @@ def annotate(ax, text, xy, xytext):
 
 
 def save_fig(name, fig):
-    fig.savefig(join(OUTPUT_FOLDER, name + '.png'), figsize=(6, 4.5),
+    fig.savefig(join(OUTPUT_FOLDER, name + '.png'),
                 dpi=300, bbox_inches='tight')
 
 
@@ -447,42 +451,82 @@ def weibull_cdf():
 
     fit = np.array([1.0 / c, b, a])
 
+    def xtrans(t):
+        return np.log(t)
+    def ytrans(F):
+        return np.log(-np.log(np.subtract(1.0, F)))
+
     domain_e = np.linspace(1.125, 3.5, 1000)
     domain_f = np.linspace(1.15, 3.5, 1000)
 
-    fig, ax = format_plot(aspect=None, x_zero=False,
+    fig, ax = format_plot(figsize=(4.5, 6.0), aspect=None, x_zero=False,
                           majy=1.0, miny=1.0, majx=0.5, minx=0.1)
-    ax.set_xlim(0, 1.7)
-    ax.set_ylim(-4, 1.5)
-    xlabel(ax, '$ln(t)$')
-    ylabel(ax, '$ln(-ln(1-F))$', va='bottom', adjust=300)
+    ax.spines['bottom'].set_bounds(0, 1.8)
+    ax.spines['bottom'].set_position(('data', -4))
+    ax.set_xlim(0, 1.5)
+    ax.spines['left'].set_bounds(-4, 1.55)
+    ax.set_ylim(*ytrans([0.01, 0.995]))
+    xlabel(ax, '$ln(t)$', xloc=1.15, adjust=40)
+    ylabel(ax, '$ln(-ln(1-F))$', va='bottom', adjust=325, yloc=0.99)
 
     # Add parasite axes
     fig.subplots_adjust(left=0.25, bottom=0.25)
     par_x = ax.twinx()
     par_y = ax.twiny()
-    par_x.xaxis.set_ticks_position('bottom')
+
+    # Configure the x-axis
+
     # Turn off spines and y-axis
-    plt.setp([*par_x.spines.values(), par_x.yaxis], visible=False)
+    plt.setp(list(par_x.spines.values()) + [par_x.yaxis], visible=False)
     # Turn on and offset lower spine
-    plt.setp(par_x.spines['bottom'], position=('axes', -0.15), visible=True)
-    # Turn off spines and x-axis
-    plt.setp([*par_y.spines.values(), par_y.xaxis], visible=False)
+    plt.setp(par_x.spines['bottom'], position=('axes', -0.01), visible=True)
+    plt.setp(par_x.xaxis, ticks_position='bottom', visible=True)
+    # Set tickers and ticks
+    par_x.xaxis.major = Ticker()
+    par_x.xaxis.minor = Ticker()
+    plt.setp(par_x.xaxis,
+        major_locator=FixedLocator(xtrans([1, 2, 3, 4])),
+        major_formatter=FuncFormatter(
+            lambda x, pos=None: '${:0.2g}$'.format(np.exp(x))
+        ),
+        minor_locator=NullLocator(),
+        minor_formatter=NullFormatter()
+    )
+    # Set axis bounds
+    par_x.spines['bottom'].set_bounds(*xtrans([1, 4.8]))
+    # Add label
+    xlabel(par_x, '$t$', xloc=1.015)
+
+    # Configure the y-axis
+
+    # Turn off spines and y-axis
+    plt.setp(list(par_y.spines.values()) + [par_y.xaxis], visible=False)
     # Turn on and offset left spine
     plt.setp(par_y.spines['left'], position=('axes', -0.15), visible=True)
+    plt.setp(par_y.yaxis, ticks_position='left', visible=True)
+    # Set tickers and ticks
+    par_y.yaxis.major = Ticker()
+    par_y.yaxis.minor = Ticker()
+    plt.setp(par_y.yaxis,
+        major_locator=FixedLocator(
+            ytrans([0.05, 0.1, 0.5, 0.9, 0.95, 0.99])
+        ),
+        major_formatter=FuncFormatter(
+            lambda x, pos=None: '${:0.2g}$'.format(-np.expm1(-np.exp(x)))
+        ),
+        minor_locator=FixedLocator(ytrans(np.concatenate((
+            np.arange(0.01, 0.1, 0.01),
+            np.arange(0.1, 1.0, 0.1),
+            np.arange(0.9, 1.0, 0.01)
+        )))),
+        minor_formatter=NullFormatter()
+    )
+    # Set axis bounds
+    par_y.spines['left'].set_bounds(*ytrans([0.01, 0.995]))
+    # Add label
+    ylabel(par_y, '$F$', adjust=100, va='bottom')
 
-    # Can't seem to turn on the ticks here
-    par_x.xaxis.major = axis.Ticker()
-    par_x.xaxis.set_major_locator(ticker.FixedLocator([1, 2, 3, 4]))
-    par_x.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos=None: '{:0.2g}'.format(np.exp(x))))
-
-
-
-    def xtrans(t):
-        return np.log(t)
-    def ytrans(F):
-        return np.log(-np.log(1 - F))
-
+    # Draw plots
     ax.plot(y, x, '+', markersize=6)
     ax.plot(xtrans(domain_e), ytrans(weibull_cdf_fit.model(domain_e, *exact)),
             '--', lw=0.5)
