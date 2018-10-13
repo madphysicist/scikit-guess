@@ -69,6 +69,7 @@ original.
 
 .. include:: /link-defs.rst
 
+
 .. include:: ../page_break.rst
 
 
@@ -954,6 +955,7 @@ We can test the computation by comparing against the values in the table below
 
    .. include:: /generated/reei/erf-test-data.rst
 
+
 .. include:: ../page_break.rst
 
 
@@ -983,6 +985,7 @@ Abstract
 The parameters of power, exponential, logarithmic and Weibull functions are
 optimized by a non-iterative regression method based on an appropriate integral
 equation.
+
 
 .. include:: ../page_break.rst
 
@@ -1388,6 +1391,9 @@ to a linear one given the appropriate integral equation. In this manner, the
 usual iterative procedures can be relpaced by a simple linear calculation.
 
 
+.. include:: ../page_break.rst
+
+
 .. rst-class:: center
 
 .. _reei3:
@@ -1411,6 +1417,100 @@ Regression of Sinusoids
 
 1. Introduction
 ===============
+
+Under the seemingly innocuous title "Regression of Sinusoids", ought to appear
+the subtitle "An Optimization Nightmare" to add a touch of realism. Indeed, we
+must have already been concerned with the problem to fully understand the
+relevance of the word. But what is it, really?
+
+As with an number of similar problems, the data is comprised of :math:`n`
+experimental points
+:math:`(x_1, y_1), (x_2, y_2), ..., (x_k, y_k), ..., (x_n, y_n)`. We seek to
+adjust the parameters of a function :math:`y = f(x)` in such a way that its
+curve passes "as close as possible" to the data points. In this particular
+case, we will deal with the following sinusoidal function of the four
+parameters :math:`a`, :math:`b`, :math:`c`, and :math:`\omega`:
+
+.. math::
+   :label: sin-fx
+
+   f(x) = a + b \; sin(\omega \; x) + c \; cos(\omega \; x)
+
+This function is equivalent to:
+
+.. math::
+   :label: sin-fx2
+
+   \begin{cases}
+       f(x) = a + \rho \; sin(\omega \; x + \phi) \\
+       \rho = \sqrt{b^2 + c^2} \quad ; \quad b = \rho \; cos(\phi) \quad ;
+           \quad c = \rho \; sin(\phi)
+   \end{cases}
+
+The expression "as close as possible" implies an optimization criterion. In
+practice, we consider the sum of the squared residuals:
+
+.. math::
+   :label: sin-resid
+
+   \varepsilon^2_{a, b, c, \omega} =
+       \sum_{k=1}^n \left( y_k - f(x_k)\right )^2 =
+       \sum_{k=1}^n \left( y_k - \left(
+           a + b \; sin(\omega \; x_k) + c \; cos(\omega \; x_k)
+       \right) \right)^2
+
+That is the sum that we wisth to minimize, from which we get the generic name
+"least squares method".
+
+When :math:`\omega` is known a-priori, the solution is trivial. In effect,
+equation :eq:`sin-fx` becomes linear in the optimization parameters (:math:`a`,
+:math:`b` and :math:`c`). This well known case merits only the briefest
+mention, which will be made in the next section.
+
+In all other cases, the regression (or optimization) is non-linear, due to the
+fact that the sum of squares has a non-linear dependency on :math:`\omega`.
+
+An almost equally favorable situation arises when we have a "good enough"
+approximation for :math:`\omega`, suitable to initialize an arbitrary
+non-linear optimization method. Literature is full of descriptions of such
+methods and many are implemented in software. To discuss these methods further
+would exceed the scope of the framework of this paper.
+
+But the dreaded nightmare is not far. It is crucial that the initial estimate
+for :math:`\omega` is "good enough"... And this is where sinusoidal functions
+differ from more accomodating non-linear functions: The more periods that the
+:math:`x_k` span, the more randomly they are distributed, or the more noise is
+present in the :math:`y_k` values, the more the condition "good enough" must be
+replaced with "very good", tending to "with great precision". In other words,
+should know the value of :math:`\omega` we are looking for in advance!
+
+The original method proposed in :ref:`Section 3 <reei3-sec3>` provides a
+starting point for addressing this challenge. Admittedly, it would be wrong to
+pretend that the method is particularly robust: :ref:`Section 4 <reei3-sec4>`
+will discuss some of its deficiencies. Nevertheless, thanks to the first
+result, we will see in :ref:`Section 5 <reei4-sec5>` that an original
+regression method (a saw's tooth), allows for a much more accurate
+approximation of :math:`\omega` through an improved linearization. Finally,
+:ref:`Section 6 <reei3-sec6>` presents a summary of preformance in the course
+of systematic experiments. A synopsis of the entire method, which does not
+involve any iterative calculations, is presented in the
+:ref:`Appendix <reei3-appendix1>`.
+
+Before getting into the heart of the matter, a warning must be given regarding
+some of the figures presented here (:numref:`sin-a`, :numref:`sin-b`,
+:numref:`sin-c`, :numref:`sin-d`, :numref:`sin-e`). They serve merely as
+illustrations of the procedures being described. To create them, we were
+obligated to fix on a particuar set of numerical data, which are not
+necessarily representative of the multitudes of possible cases. Given these
+figures alone, it would be absurd to form any opinion of the method in
+question, favorable or otherwise. This is especially true as the example has
+been selected with data that exaggerate all the defects that are explained in
+the text, to allow for easy identification and unambiguous discussion.
+
+We see in :numref:`sin-a` that the "experimental" points are sparse, very
+irregularly distributed, and widely dispersed. One might suspect that this is
+not real experimental data, but rather a simulation obtained in the following
+way:
 
 
 .. _reei3-sec2:
