@@ -549,10 +549,96 @@ def weibull_cdf():
     )
 
 
+class Sinusoid:
+    exact = -0.4, 1.3, -0.6
+    omega_e = 2
+
+    x = np.array([
+        -1.983, -1.948, -1.837, -1.827, -1.663, -0.815, -0.778, -0.754,
+        -0.581, 0.322, 0.418, 0.781, 0.931, 1.51, 1.607,
+    ])
+    y = np.array([
+        0.936, 0.81, 0.716, 0.906, 0.247, -1.513, -1.901, -1.565,
+        -1.896, 0.051, 0.021, 1.069, 0.862, 0.183, 0.311,
+    ])
+
+    domain = np.linspace(-2.0, 2.0, 1000)
+
+    @staticmethod
+    def model(x, a, b, c, omega):
+        t = omega * x
+        return a + b * np.sin(t) + c * np.cos(t)
+
+    def sin_exact(self):
+        exact = self.model(self.x, *self.exact, self.omega_e)
+        rho = np.hypot(self.exact[1], self.exact[2])
+        rms = np.std(self.y - exact)
+
+        fig, ax = format_plot(majx=1, minx=1, majy=1, miny=1)
+        xlabel(ax, '$x$')
+        ylabel(ax, '$y$')
+
+        ax.plot(self.x, self.y, '+', markersize=6)
+        ax.plot(self.domain, self.model(self.domain, *self.exact,
+                                        self.omega_e), '--', lw=0.5)
+
+        fix_plot_zeros(ax)
+
+        extra = [
+            '', ('\\omega_e', self.omega_e, 0), ('a_e', self.exact[0], 1),
+            ('b_e', self.exact[1], 1), ('c_e', self.exact[2], 1),
+            ('\\rho_e', rho, 6), ('\\sigma_e', rms, 4),
+        ]
+        return fig, gen_table(
+            cols=[np.arange(self.x.size) + 1, self.x, self.y, extra],
+            specs=['{:d}', '{:0.3f}', '{:0.3f}', ':math:`{}` = {:.{}f}'],
+            heading=[':math:`k`', ':math:`x_k`', ':math:`y_k`', '']
+        )
+
+    def sin_nomega(self):
+        fig, ax = format_plot(majx=1, minx=1, majy=1, miny=1)
+        xlabel(ax, '$x$')
+        ylabel(ax, '$y$')
+
+        t = self.omega_e * self.x
+        M = np.stack((np.ones_like(self.x), np.sin(t), np.cos(t)), axis=1)
+        p = self.y
+
+        (a, b, c), *_ = lstsq(M, p, overwrite_a=True, overwrite_b=False)
+        fit = np.array([a, b, c])
+
+        rho = np.hypot(b, c)
+        rms = np.std(self.y - self.model(self.x, *fit, self.omega_e))
+
+        ax.plot(self.x, self.y, '+', markersize=6)
+        ax.plot(self.domain, self.model(self.domain, *self.exact,
+                                        self.omega_e), '--', lw=0.5)
+        ax.plot(self.domain, self.model(self.domain, *fit, self.omega_e),
+                '-', lw=0.5)
+
+        fix_plot_zeros(ax)
+
+        extra = [
+            ('\\omega_e', self.omega_e, 0), ('a_0', fit[0], 6),
+            ('b_0', fit[1], 6), ('c_0', fit[2], 6), ('\\rho_0', rho, 6),
+            ('\\sigma_0', rms, 6),
+        ]
+        return fig, gen_table(
+            cols=[extra], specs=[':math:`{}` = {:.{}f}'], heading=None
+        )
+
+
+sinusoid = Sinusoid()
+func_list = [
+    gauss_pdf, gauss_cdf, erf_test, exp, weibull_cdf,
+    sinusoid.sin_exact, sinusoid.sin_nomega,
+]
+
+
 if __name__ != '__main__':
     makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-for func in [gauss_pdf, gauss_cdf, erf_test, exp, weibull_cdf]:
+for func in func_list:
     name = func.__name__.replace('_', '-')
     title = name.replace('-', ' ').upper()
     figure, table = func()

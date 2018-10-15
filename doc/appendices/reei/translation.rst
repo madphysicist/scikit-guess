@@ -1423,7 +1423,7 @@ the subtitle "An Optimization Nightmare" to add a touch of realism. Indeed, we
 must have already been concerned with the problem to fully understand the
 relevance of the word. But what is it, really?
 
-As with an number of similar problems, the data is comprised of :math:`n`
+As with any number of similar problems, the data is comprised of :math:`n`
 experimental points
 :math:`(x_1, y_1), (x_2, y_2), ..., (x_k, y_k), ..., (x_n, y_n)`. We seek to
 adjust the parameters of a function :math:`y = f(x)` in such a way that its
@@ -1447,8 +1447,8 @@ This function is equivalent to:
            \quad c = \rho \; sin(\phi)
    \end{cases}
 
-The expression "as close as possible" implies an optimization criterion. In
-practice, we consider the sum of the squared residuals:
+The expression "as close as possible" implies an optimization criterion.
+Specifically, we consider the sum of the squared residuals:
 
 .. math::
    :label: sin-resid
@@ -1488,7 +1488,7 @@ The original method proposed in :ref:`Section 3 <reei3-sec3>` provides a
 starting point for addressing this challenge. Admittedly, it would be wrong to
 pretend that the method is particularly robust: :ref:`Section 4 <reei3-sec4>`
 will discuss some of its deficiencies. Nevertheless, thanks to the first
-result, we will see in :ref:`Section 5 <reei4-sec5>` that an original
+result, we will see in :ref:`Section 5 <reei3-sec5>` that an original
 regression method (a saw's tooth), allows for a much more accurate
 approximation of :math:`\omega` through an improved linearization. Finally,
 :ref:`Section 6 <reei3-sec6>` presents a summary of preformance in the course
@@ -1497,32 +1497,148 @@ involve any iterative calculations, is presented in the
 :ref:`Appendix <reei3-appendix1>`.
 
 Before getting into the heart of the matter, a warning must be given regarding
-some of the figures presented here (:numref:`sin-a`, :numref:`sin-b`,
-:numref:`sin-c`, :numref:`sin-d`, :numref:`sin-e`). They serve merely as
-illustrations of the procedures being described. To create them, we were
-obligated to fix on a particuar set of numerical data, which are not
-necessarily representative of the multitudes of possible cases. Given these
-figures alone, it would be absurd to form any opinion of the method in
-question, favorable or otherwise. This is especially true as the example has
-been selected with data that exaggerate all the defects that are explained in
-the text, to allow for easy identification and unambiguous discussion.
+some of the figures presented here (:numref:`reei-sin-exact-plot`,
+:numref:`reei-sin-nomega-plot`, :numref:`sin-c`, :numref:`sin-d`,
+:numref:`sin-e`). They serve merely as illustrations of the procedures being
+described. To create them, we were obligated to fix on a particuar set of
+numerical data, which are not necessarily representative of the multitudes of
+possible cases. Given these figures alone, it would be absurd to form any
+opinion of the method in question, favorable or otherwise. This is especially
+true as the example has been selected with data that exaggerate all the defects
+that are explained in the text, to allow for easy identification and
+unambiguous discussion.
 
-We see in :numref:`sin-a` that the "experimental" points are sparse, very
-irregularly distributed, and widely dispersed. One might suspect that this is
-not real experimental data, but rather a simulation obtained in the following
-way:
+We see in :numref:`reei-sin-exact-data` that our "experimental" points are
+sparse, very irregularly distributed, and widely dispersed. One might suspect
+that this is not real experimental data, but rather a simulation obtained in
+the following way: An "exact" function is given, along with the coefficients
+:math:`a_e`, :math:`b_e`, :math:`c_e`, and :math:`\omega_e`, indicated in
+:numref:`reei-sin-exact-data`. The curve is plotted in
+:numref:`reei-sin-exact-plot` with a dashed line. The :math:`x_k` were selected
+at random from the domain, and rounded to the values shown in
+:numref:`reei-sin-exact-data`. The corresponding exact :math:`y` values are
+then computed from equation :eq:`sin-fx`. The :math:`y_k` were then randomly
+perturbed with a distribution whose root mean square :math:`\sigma_e` was
+approximately 10% of the amplitude :math:`\rho_e` of the sinusoid. This
+represents a much wider dispersion compared to what is usually seen in
+practice.
+
+.. figure:: /generated/reei/sin-exact-plot.png
+   :name: reei-sin-exact-plot
+
+   "Exact" sinusoid along with the numerical data of our example.
+
+.. table:: Numerical values corresponding to the data in \
+   :numref:`reei-sin-exact-plot`. [errata-reei-12]_
+   :name: reei-sin-exact-data
+   :class: data-table
+
+   .. include:: /generated/reei/sin-exact-data.rst
+
+The root mean square is defined by:
+
+.. math::
+   :label: sin-rms
+
+   \sigma = \sqrt{\frac{1}{n} \sum_{k=1}^n \left( f(x_k) - y_k \right)^2}
+
+The values of the function :math:`f(x)` are to be computed using the parameters
+:math:`a`, :math:`b`, :math:`c` and :math:`\omega` from the example under
+consideration.
+
+The values of :math:`y_k`, indicated in :numref:`reei-sin-exact-data` and
+plotted in :numref:`reei-sin-exact-plot`, are the data for the numerical
+examples in the following sections. It should be noted that the exact values
+:math:`a_e`, :math:`b_e`, :math:`c_e` and :math:`\omega_e`, shown in
+:numref:`reei-sin-exact-data` are not used further on (except :math:`\omega_e`
+in the "trivial" case in :ref:`Section 2 <reei3-sec2>`). They should be
+forgotten for the remainder of the algorithm, which uses only
+:math:`(x_k, y_k)` as data. While the exact sinusoid will be shown on the
+various figures as a reminder, it is not an indication of the fact that the
+function :eq:`sin-fx` with the parameters (:math:`a_e, b_e, c_e, \omega_e`) is
+ever used directly.
+
+The tables serve another role, which will be appreciated by readers interested
+in implementing these techniques in a computer program. If so desired, all of
+the sample calculations shown here can be reproduced exactly with the data and
+results reported below. This provides a means to validate and correct a
+regression program implementing the algorithms described here.
 
 
 .. _reei3-sec2:
 
-2. Instances Where :math:`\omega` is Known Ahead of Time
-========================================================
+2. Case Where :math:`\omega` is Known A-Priori
+==============================================
+
+When the value :math:`\omega = \omega_e` is fixed, the optimization only needs
+to be performed for the parameters :math:`a`, :math:`b` and :math:`c` of
+:eq:`sin-fx`. Taking the partial derivatives of :eq:`sin-resid` with respect to
+the optimization parameters result in a system of three equations:
+
+.. math::
+   :label: sin-nomega-system
+
+   \begin{cases}
+       \left( \frac{\partial \varepsilon^2}{\partial a} \right)_
+           {(a_0, b_0, c_0)} = -2 \sum_{k=1}^n \left( y_k -
+           \left( a_0 + b_0 \; sin(\omega_e \; x_k) +
+           c_0 \; cos(\omega_e \; x_k)\right) \right) = 0 \\
+       \left( \frac{\partial \varepsilon^2}{\partial b} \right)_
+           {(a_0, b_0, c_0)} = -2 \sum_{k=1}^n \left( y_k -
+           \left( a_0 + b_0 \; sin(\omega_e \; x_k) +
+           c_0 \; cos(\omega_e \; x_k)\right) \right) \;
+           sin(\omega_e \; x_k) = 0 \\
+       \left( \frac{\partial \varepsilon^2}{\partial c} \right)_
+           {(a_0, b_0, c_0)} = -2 \sum_{k=1}^n \left( y_k -
+           \left( a_0 + b_0 \; sin(\omega_e \; x_k) +
+           c_0 \; cos(\omega_e \; x_k)\right) \right) \;
+           cos(\omega_e \; x_k) = 0 \\
+   \end{cases}
+
+The solution is given in the following system :eq:`sin-nomega-soln`, with the
+convention that :math:`\sum \equiv \sum_{k=1}^n`:
+
+.. math::
+   :label: sin-nomega-soln
+
+   \begin{bmatrix} a_0 \\ b_0 \\ c_0 \end{bmatrix} =
+   \begin{bmatrix}
+       n & \sum sin(\omega_e x_k) & \sum cos(\omega_e x_k) \\
+       \sum sin(\omega_e x_k) & \sum sin^2(\omega_e x_k) &
+           \sum sin(\omega_e x_k) cos(\omega_e x_k) \\
+       \sum cos(\omega_e x_k) & \sum sin(\omega_e x_k) cos(\omega_e x_k) &
+           \sum cos^2(\omega_e x_k)
+   \end{bmatrix}^{-1}
+   \begin{bmatrix}
+       \sum y_k \\ \sum y_k sin(\omega_e x_k) \\ \sum y_k cos(\omega_e x_k)
+   \end{bmatrix}
+
+The result is presented in figure :numref:`reei-sin-nomega-plot`. We note that
+the root mean square :math:`\sigma_0` is practically identical to
+:math:`\sigma_e` in :numref:`reei-sin-exact-data`. This indicates that the
+regression did not increase the residuals of the fitted sinusoid relative to
+the "exact" one. Obviosly, this is too good to always be true. So, after this
+brief review, we must tackle the crux of the problem: to compute a sufficiently
+accurate approximation for :math:`\omega`, since it will not be know a-priori
+as it was in the preceding example.
+
+.. figure:: /generated/reei/sin-nomega-plot.png
+   :name: reei-sin-nomega-plot
+
+   Case where :math:`\omega` is know exactly.
+
+.. table:: Fitting parameters of the curve shown in \
+   :numref:`reei-sin-nomega-plot`. [errata-reei-13]_
+   :name: reei-sin-nomega-data
+   :class: data-table
+
+   .. include:: /generated/reei/sin-nomega-data.rst
 
 
 .. _reei3-sec3:
 
-3. Linearization With an Integral Equation
-==========================================
+3. Linearization Through an Integral Equation
+=============================================
 
 
 .. _reei3-sec4:
