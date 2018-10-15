@@ -1595,11 +1595,11 @@ the optimization parameters result in a system of three equations:
            cos(\omega_e \; x_k) = 0 \\
    \end{cases}
 
-The solution is given in the following system :eq:`sin-nomega-soln`, with the
+The solution is given in the following system :eq:`sin-nomega-lsq`, with the
 convention that :math:`\sum \equiv \sum_{k=1}^n`:
 
 .. math::
-   :label: sin-nomega-soln
+   :label: sin-nomega-lsq
 
    \begin{bmatrix} a_0 \\ b_0 \\ c_0 \end{bmatrix} =
    \begin{bmatrix}
@@ -1640,11 +1640,179 @@ as it was in the preceding example.
 3. Linearization Through an Integral Equation
 =============================================
 
+The goal being to reduce the problem to a linear regression, it is sometimes
+tempting to use a linear differential equation whose solution is our function
+of interest as the intermediary. An example is the follwing equation, for which
+the sinusiod :eq:`sin-fx` is a solution:
+
+.. math::
+   :label: sin-diff-eq
+
+   f(x) = a - \frac{1}{\omega^2} \frac{d^2 f(x)}{dx^2}
+
+Taking the appropriate partial derivatives of :eq:`sin-diff-resid` leads to a
+system of linear equations of two unknowns :math:`a` and
+:math:`\beta = \frac{1}{\omega^2}`.
+
+.. math::
+   :label: sin-diff-resid
+
+   \varepsilon^2_{(a, b, c, \omega)} =
+       \sum_{k=1}^n \left( y_k - f(x_k) \right)^2 =
+       \sum_{k=1}^n \left( y_k - a - \beta y''(x_k) \right)^2
+
+Unfortunately, this is not a viable solution in practice (unless we have at our
+disposal a very large number of especially well distributed samples). The
+stumbling block here is the calculation of :math:`y''(x_k)` from the :math:`n`
+data points :math:`(x_k, y_k)`: as illustrated in :numref:`sin-c`, the
+fluctuations are generally too unstable for meaningful approximation.
+
+On the other hand, the computation of numerical integrals is clearly less
+problematic than that of derivatives. It is therefore no surprise that we will
+seek an integral equation having for its solution our function of interest. For
+example, in the present case, we have equation :eq:`sin-int-eq`, for which the
+sinusoid :eq:`sin-fx` is a solution:
+
+.. math::
+   :label: sin-int-eq
+
+   f(x) = -\omega^2 \int_{x_i}^x \int_{x_j}^v f(u) du \; dv + P(x)
+
+:math:`P(x)` is a second-degree polynomial whose coefficiens depend on
+:math:`a`, :math:`b`, :math:`c`, :math:`\omega` and the limits of integration
+:math:`x_i` and :math:`x_j`.
+
+We could, of course, go into a great amount of detail regarding :math:`P(x)`,
+but that would derail the presentation without much immediate benefit. We can
+simply use the fact that a complete analysis shows that the limits of
+integration have no bearing on the regression that follows, at least with
+regard to the quantity of interest, the optimized value of :math:`\omega`
+(noted as :math:`\omega_1`). Therefore, to simplify, we will set
+:math:`x_i = x_j = x_1`, which results in a function of the following form:
+
+.. math::
+   :label: sin-int-func
+
+   f(x) = A \; SS(x) + B \; x^2 + C \; x + D
+
+.. math::
+   :label: sin-int-vars
+
+   \text{with:} \;
+   \begin{cases}
+       SS(x) = \int_{x_1}^x \int_{x_1}^v f(u) du \; dv \quad ;
+           \quad A = -\omega^2 \quad ; \quad B = \frac{1}{2}a\omega^2 \\
+       C = -a \; \omega^2 \; x_1 + b \; \omega \; cos(\omega \; x_1) -
+           c \; \omega \; cos(\omega \; x_1) \\
+       D = a + \frac{1}{2} \; a \; \omega^2 \; x_1^2 +
+           (b + c \; \omega \; x_1) \; sin(\omega \; x_1) +
+           (c - b \; \omega \; x_1) \; cos(\omega \; x_1)
+   \end{cases}
+
+The coefficients :math:`A`, :math:`B`, :math:`C`, :math:`D` are unknown.
+However, they can be approximated through linear regression, based on the
+values of :math:`SS_k` computed beforehand. To accomplish this, we perform two
+numeric integrations:
+
+.. math::
+   :label: sin-int-int1
+
+   \begin{cases}
+       S(x_1) = S_1 = 0 \\
+       S(x_k) \simeq S_k = S_{k-1} + \frac{1}{2}(y_k + y_{k-1}) (x_k - x_{k-1})
+           \quad k = 2 \; \text{to} \; n
+   \end{cases}
+
+.. math::
+   :label: sin-int-int2
+
+   \begin{cases}
+       SS(x_1) = SS_1 = 0 \\
+       SS(x_k) \simeq SS_k = SS_{k-1} + \frac{1}{2}(S_k + S_{k-1})
+           (x_k - x_{k-1}) \quad k = 2 \; \text{to} \; n
+   \end{cases}
+
+It goes without saying that the points must first be ranked in order of
+ascending :math:`x_k`. It follows that the sum of squared residuals to minimize
+is the following\ [errata-reei-14]_:
+
+.. math::
+   :label: sin-int-resid
+
+   \varepsilon^2_{a, b, c, \omega} = \sum_{k=1}^n \left( y_k -
+       \left( A \; SS_k + B \; x_k^2 + C \; x_k  + D \right) \right)^2
+
+It is pointless to reiterate the partial derivatives with respect to :math:`A`,
+:math:`B`, :math:`C` and :math:`D`, used to obtain the optimized :math:`A_1`,
+:math:`B_1`, :math:`C_1` and :math:`D_1`, followed by :math:`a_1`, :math:`b_1`,
+:math:`c_1` and :math:`\omega_1` (according to :eq:`sin-int-vars`):
+
+.. math::
+   :label: sin-int-lsq
+
+   \begin{bmatrix} A_1 \\ B_1 \\ C_1 \\ D_1 \end{bmatrix} =
+   \begin{bmatrix}
+       \sum \left( SS_k \right)^2 & \sum x_k^2 SS_k &
+           \sum x_k SS_k & \sum SS_k \\
+       \sum x_k^2 SS_k & \sum x_k^4 & \sum x_k^3 & \sum x_k^2 \\
+       \sum x_k SS_k   & \sum x_k^3 & \sum x_k^2 & \sum x_k \\
+       \sum SS_k       & \sum x_k^2 & \sum x_k   & n
+   \end{bmatrix}^{-1}
+   \begin{bmatrix}
+       \sum y_k SS_k \\ \sum y_k x_k^2 \\ \sum y_k x_k \\ \sum y_k
+   \end{bmatrix}
+
+.. math::
+   :label: sin-int-params
+
+   \begin{cases}
+       \omega_1 = \sqrt{-A_1} \quad ; \quad a_1 = \frac{2 B_1}{\omega_1^2} \\
+       b_1 = \left( B_1 x_1^2 + C_1 x_1 + D_1 - a_1 \right)
+           sin(\omega \; x_1) +
+           \frac{1}{\omega_1} \left( C_1 + 2 B_1 x_1 \right)
+               cos(\omega \; x_1) \\
+       c_1 = \left( B_1 x_1^2 + C_1 x_1 + D_1 - a_1 \right)
+           cos(\omega \; x_1) -
+           \frac{1}{\omega_1} \left( C_1 + 2 B_1 x_1 \right)
+               sin(\omega \; x_1)
+   \end{cases}
+
+The result set for our sample data is displayed further along in
+:numref:`sin-j`. The numerical values of :math:`\omega_1`, :math:`a_1`,
+:math:`b_1` and :math:`c_1` are shown in :numref:`sin-tj`. To compare the
+graphical and numerical representations with resepect to the data points
+:math:(x_k, y_k), refer to the curve and table column labeled (1).
+
+Incidentally, it is interesting to compare the results of numerical
+integrations :eq:`sin-int-int1` and :eq:`sin-int-int2` with respect to
+differentiation (:numref:`reei-sin-int-plot`). Observing the significant
+oscillations of the latter (a sample point is noted :math:`f_k` on the plot),
+and how they would be exacerbated by further differentiation (not shown due to
+the excessive fluctuation amplitude), it becomes patently obvious that a
+solution based on integral equations is going to be more feasible than one
+based on a differential equation.
+
+.. figure:: /generated/reei/sin-int-plot.png
+   :name: reei-sin-int-plot
+
+   Numerical integrations and comparison with differentiations.
+
+.. table:: Cumulative sums corresponding to :numref:`reei-sin-int-plot`.
+   :name: reei-sin-int-data
+   :class: data-table
+
+   .. include:: /generated/reei/sin-int-data.rst
+
+Nevertheless, we retain sight of the fact that with more numerous and evenly
+distributed :math:`x_k`, and less scattered :math:`y_k`, the fluctuations would
+have a more acceptable amplitude. However, let us remember that we seek to
+handle not only the easy cases, but the hard ones as well.
+
 
 .. _reei3-sec4:
 
-4. Succinct Performance Analysis
-================================
+4. Summary of Performance Analysis
+==================================
 
 
 .. _reei3-sec4-1:

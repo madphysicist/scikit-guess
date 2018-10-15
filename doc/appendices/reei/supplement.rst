@@ -157,7 +157,7 @@ Sinusoid with Known Frequency
 =============================
 
 Algorithm originally presented in :ref:`reei3-sec2`, in equation
-:eq:`sin-nomega-soln`. The algorithm is not summarized in detail since it deals
+:eq:`sin-nomega-lsq`. The algorithm is not summarized in detail since it deals
 with a trivial case that is not particularly useful in practice.
 
 The matrix :math:`M` is a concatenation of the final coefficients in
@@ -370,6 +370,10 @@ link back to the corresponding location in the translated paper as footnotes.
    0.147041). The difference is not enough to warrant worry over the
    implementation, but should be verified by the author to be caused by
    roundoff.
+
+.. [errata-reei-14] The version of :eq:`sin-int-resid` in the original paper
+   has an unbalanced closing parenthesis after :math:`D`. It has been removed
+   in the translation.
 
 
 .. include:: /link-defs.rst
