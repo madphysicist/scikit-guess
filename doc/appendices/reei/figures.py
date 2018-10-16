@@ -257,13 +257,15 @@ def gauss_pdf():
 
     # S(x) = mu * erf((x - mu) / (sqrt(2) * sigma)) / (2 * sigma**2)
     ax.plot(x, S, 's-', markersize=7, markerfacecolor='none', lw=0.5)
-    ax.plot(domain, Smodel(domain, *exact) - Smodel(x[0], *exact), '--', lw=0.5)
+    ax.plot(domain, Smodel(domain, *exact) - Smodel(x[0], *exact),
+            '--', lw=0.5)
     #ax.plot(domain, Sk(domain, *fit) - Sk(x[0], *fit), '-')
     annotate(ax, '$S_k$', xy=(x[7], S[7]), xytext=(0.42, 0.72))
 
     # T(x) = mu * S(x) - sigma**2 * f(x)
     ax.plot(x, T, 'D-', markersize=7, markerfacecolor='none', lw=0.5)
-    ax.plot(domain, Tmodel(domain, *exact) - Tmodel(x[0], *exact), '--', lw=0.5)
+    ax.plot(domain, Tmodel(domain, *exact) - Tmodel(x[0], *exact),
+            '--', lw=0.5)
     #ax.plot(domain, Tk(domain, *fit) - Tk(x[0], *fit), '-')
     annotate(ax, '$T_k$', xy=(x[7], T[7]), xytext=(0.42, -0.18))
 
@@ -597,7 +599,8 @@ class Sinusoid:
         """
         t = omega * x
         C = a * x[0] - b / omega * np.cos(t[0]) + c / omega * np.sin(t[0])
-        ss = 0.5 * a * x**2 - C * x - b / omega**2 * np.sin(t) - c / omega**2 * np.cos(t)
+        ss = 0.5 * a * x**2 - C * x - \
+                b / omega**2 * np.sin(t) - c / omega**2 * np.cos(t)
         ss -= ss[0]
         return ss
 
@@ -608,6 +611,26 @@ class Sinusoid:
         """
         t = omega * x
         return b * omega * np.cos(t) - c * omega * np.sin(t)
+
+    @staticmethod
+    def fit1(x, y):
+        """
+        Integral-only fitting function to obtain :math:`\omega_1`.
+        """
+        x, y = map(np.asfarray, (x, y))
+
+        d = 0.5 * np.diff(x)
+
+        S = np.cumsum((y[1:] + y[:-1]) * d)
+        S = np.insert(S, 0, 0)
+
+        SS = np.cumsum((S[1:] + S[:-1]) * d)
+        SS = np.insert(SS, 0, 0)
+
+        M = np.stack((SS, x**2, x, np.ones_like(x)), axis=1)
+        (A1, B1, C1, D1), *_ = lstsq(M, y, overwrite_a=True, overwrite_b=False)
+
+        return np.sqrt(-A1)
 
     def sin_exact(self):
         """
@@ -688,17 +711,13 @@ class Sinusoid:
         SS = np.cumsum((S[1:] + S[:-1]) * d)
         SS = np.insert(SS, 0, 0)
 
-        M = np.stack((SS, self.x**2, self.x, np.ones_like(self.x)), axis=1)
-
-        (a, b, c, omega), *_ = lstsq(M, self.y,
-                                     overwrite_a=True, overwrite_b=False)
-
         diff = np.diff(self.y) / np.diff(self.x)
         diff_x = 0.5 * (self.x[1:] + self.x[:-1])
 
         fig, ax = format_plot(aspect=0.4,
                               majx=1.0, minx=1.0, majy=1.0, miny=1.0)
         ax.set_ylim(-3.5, 4.1)
+        xlabel(ax, '$x$')
 
         # Plot the derivative
         ax.plot(self.domain, self.derivative(self.domain, *self.exact),
@@ -729,11 +748,42 @@ class Sinusoid:
             heading=[':math:`k`', ':math:`S_k`', ':math:`SS_k`']
         )
 
+    def sin_eq_nd(self):
+        """
+        Generates a figure and table showing the effects of :math:`n_k`
+        on :math:`\omega_1 / \omega_e` for the equidistant,
+        non-dispersive sinusoid in the paper.
+        """
+        omega_e = 2.0 * np.pi
+        n = np.arange(5, 21)
+
+        def omega(p):
+            x = np.linspace(0.0, 1.0, p)
+            y = np.sin(omega_e * x)
+            return self.fit1(x, y)
+
+        ratios = np.array([omega(p) / omega_e for p in n])
+
+        fig, ax = format_plot(aspect=40, x_zero=False, y_zero=False,
+                              majx=5, minx=1, majy=0.1, miny=0.1)
+        ax.set_xlim(4.1, 21.9)
+        ax.set_ylim(1, 1.33)
+        xlabel(ax, '$n_p$')
+        ylabel(ax, r'$\frac{\omega_1}{\omega_e}$')
+
+        ax.plot(n, ratios, 's', ms=1.8, markerfacecolor='none')
+
+        return fig, gen_table(
+            cols=[n, ratios], specs=['{:d}', '{:0.4g}'],
+            heading=[':math:`n_p`', r':math:`\frac{\omega_1}{\omega_e}`']
+        )
+
 
 sinusoid = Sinusoid()
 func_list = [
     gauss_pdf, gauss_cdf, erf_test, exp, weibull_cdf,
     sinusoid.sin_exact, sinusoid.sin_nomega, sinusoid.sin_int,
+    sinusoid.sin_eq_nd
 ]
 
 

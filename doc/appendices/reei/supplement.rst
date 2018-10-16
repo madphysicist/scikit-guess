@@ -394,10 +394,26 @@ link back to the corresponding location in the translated paper as footnotes.
    appear to be half way between the exact x-values. This makes it reasonable
    to suppose that the values were calculated from :math:`(x_k, y_k)` with
    something like :math:`f'_k = \frac{y_{k+1} - y_k}{x_{k+1} - x_k}` for
-   :math:`k` from 1 to :math:`n-1`. This is the black line in the generated
-   plot, but it does not match the original figure at all. Using the first
-   equation in :ref:`reei1-sec2` (describing :math:`D_k`) does not help either
-   in this case.
+   :math:`k` from :math:`1` to :math:`n-1`. This is the black line in the
+   generated plot, but it does not match the original figure at all. Using the
+   first equation in :ref:`reei1-sec2` (describing :math:`D_k`) does not help
+   either in this case.
+
+.. [errata-reei-14] The figure shown here is generates identical results to the
+   one in the original paper, but it is not strictly correct. For each value of
+   :math:`n_p`, the following code generates the :math:`x` and :math:`y`
+   values used to compute :math:`\omega_1`:
+
+   .. code-block:: python
+
+      omega_e = 2.0 * np.pi
+      x = np.linspace(0.0, 1.0, p)
+      y = np.sin(omega_e * x)
+
+   This is not quite correct. The actual x-values should be generated with
+   ``np.linspace(0.0, 1.0, p, endpoint=False)``. Put another way, the data in
+   the paper appears to be generated for values of :math:`n_p - 1` rather than
+   :math:`n_p`. The overall point being made holds regardless, of course.
 
 
 .. include:: /link-defs.rst

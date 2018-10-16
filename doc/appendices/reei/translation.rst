@@ -1812,26 +1812,61 @@ handle not only the easy cases, but the hard ones as well.
 
 .. _reei3-sec4:
 
-4. Summary of Performance Analysis
+4. A Brief Analysis of Performance
 ==================================
+
+The most important parameter to optimize is :math:`\omega`. This comes with the
+understanding that once the optimization has succeeded, we can always fall back
+to the conventional regression method in :ref:`Section 2 <reei3-sec2>` to
+obtain :math:`a`, :math:`b` and :math:`c`. We will therefore concentrate on an
+investigation restricted to results with respect to :math:`\omega`. The three
+most influential factors are:
+
+- The number of points, :math:`n_p`, in each period of the sinusoid.
+- The distribution of samples in the domain:
+  - Either equidistant: :math:`x_{k+1} - x_k = constant`
+  - Or random: :math:`x_k` is drawn at random from the available domain.
+- The scatter of the ordinates :math:`y_k`, characterized by
+  :math:`(\sigma_1 / \rho_e)`, the ratio of the root mean squared error
+  :eq:`sin-rms` to the amplitude of the sinusoid.
 
 
 .. _reei3-sec4-1:
 
-4.1 "Equidistant" Distribution of Abscissae and Non-dispersion of Ordinates
----------------------------------------------------------------------------
+4.1 Equidistant Distribution of Abscissae With Non-dispersive Ordinates
+-----------------------------------------------------------------------
+
+We find that the ratio :math:`\omega_1 / \omega_e`, which is expected to be
+equal to 1, is affected by a deviation inversely proportional to :math:`n_p`
+(:numref:`reei-sin-eq-nd-plot`). It is conceivably possible to construct an
+empirical function to correct the deviation. But such a function would not be
+very interesting, as the correction would not be satisfactory for the randomly
+distributed points we well investigate further on. A more general approach,
+described in :ref:`Section 5 <reei3-sec5>`, seems more appropriate.
+
+.. figure:: /generated/reei/sin-eq-nd-plot.png
+   :name: reei-sin-eq-nd-plot
+
+   Effect of the number of points per period, with an equidistant distribution.
+
+.. table:: Numerical results corresponding to :numref:`reei-sin-eq-nd-plot`.\
+   [errata-reei-14]_
+   :name: reei-sin-eq-nd-data.
+   :class: data-table
+
+   .. include:: /generated/reei/sin-eq-nd-data.rst
 
 
 .. _reei3-sec4-2:
 
-4.2 Random Distribution of Point Abscissae Without Ordinate Dispersion
-----------------------------------------------------------------------
+4.2 Random Distribution of Abscissae With Non-Dispersive Ordinates
+------------------------------------------------------------------
 
 
 .. _reei3-sec4-3:
 
-4.3 Random Distribution of Point Abscissae With Dispersed Ordinates
--------------------------------------------------------------------
+4.3 Random Distribution of Abscissae With Dispersed Ordinates
+-------------------------------------------------------------
 
 
 .. _reei3-sec5:
