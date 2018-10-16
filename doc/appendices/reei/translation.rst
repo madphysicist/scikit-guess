@@ -1824,7 +1824,7 @@ most influential factors are:
 
 - The number of points, :math:`n_p`, in each period of the sinusoid.
 - The distribution of samples in the domain:
-  - Either equidistant: :math:`x_{k+1} - x_k = constant`
+  - Either uniform: :math:`x_{k+1} - x_k = constant`
   - Or random: :math:`x_k` is drawn at random from the available domain.
 - The scatter of the ordinates :math:`y_k`, characterized by
   :math:`(\sigma_1 / \rho_e)`, the ratio of the root mean squared error
@@ -1833,8 +1833,8 @@ most influential factors are:
 
 .. _reei3-sec4-1:
 
-4.1 Equidistant Distribution of Abscissae With Non-dispersive Ordinates
------------------------------------------------------------------------
+4.1 Uniform Distribution of Abscissae With Non-Dispersed Ordinates
+------------------------------------------------------------------
 
 We find that the ratio :math:`\omega_1 / \omega_e`, which is expected to be
 equal to 1, is affected by a deviation inversely proportional to :math:`n_p`
@@ -1856,11 +1856,13 @@ described in :ref:`Section 5 <reei3-sec5>`, seems more appropriate.
 
    .. include:: /generated/reei/sin-eq-nd-data.rst
 
+.. todo:: Place table next to figure if possible.
+
 
 .. _reei3-sec4-2:
 
-4.2 Random Distribution of Abscissae With Non-Dispersive Ordinates
-------------------------------------------------------------------
+4.2 Random Distribution of Abscissae With Non-Dispersed Ordinates
+-----------------------------------------------------------------
 
 
 .. _reei3-sec4-3:
