@@ -108,8 +108,8 @@ def ylabel(ax, label, adjust=50, yloc=1.0, va='center'):
     )
 
 
-def annotate(ax, text, xy, xytext):    
-    ax.annotate(text, xy=xy, xytext=xytext, fontsize=14,
+def annotate(ax, text, xy, xytext, fs=14):
+    ax.annotate(text, xy=xy, xytext=xytext, fontsize=fs,
                 arrowprops=dict(facecolor='k', arrowstyle='->'))
 
 
@@ -549,13 +549,21 @@ def weibull_cdf():
     )
 
 
+#############
+# Sinusoids #
+#############
+
 class Sinusoid:
-    exact = -0.4, 1.3, -0.6
-    omega_e = 2
+    """
+    Keeps track of the shared data for all the sinusoidal regressions
+    described in the paper.
+    """
+
+    exact = -0.4, 1.3, -0.6, 2
 
     x = np.array([
         -1.983, -1.948, -1.837, -1.827, -1.663, -0.815, -0.778, -0.754,
-        -0.581, 0.322, 0.418, 0.781, 0.931, 1.51, 1.607,
+        -0.518, 0.322, 0.418, 0.781, 0.931, 1.51, 1.607,
     ])
     y = np.array([
         0.936, 0.81, 0.716, 0.906, 0.247, -1.513, -1.901, -1.565,
@@ -566,11 +574,47 @@ class Sinusoid:
 
     @staticmethod
     def model(x, a, b, c, omega):
+        """
+        The model for a simple sinusoid.
+        """
         t = omega * x
         return a + b * np.sin(t) + c * np.cos(t)
 
+    @staticmethod
+    def S(x, a, b, c, omega):
+        """
+        First order integral of the sinusoid.
+        """
+        t = omega * x
+        s = a * x - b / omega * np.cos(t) + c / omega * np.sin(t)
+        s -= s[0]
+        return s
+
+    @staticmethod
+    def SS(x, a, b, c, omega):
+        """
+        Second order integral of the sinusoid.
+        """
+        t = omega * x
+        C = a * x[0] - b / omega * np.cos(t[0]) + c / omega * np.sin(t[0])
+        ss = 0.5 * a * x**2 - C * x - b / omega**2 * np.sin(t) - c / omega**2 * np.cos(t)
+        ss -= ss[0]
+        return ss
+
+    @staticmethod
+    def derivative(x, a, b, c, omega):
+        """
+        The derivative of the sinusoid.
+        """
+        t = omega * x
+        return b * omega * np.cos(t) - c * omega * np.sin(t)
+
     def sin_exact(self):
-        exact = self.model(self.x, *self.exact, self.omega_e)
+        """
+        Generates a figure and table for the exact sinusoidal data in
+        the paper.
+        """
+        exact = self.model(self.x, *self.exact)
         rho = np.hypot(self.exact[1], self.exact[2])
         rms = np.std(self.y - exact)
 
@@ -579,13 +623,13 @@ class Sinusoid:
         ylabel(ax, '$y$')
 
         ax.plot(self.x, self.y, '+', markersize=6)
-        ax.plot(self.domain, self.model(self.domain, *self.exact,
-                                        self.omega_e), '--', lw=0.5)
+        ax.plot(self.domain, self.model(self.domain, *self.exact),
+                '--', lw=0.5)
 
         fix_plot_zeros(ax)
 
         extra = [
-            '', ('\\omega_e', self.omega_e, 0), ('a_e', self.exact[0], 1),
+            '', ('\\omega_e', self.exact[-1], 0), ('a_e', self.exact[0], 1),
             ('b_e', self.exact[1], 1), ('c_e', self.exact[2], 1),
             ('\\rho_e', rho, 6), ('\\sigma_e', rms, 4),
         ]
@@ -596,30 +640,34 @@ class Sinusoid:
         )
 
     def sin_nomega(self):
+        """
+        Generates a figure and table for the sinusoid with known
+        frequency in the paper.
+        """
         fig, ax = format_plot(majx=1, minx=1, majy=1, miny=1)
         xlabel(ax, '$x$')
         ylabel(ax, '$y$')
 
-        t = self.omega_e * self.x
+        omega_e = self.exact[-1]
+        t = omega_e * self.x
         M = np.stack((np.ones_like(self.x), np.sin(t), np.cos(t)), axis=1)
         p = self.y
 
         (a, b, c), *_ = lstsq(M, p, overwrite_a=True, overwrite_b=False)
-        fit = np.array([a, b, c])
+        fit = np.array([a, b, c, omega_e])
 
         rho = np.hypot(b, c)
-        rms = np.std(self.y - self.model(self.x, *fit, self.omega_e))
+        rms = np.std(self.y - self.model(self.x, *fit))
 
         ax.plot(self.x, self.y, '+', markersize=6)
-        ax.plot(self.domain, self.model(self.domain, *self.exact,
-                                        self.omega_e), '--', lw=0.5)
-        ax.plot(self.domain, self.model(self.domain, *fit, self.omega_e),
-                '-', lw=0.5)
+        ax.plot(self.domain, self.model(self.domain, *self.exact),
+                '--', lw=0.5)
+        ax.plot(self.domain, self.model(self.domain, *fit), '-', lw=0.5)
 
         fix_plot_zeros(ax)
 
         extra = [
-            ('\\omega_e', self.omega_e, 0), ('a_0', fit[0], 6),
+            ('\\omega_e', omega_e, 0), ('a_0', fit[0], 6),
             ('b_0', fit[1], 6), ('c_0', fit[2], 6), ('\\rho_0', rho, 6),
             ('\\sigma_0', rms, 6),
         ]
@@ -627,11 +675,65 @@ class Sinusoid:
             cols=[extra], specs=[':math:`{}` = {:.{}f}'], heading=None
         )
 
+    def sin_int(self):
+        """
+        Generates a figure and table for the integral-only sinudoidal
+        data in the paper.
+        """
+        d = 0.5 * np.diff(self.x)
+
+        S = np.cumsum((self.y[1:] + self.y[:-1]) * d)
+        S = np.insert(S, 0, 0)
+
+        SS = np.cumsum((S[1:] + S[:-1]) * d)
+        SS = np.insert(SS, 0, 0)
+
+        M = np.stack((SS, self.x**2, self.x, np.ones_like(self.x)), axis=1)
+
+        (a, b, c, omega), *_ = lstsq(M, self.y,
+                                     overwrite_a=True, overwrite_b=False)
+
+        diff = np.diff(self.y) / np.diff(self.x)
+        diff_x = 0.5 * (self.x[1:] + self.x[:-1])
+
+        fig, ax = format_plot(aspect=0.4,
+                              majx=1.0, minx=1.0, majy=1.0, miny=1.0)
+        ax.set_ylim(-3.5, 4.1)
+
+        # Plot the derivative
+        ax.plot(self.domain, self.derivative(self.domain, *self.exact),
+                '--', lw=0.75)
+        ax.plot(diff_x, diff, 's-', ms=1.5, lw=-0.75)
+        annotate(ax, '$f\'(x)$', xy=(-1.1, self.derivative(-1.1, *self.exact)),
+                 xytext=(-1.5, -2.0), fs=12)
+        annotate(ax, '$f\'_k$', xy=(diff_x[1], diff[1]), xytext=(-1.4, -1.5),
+                 fs=12)
+
+        # Plot the first-order integral
+        ax.plot(self.domain, self.S(self.domain, *self.exact), 'b--', lw=0.75)
+        ax.plot(self.x, S, 'bs-', ms=1.5, lw=0.75)
+        annotate(ax, '$S_k$', xy=(self.x[11], S[11]), xytext=(0.5, -0.8),
+                 fs=12)
+
+        # Plot the second-order integral
+        ax.plot(self.domain, self.SS(self.domain, *self.exact), 'r--', lw=0.75)
+        ax.plot(self.x, SS, 'rs-', ms=1.5, lw=0.75)
+        annotate(ax, '$SS_k$', xy=(self.x[11], SS[11]), xytext=(0.45, -2.8),
+                 fs=12)
+
+        fix_plot_zeros(ax)
+
+        return fig, gen_table(
+            cols=[np.arange(self.x.size) + 1, S, SS],
+            specs=['{:d}', '{:0.6g}', '{:0.6g}'],
+            heading=[':math:`k`', ':math:`S_k`', ':math:`SS_k`']
+        )
+
 
 sinusoid = Sinusoid()
 func_list = [
     gauss_pdf, gauss_cdf, erf_test, exp, weibull_cdf,
-    sinusoid.sin_exact, sinusoid.sin_nomega,
+    sinusoid.sin_exact, sinusoid.sin_nomega, sinusoid.sin_int,
 ]
 
 

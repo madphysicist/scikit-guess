@@ -1529,7 +1529,7 @@ practice.
    "Exact" sinusoid along with the numerical data of our example.
 
 .. table:: Numerical values corresponding to the data in \
-   :numref:`reei-sin-exact-plot`. [errata-reei-12]_
+   :numref:`reei-sin-exact-plot`.
    :name: reei-sin-exact-data
    :class: data-table
 
@@ -1628,7 +1628,7 @@ as it was in the preceding example.
    Case where :math:`\omega` is know exactly.
 
 .. table:: Fitting parameters of the curve shown in \
-   :numref:`reei-sin-nomega-plot`. [errata-reei-13]_
+   :numref:`reei-sin-nomega-plot`.
    :name: reei-sin-nomega-data
    :class: data-table
 
@@ -1734,7 +1734,7 @@ numeric integrations:
 
 It goes without saying that the points must first be ranked in order of
 ascending :math:`x_k`. It follows that the sum of squared residuals to minimize
-is the following\ [errata-reei-14]_:
+is the following\ [errata-reei-12]_:
 
 .. math::
    :label: sin-int-resid
@@ -1795,7 +1795,8 @@ based on a differential equation.
 .. figure:: /generated/reei/sin-int-plot.png
    :name: reei-sin-int-plot
 
-   Numerical integrations and comparison with differentiations.
+   Numerical integrations and comparison with differentiations.\
+   [errata-reei-13]_.
 
 .. table:: Cumulative sums corresponding to :numref:`reei-sin-int-plot`.
    :name: reei-sin-int-data
