@@ -778,12 +778,64 @@ class Sinusoid:
             heading=[':math:`n_p`', r':math:`\frac{\omega_1}{\omega_e}`']
         )
 
+    def sin_rand_nd(self):
+        """
+        Generates a figure and table showing the effects of :math:`n_k`
+        on :math:`\omega_1 / \omega_e` for the random, non-dispersive
+        sinusoid in the paper.
+        """
+        omega_e = 2.0 * np.pi
+        n = np.array([8, 10, 12, 15, 20, 50])
+        wm = []
+
+        fig, ax = format_plot(aspect=0.15, x_zero=False, majx=0.1, minx=0.1)
+        ax.spines['left'].set_position(('data', 1))
+        ax.set_xlim(0.89, 1.35)
+        ax.set_ylim(0, 1.099)
+        xlabel(ax, r'$\frac{\omega_1}{\omega_e}$')
+        ylabel(ax, '$P$')
+
+        tx = [1.185, 1.125, 1.09, 1.06, 1.03, 1.01]
+
+        for p, t in zip(n, tx):
+            x = np.random.rand(10000, p)
+            x.sort(axis=1)
+            y = np.sin(omega_e * x)
+            # TODO: This is a great usecase for multiple simultaneous fits.
+            ratios = [self.fit1(*k) for k in zip(x, y)]
+            ratios = np.array([f / omega_e for f in ratios if not np.isnan(f)])
+
+            pdf, bins = np.histogram(ratios, bins=500, density=True)
+            pdf *= np.diff(bins)
+            bins = 0.5 * (bins[1:] + bins[:-1])
+            cdf = np.cumsum(pdf)
+            wm.append(np.interp(0.5, cdf, bins))
+
+            ax.plot(bins, cdf, lw=0.5)
+            ax.text(t, 0.8, '${}$'.format(p), fontsize=8, va='top', ha='left')
+
+        wm = np.array(wm)
+
+        ax.plot([1, 1.2], [0.5, 0.5], ':', lw=0.5)
+        ax.plot([1, 1.4], [1, 1], lw=0.75)
+        ax.text(1.21, 0.5, r'$P \left( \frac{\omega_1}{\omega_e} < '
+                           r'\frac{\omega_{1m}}{\omega_e} \right) = 0.5$',
+                va='center', ha='left')
+
+        return fig, gen_table(
+            cols=[n, wm], specs=['{:d}', '{:0.3f}'],
+            heading=[':math:`n_p`', r':math:`\frac{\omega_{1m}}{\omega_e}`']
+        )
+
+    def sin_rand_d(self):
+        pass
+
 
 sinusoid = Sinusoid()
 func_list = [
     gauss_pdf, gauss_cdf, erf_test, exp, weibull_cdf,
     sinusoid.sin_exact, sinusoid.sin_nomega, sinusoid.sin_int,
-    sinusoid.sin_eq_nd
+    sinusoid.sin_eq_nd, sinusoid.sin_rand_nd,
 ]
 
 

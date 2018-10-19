@@ -1498,7 +1498,7 @@ involve any iterative calculations, is presented in the
 
 Before getting into the heart of the matter, a warning must be given regarding
 some of the figures presented here (:numref:`reei-sin-exact-plot`,
-:numref:`reei-sin-nomega-plot`, :numref:`sin-c`, :numref:`sin-d`,
+:numref:`reei-sin-nomega-plot`, :numref:`reei-sin-int-plot`, :numref:`sin-d`,
 :numref:`sin-e`). They serve merely as illustrations of the procedures being
 described. To create them, we were obligated to fix on a particuar set of
 numerical data, which are not necessarily representative of the multitudes of
@@ -1664,8 +1664,8 @@ system of linear equations of two unknowns :math:`a` and
 Unfortunately, this is not a viable solution in practice (unless we have at our
 disposal a very large number of especially well distributed samples). The
 stumbling block here is the calculation of :math:`y''(x_k)` from the :math:`n`
-data points :math:`(x_k, y_k)`: as illustrated in :numref:`sin-c`, the
-fluctuations are generally too unstable for meaningful approximation.
+data points :math:`(x_k, y_k)`: as illustrated in :numref:`reei-sin-int-plot`,
+the fluctuations are generally too unstable for meaningful approximation.
 
 On the other hand, the computation of numerical integrals is clearly less
 problematic than that of derivatives. It is therefore no surprise that we will
@@ -1856,13 +1856,37 @@ described in :ref:`Section 5 <reei3-sec5>`, seems more appropriate.
 
    .. include:: /generated/reei/sin-eq-nd-data.rst
 
-.. todo:: Place table next to figure if possible.
+.. todo::
+
+   Place table next to figure if possible: ``.figure {float: left;}``?
 
 
 .. _reei3-sec4-2:
 
 4.2 Random Distribution of Abscissae With Non-Dispersed Ordinates
 -----------------------------------------------------------------
+
+When :math:`x_k` are randomly distributed, the calculated values of
+:math:`\omega_1` become more dispersed as :math:`n_p` shrinks. For a fixed
+value :math:`n_p`, the cumulative distribution (computed from 10000
+simulations), is represented in :numref:`reei-sin-rand-nd-plot`
+
+.. figure:: /generated/reei/sin-rand-nd-plot.png
+   :name: reei-sin-rand-nd-plot
+
+   Cumulative distributions of :math:`\omega_1` (random distribution of
+   :math:`x_k`, non-dispersed :math:`y_k`).
+
+.. table:: Medians values of distributions shown in \
+   :numref:`reei-sin-rand-nd-plot`.
+   :name: reei-sin-rand-nd-data.
+   :class: data-table
+
+   .. include:: /generated/reei/sin-rand-nd-data.rst
+
+.. todo::
+
+   Place table next to figure if possible: ``.figure {float: left;}``?
 
 
 .. _reei3-sec4-3:
