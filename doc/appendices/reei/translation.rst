@@ -1851,7 +1851,7 @@ described in :ref:`Section 5 <reei3-sec5>`, seems more appropriate.
 
 .. table:: Numerical results corresponding to :numref:`reei-sin-eq-nd-plot`.\
    [errata-reei-14]_
-   :name: reei-sin-eq-nd-data.
+   :name: reei-sin-eq-nd-data
    :class: data-table
 
    .. include:: /generated/reei/sin-eq-nd-data.rst
@@ -1872,7 +1872,7 @@ value of :math:`n_p`, the cumulative distribution (computed from 10000
 simulations), is represented in :numref:`reei-sin-rand-nd-plot`. It can be seen
 that the expected median :math:`\omega_1m / \omega_e`, which is expected to be
 equal to 1, is affected even more than under the conditions described in
-:ref:`Section 4.1 <_reei-sec4-1>`.
+:ref:`Section 4.1 <reei3-sec4-1>`.
 
 .. figure:: /generated/reei/sin-rand-nd-plot.png
    :name: reei-sin-rand-nd-plot
@@ -1880,9 +1880,9 @@ equal to 1, is affected even more than under the conditions described in
    Cumulative distributions of :math:`\omega_1` (random distribution of
    :math:`x_k`, non-dispersed :math:`y_k`).
 
-.. table:: Medians values of distributions shown in \
+.. table:: Median values of distributions shown in \
    :numref:`reei-sin-rand-nd-plot`.
-   :name: reei-sin-rand-nd-data.
+   :name: reei-sin-rand-nd-data
    :class: data-table
 
    .. include:: /generated/reei/sin-rand-nd-data.rst
@@ -1897,11 +1897,56 @@ equal to 1, is affected even more than under the conditions described in
 4.3 Random Distribution of Abscissae With Dispersed Ordinates
 -------------------------------------------------------------
 
+As expected, the dispersion of :math:`\omega_1` is greater than in the previous
+case. :numref:`reei-sin-rand-d-plot` shows the the case where
+:math:`(\sigma_1/\rho_e) = 10\%`, compared to :math:`(\sigma_1/\rho_e) = 0` as
+represented in :numref:`reei-sin-rand-nd-plot`. Nevertheless, the median values
+are barely affected (compare :numref:`reei-sin-rand-d-data` to the previous
+data in :numref:`reei-sin-rand-nd-data`).
+
+.. figure:: /generated/reei/sin-rand-d-plot.png
+   :name: reei-sin-rand-d-plot
+
+   Cumulative distributions of :math:`\omega_1` with randomly distributed \
+   ordinates such that :math:`(\sigma_1/\rho_e = 0.1)`
+
+.. table:: Median values of distributions shown in \
+   :numref:`reei-sin-rand-d-plot`.
+   :name: reei-sin-rand-d-data
+   :class: data-table
+
+   .. include:: /generated/reei/sin-rand-d-data.rst
+
+.. todo::
+
+   Place table next to figure if possible: ``.figure {float: left;}``?
+
+
 
 .. _reei3-sec5:
 
 5. Instances Where :math:`a` and :math:`\rho` Parameters Are Approximately Known
 ================================================================================
+
+We now shift our interest to a function :math:`y = f(x)`, expressed in the form
+:eq:`sin-fx2`. The inverse function is an arcsine, but can also be expressed as
+an arctangent:
+
+.. math::
+   :label: sin-a-rho
+
+   \begin{cases}
+       \Phi(x) = arctan \left( \frac{f(x) - a}
+           {\sqrt{\rho^2 - \left( f(x) - a \right)^2}} \right) \\
+       \omega \; x + \phi = \pm \Phi(x) + \pi K_{(x)}
+   \end{cases}
+
+:math:`arctan` denotes the principal values (between :math:`-\frac{\pi}{2}` and
+:math:`\frac{\pi}{2}`) of the multivalued function. The sign of :math:`Phi` and
+the integer :math:`K_{(x)}` depend on the half-period of the sinusoid in which
+the point :math:`(x, y)` is found, making their dependence on :math:`x`
+discontinuous. Additionally, we can show that the sign is + when
+:math:`K_{(x)}` is even and - when odd.
 
 
 .. _reei3-sec6:
