@@ -1866,10 +1866,13 @@ described in :ref:`Section 5 <reei3-sec5>`, seems more appropriate.
 4.2 Random Distribution of Abscissae With Non-Dispersed Ordinates
 -----------------------------------------------------------------
 
-When :math:`x_k` are randomly distributed, the calculated values of
-:math:`\omega_1` become more dispersed as :math:`n_p` shrinks. For a fixed
-value :math:`n_p`, the cumulative distribution (computed from 10000
-simulations), is represented in :numref:`reei-sin-rand-nd-plot`
+Since :math:`x_k` are randomly distributed, the dispersion in the calculated
+values of :math:`\omega_1` increases as :math:`n_p` becomes small. For a fixed
+value of :math:`n_p`, the cumulative distribution (computed from 10000
+simulations), is represented in :numref:`reei-sin-rand-nd-plot`. It can be seen
+that the expected median :math:`\omega_1m / \omega_e`, which is expected to be
+equal to 1, is affected even more than under the conditions described in
+:ref:`Section 4.1 <_reei-sec4-1>`.
 
 .. figure:: /generated/reei/sin-rand-nd-plot.png
    :name: reei-sin-rand-nd-plot
