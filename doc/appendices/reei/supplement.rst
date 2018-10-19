@@ -9,6 +9,9 @@ Supplementary Materials
 Additional Considerations
 -------------------------
 
+Matrix Equations
+================
+
 The purpose of this translation was originally to motivate the writing of the
 scikit to which it is attached. As such, the calculations shown for linear
 regressions in the paper can be greatly simplified using the power of existing
@@ -52,7 +55,7 @@ regression can be obtained by running one of the following two function calls:
    params, *_ = numpy.linalg.lstsq(M, p)
 
 Gaussian PDF
-============
+------------
 
 Algorithm originally presented in :ref:`reei1-sec3` and summarized
 :ref:`here <reei1-sec3-alg>`.
@@ -81,7 +84,7 @@ element. In numpy terms:
    p = y - y[0]
 
 Gaussian CDF
-============
+------------
 
 Algorithm originally presented in :ref:`reei1-appendix2` and summarized
 :ref:`here <reei1-appendix2-alg>`.
@@ -100,7 +103,7 @@ In numpy terms:
    p = scipy.special.erfinv(2 * y - 1)
 
 Exponential
-===========
+-----------
 
 Algorithm originally presented in :ref:`reei2-sec2` and summarized
 :ref:`here <reei2-sec2-alg>`.
@@ -139,7 +142,7 @@ the remaining parameters with :math:`M` constructed from :math:`c_1` and
    p2 = y
 
 Weibull CDF
-===========
+-----------
 
 Algorithm originally presented in :ref:`reei2-sec3` and summarized
 :ref:`here <reei2-sec3-alg>`.
@@ -154,7 +157,7 @@ terms:
    x, y = np.log(-np.log(1.0 - y)), x
 
 Sinusoid with Known Frequency
-=============================
+-----------------------------
 
 Algorithm originally presented in :ref:`reei3-sec2`, in equation
 :eq:`sin-nomega-lsq`. The algorithm is not summarized in detail since it deals
@@ -177,7 +180,7 @@ numpy terms:
    p = y
 
 Integral-Only Sinusoidal Regression Method
-==========================================
+------------------------------------------
 
 Algorithm originally presented in :ref:`reei3-sec3`, in equation
 :eq:`sin-int-lsq`. This equation consitutes the first step in the complete
@@ -205,6 +208,68 @@ numpy terms:
 .. code-block:: python
 
    p = y
+
+
+Computation and Plotting of Randomized Figures
+==============================================
+
+Some of the figures in the paper contain too many data points to place
+conveniently in a table. In such cases, the translation attempts to reproduce
+the results with randomly generated data following the paper's instructions.
+The number of points used in such cases is sufficient to allow all the results
+to match within acceptable thresholds.
+
+Reference implementation of the code used to generate the various radomized
+figures and tables is shown below, along with brief explanations. The figures
+are regenerated every time the documentation is built, so results will always
+vary slightly.
+
+Cumulative Distributions and Medians
+------------------------------------
+
+In measuring the accuracy of the sinusoidal regression algorithm, a number of
+figures showing cumulative distributions of a ratio of anglar frequencies is
+used for demonstration: in :numref:`reei-sin-rand-nd-plot`,
+:numref:`reei-sin-rand-d-plot`, :numref:`reei-sin-h-plot`,
+:numref:`reei-sin-i-plot` and :numref:`reei-sin-rand-k-plot`. The code to
+simulate :math:`N` fits with :math:`n_p` (``n`` in the code ) points per period
+goes something like this:
+
+.. code-block:: python
+
+   omega_e = 2.0 * np.pi
+   x = np.random.rand(N, n)  # One simulation per row
+   x.sort(axis=1)
+   y = np.sin(omega_e * x)
+
+   omega = [self.fit(*k) for k in zip(x, y)]
+
+Here ``fit`` is a function that accepts the :math:`x_k` and :math:`y_k` vectors
+and returns an estimate for :math:`\omega`. The exact function will differ
+depending on whether we are discussing :math:`\omega_1`, :math:`\omega_2` or
+:math:`\omega_3`. For sufficiently large :math:`N`, there is a good likelihood
+that the values of :math:`\omega` will contain NaN due to pathological input
+data (where :math:`\sqrt{-A_1}` is imaginary), so we filter the list:
+
+.. code-block:: python
+
+   ratios = np.array([f / omega_e for f in omega if not np.isnan(f)])
+
+The loss of one or two elements for very large :math:`N` will not affect the
+PDF and CDF much:
+
+.. code-block:: python
+
+   pdf, bins = np.histogram(ratios, bins=500, density=True)
+   pdf *= np.diff(bins)                # Convert density into mass
+   bins = 0.5 * (bins[1:] + bins[:-1]) # Use bin centers
+   cdf = np.cumsum(pdf)
+
+The median value of the distribution is obtained through linear interpolation:
+
+.. code-block:: python
+
+   med = np.interp(0.5, cdf, bins)
 
 
 .. include:: ../page_break.rst
