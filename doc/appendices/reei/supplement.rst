@@ -54,6 +54,9 @@ regression can be obtained by running one of the following two function calls:
    params, *_ = scipy.linalg.lstsq(M, p)
    params, *_ = numpy.linalg.lstsq(M, p)
 
+
+.. _gauss-pdf-mat:
+
 Gaussian PDF
 ------------
 
@@ -83,6 +86,9 @@ element. In numpy terms:
 
    p = y - y[0]
 
+
+.. _gauss-cdf-mat:
+
 Gaussian CDF
 ------------
 
@@ -101,6 +107,9 @@ In numpy terms:
 .. code-block:: python
 
    p = scipy.special.erfinv(2 * y - 1)
+
+
+.. _exp-mat:
 
 Exponential
 -----------
@@ -141,20 +150,25 @@ the remaining parameters with :math:`M` constructed from :math:`c_1` and
 
    p2 = y
 
+
+.. _weibull-mat:
+
 Weibull CDF
 -----------
 
 Algorithm originally presented in :ref:`reei2-sec3` and summarized
 :ref:`here <reei2-sec3-alg>`.
 
-This is just a transposed and transformed version of the :ref:`Exponential`
-case. The input :math:`x` and :math:`y` are first swapped, and then the new
-:math:`x` values are transformed according to :eq:`weibull-cdf-subst`. In numpy
-terms:
+This is just a transposed and transformed version of the :ref:`exp-mat` case.
+The input :math:`x` and :math:`y` are first swapped, and then the new :math:`x`
+values are transformed according to :eq:`weibull-cdf-subst`. In numpy terms:
 
 .. code-block:: python
 
    x, y = np.log(-np.log(1.0 - y)), x
+
+
+.. _sin-nomega-mat:
 
 Sinusoid with Known Frequency
 -----------------------------
@@ -178,6 +192,9 @@ numpy terms:
 .. code-block:: python
 
    p = y
+
+
+.. _sin-int-mat:
 
 Integral-Only Sinusoidal Regression Method
 ------------------------------------------
@@ -231,7 +248,7 @@ In measuring the accuracy of the sinusoidal regression algorithm, a number of
 figures showing cumulative distributions of a ratio of anglar frequencies is
 used for demonstration: in :numref:`reei-sin-rand-nd-plot`,
 :numref:`reei-sin-rand-d-plot`, :numref:`reei-sin-h-plot`,
-:numref:`reei-sin-i-plot` and :numref:`reei-sin-rand-k-plot`. The code to
+:numref:`reei-sin-i-plot` and :numref:`reei-sin-k-plot`. The code to
 simulate :math:`N` fits with :math:`n_p` (``n`` in the code ) points per period
 goes something like this:
 

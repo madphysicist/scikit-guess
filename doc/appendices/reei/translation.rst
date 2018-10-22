@@ -1822,13 +1822,13 @@ obtain :math:`a`, :math:`b` and :math:`c`. We will therefore concentrate on an
 investigation restricted to results with respect to :math:`\omega`. The three
 most influential factors are:
 
-- The number of points, :math:`n_p`, in each period of the sinusoid.
-- The distribution of samples in the domain:
-  - Either uniform: :math:`x_{k+1} - x_k = constant`
-  - Or random: :math:`x_k` is drawn at random from the available domain.
-- The scatter of the ordinates :math:`y_k`, characterized by
-  :math:`(\sigma_1 / \rho_e)`, the ratio of the root mean squared error
-  :eq:`sin-rms` to the amplitude of the sinusoid.
+  - The number of points, :math:`n_p`, in each period of the sinusoid.
+  - The distribution of samples in the domain:
+    - Either uniform: :math:`x_{k+1} - x_k = constant`
+    - Or random: :math:`x_k` is drawn at random from the available domain.
+  - The scatter of the ordinates :math:`y_k`, characterized by
+    :math:`(\sigma_1 / \rho_e)`, the ratio of the root mean squared error
+    :eq:`sin-rms` to the amplitude of the sinusoid.
 
 
 .. _reei3-sec4-1:
@@ -1933,7 +1933,7 @@ We now shift our interest to a function :math:`y = f(x)`, expressed in the form
 an arctangent:
 
 .. math::
-   :label: sin-a-rho
+   :label: sin-inv-fx
 
    \begin{cases}
        \Phi(x) = arctan \left( \frac{f(x) - a}
@@ -1942,11 +1942,75 @@ an arctangent:
    \end{cases}
 
 :math:`arctan` denotes the principal values (between :math:`-\frac{\pi}{2}` and
-:math:`\frac{\pi}{2}`) of the multivalued function. The sign of :math:`Phi` and
-the integer :math:`K_{(x)}` depend on the half-period of the sinusoid in which
-the point :math:`(x, y)` is found, making their dependence on :math:`x`
+:math:`\frac{\pi}{2}`) of the multivalued function. The sign of :math:`\Phi`
+and the integer :math:`K_{(x)}` depend on the half-period of the sinusoid in
+which the point :math:`(x, y)` is found, making their dependence on :math:`x`
 discontinuous. Additionally, we can show that the sign is + when
 :math:`K_{(x)}` is even and - when odd.
+
+If we consider :math:`\Phi(x)` by itself, it is a sawtooth function, as shown
+in :numref:`reei-sin-saw-plot` by the dotted curve. The points
+:math:`(x_k, \Phi_k)`, with :math:`\Phi_k = \Phi(x_k)`, are represented by
+crosses. Rewritten in this manner, the problem becomes one of regression of a
+sawtooth function, which is largely as "nightmarish" as regression of the
+sinusoid. Since we have no information other than the points
+:math:`(x_k, \Phi_k)`, determining :math:`K_{(x)}` difficult and mostly
+empirical, and therefore not guaranteed to always be feasible in the general
+case. The situation is different in our case because we have already found the
+orders of magnitude of the parameters: :math:`a_1`, :math:`b_1`, :math:`c_1`
+and :math:`\omega_1`, and consequently :math:`\rho_1` and :math:`\phi_1`
+through :eq:`sin-fx2`. In the current instance, which will be represented by
+the subscript 2, we posit that:
+
+.. math::
+   :label: sin-param-2
+
+   a_2 = a_1 \quad ; \quad \rho_2 = \rho_1 = \sqrt{b_1^2 + c_1^2} \quad ; \quad
+       \rho_1 \; cos(\phi_1) = b_1 \quad ; \quad \rho_1 \; sin(\phi_1) = c_1 \\
+   \text{If} \; b_1 > 0 \quad \rightarrow \quad
+       \phi_1 = arctan \left( \frac{c_1}{b_1} \right) \quad ; \quad
+       \text{if} \; b_1 < 0 \quad \rightarrow \quad
+       \phi_1 = arctan \left( \frac{c_1}{b_1}\right) + \pi
+
+Now it is possible to calculate :math:`K_1, K_2, ..., K_k, ..., K_n` in number
+of different ways. One possibility is as follows, with :math:`round` rounds the
+real argument to the nearest integer:
+
+.. math::
+   :label: sin-k
+
+   K_k = round \left( \frac{\omega_1 x_k + \phi_1}{\pi} \right)
+
+Another way to write :eq:`sin-inv-fx`, applied to :math:`x = x_k`, better
+showcases the nearly linear relationship
+:math:`\theta_k \approx \omega_2 \; x_k + \phi_2` between :math:`x_k` and
+:math:`\theta_k`, as defined by:
+
+.. math::
+   :label: sin-theta
+
+   \begin{cases}
+       \theta_k = (-1)^{K_k} \; arctan \left( \frac{y_k - a_2}
+           {\sqrt{\rho_2^2 - (y_k - a_2)^2}})^2}} \right) + \pi \; \\
+       \text{if} \; \rho_2^2 \leq (y_k - a_2)^2 \quad \rightarrow \quad
+           atan = +\frac{\pi}{2} \; \text{if} \; y_k > a_2 \; \text{or} \;
+           = -\frac{\pi}{2} \; \text{if} \; y_k < a_2
+   \end{cases}
+
+We see in :numref:`reei-sin-saw-plot`, that the series of points
+:math:`(x_k, \Phi_k)` represented by crosses, is transformed into a series of
+points :math:`(x_k, \theta_k)` represented by squares, some of which coincide.
+
+.. figure:: /generated/reei/sin-saw-plot.png
+   :name: reei-sin-saw-plot
+
+   Transformation of a sawtooth function into a linear regression
+
+.. table:: Numerical data for the points shown in :numref:`reei-sin-saw-plot`.
+   :name: reei-sin-saw-data
+   :class: data-table
+
+   .. include:: /generated/reei/sin-saw-data.rst
 
 
 .. _reei3-sec6:

@@ -632,7 +632,8 @@ class Sinusoid:
 
         return np.sqrt(-A1)
 
-    def gen_omega_cdf(self, tx, ns=None, x_rand=True, y_sigma=0.0, samp=10000):
+    def gen_omega_cdf(self, tx, ns=None, x_rand=True, y_sigma=0.0, omega=1,
+                      samp=10000):
         """
         Generate a figure and table with CDFs for each number of
         points-per-cycle in `ns`.
@@ -648,7 +649,7 @@ class Sinusoid:
         ax.spines['left'].set_position(('data', 1))
         ax.set_xlim(0.89, 1.35)
         ax.set_ylim(0, 1.099)
-        xlabel(ax, r'$\frac{\omega_1}{\omega_e}$')
+        xlabel(ax, r'$\frac{{\omega_{}}}{{\omega_e}}$'.format(omega))
         ylabel(ax, '$P$')
 
         ax.text(0.5 * sum(tx[-2:]), 0.9, '$n_p =$',
@@ -676,15 +677,20 @@ class Sinusoid:
 
         ax.plot([1, 1.2], [0.5, 0.5], ':', lw=0.5)
         ax.plot([1, 1.4], [1, 1], lw=0.75)
-        ax.text(1.21, 0.5, r'$P \left( \frac{\omega_1}{\omega_e} < '
-                           r'\frac{\omega_{1m}}{\omega_e} \right) = 0.5$',
+        ax.text(1.21, 0.5,
+                r'$P \left( \frac{{\omega_{0}}}{{\omega_e}} < '
+                r'\frac{{\omega_{{{0}m}}}}{{\omega_e}} \right) = '
+                '0.5$'.format(omega),
                 va='center', ha='left')
 
         fix_plot_zeros(ax)
 
         return fig, gen_table(
             cols=[ns, wm], specs=['{:d}', '{:0.3f}'],
-            heading=[':math:`n_p`', r':math:`\frac{\omega_{1m}}{\omega_e}`']
+            heading=[
+                ':math:`n_p`',
+                r':math:`\frac{{\omega_{{{}m}}}}{{\omega_e}}`'.format(omega)
+            ]
         )
 
     def sin_exact(self):
