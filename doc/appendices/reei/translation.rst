@@ -1442,9 +1442,9 @@ This function is equivalent to:
    :label: sin-fx2
 
    \begin{cases}
-       f(x) = a + \rho \; sin(\omega \; x + \phi) \\
-       \rho = \sqrt{b^2 + c^2} \quad ; \quad b = \rho \; cos(\phi) \quad ;
-           \quad c = \rho \; sin(\phi)
+       f(x) = a + \rho \; sin(\omega \; x + \varphi) \\
+       \rho = \sqrt{b^2 + c^2} \quad ; \quad b = \rho \; cos(\varphi) \quad ;
+           \quad c = \rho \; sin(\varphi)
    \end{cases}
 
 The expression "as close as possible" implies an optimization criterion.
@@ -1938,7 +1938,7 @@ an arctangent:
    \begin{cases}
        \Phi(x) = arctan \left( \frac{f(x) - a}
            {\sqrt{\rho^2 - \left( f(x) - a \right)^2}} \right) \\
-       \omega \; x + \phi = \pm \Phi(x) + \pi K_{(x)}
+       \omega \; x + \varphi = \pm \Phi(x) + \pi K_{(x)}
    \end{cases}
 
 :math:`arctan` denotes the principal values (between :math:`-\frac{\pi}{2}` and
@@ -1958,7 +1958,7 @@ sinusoid. Since we have no information other than the points
 empirical, and therefore not guaranteed to always be feasible in the general
 case. The situation is different in our case because we have already found the
 orders of magnitude of the parameters: :math:`a_1`, :math:`b_1`, :math:`c_1`
-and :math:`\omega_1`, and consequently :math:`\rho_1` and :math:`\phi_1`
+and :math:`\omega_1`, and consequently :math:`\rho_1` and :math:`\varphi_1`
 through :eq:`sin-fx2`. In the current instance, which will be represented by
 the subscript 2, we posit that:
 
@@ -1966,11 +1966,12 @@ the subscript 2, we posit that:
    :label: sin-param-2
 
    a_2 = a_1 \quad ; \quad \rho_2 = \rho_1 = \sqrt{b_1^2 + c_1^2} \quad ; \quad
-       \rho_1 \; cos(\phi_1) = b_1 \quad ; \quad \rho_1 \; sin(\phi_1) = c_1 \\
+       \rho_1 \; cos(\varphi_1) = b_1 \quad ; \quad
+       \rho_1 \; sin(\varphi_1) = c_1 \\
    \text{If} \; b_1 > 0 \quad \rightarrow \quad
-       \phi_1 = arctan \left( \frac{c_1}{b_1} \right) \quad ; \quad
+       \varphi_1 = arctan \left( \frac{c_1}{b_1} \right) \quad ; \quad
        \text{if} \; b_1 < 0 \quad \rightarrow \quad
-       \phi_1 = arctan \left( \frac{c_1}{b_1}\right) + \pi
+       \varphi_1 = arctan \left( \frac{c_1}{b_1}\right) + \pi
 
 Now it is possible to calculate :math:`K_1, K_2, ..., K_k, ..., K_n` in number
 of different ways. One possibility is as follows, with :math:`round` rounds the
@@ -1979,11 +1980,11 @@ real argument to the nearest integer:
 .. math::
    :label: sin-k
 
-   K_k = round \left( \frac{\omega_1 x_k + \phi_1}{\pi} \right)
+   K_k = round \left( \frac{\omega_1 x_k + \varphi_1}{\pi} \right)
 
 Another way to write :eq:`sin-inv-fx`, applied to :math:`x = x_k`, better
 demonstrates the nearly linear relationship
-:math:`\theta_k \approx \omega_2 \; x_k + \phi_2` between :math:`x_k` and
+:math:`\theta_k \approx \omega_2 \; x_k + \varphi_2` between :math:`x_k` and
 :math:`\theta_k`, defined by:
 
 .. math::
