@@ -1,3 +1,7 @@
+# Requirements when building the documentation in an isolated environment when
+# the scikit itself was not installed. In particular, this supports building on
+# Read-the-Docs.
+
 numpy
 scipy
 matplotlib
