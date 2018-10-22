@@ -160,7 +160,12 @@ if __name__ == '__main__':
             'test-plots': ['matplotlib'],
             'test-pep8': ['pytest-pep8'],
             # TODO: Some of the sphinx extensions may need to go in here.
-            'docs': ['sphinx >= 1.8'],
+            'docs': [
+                'matplotlib',
+                'numpy',
+                'scipy',
+                'sphinx >= 1.8'
+            ],
             'docs-rtd': ['sphinx_rtd_theme'],
         }
     )

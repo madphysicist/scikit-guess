@@ -42,7 +42,8 @@ The following sections show how to construct such simplified solutions to the
 equations in the paper. Solutions are described briefly, and presented
 concretely with Python code. The solutions here are for conceptual reference
 only. They are not a complete or exact reflection of how things are done in the
-scikit itself.
+scikit itself. The scikit makes an effort to optimize for speed over
+legibility, which does not suit the purpose of this exposition.
 
 In the code snippets below, ``x`` and ``y`` are assumed to be one-dimensional
 numpy arrays. Both arrays have an equal number of elements, ``n``. Numpy is
