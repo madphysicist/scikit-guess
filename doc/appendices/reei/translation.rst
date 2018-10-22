@@ -60,14 +60,14 @@ throughout the translation. In all cases, the errata are clearly marked with
 footnotes with detailed descriptions of the fix in question. Errata are to be
 submitted to Jean Jacquelin before publication of this translation.
 
-To the extent possible, I have re-generated the plots in the paper using
-`matplotlib`_ as faithfully as I could, rather than copying them out of the
-original.
+I have re-generated the plots and tables in the paper as faithfully as I could,
+rather than copying them out of the original. This has provided a measure of
+confidence in the results. There may be some slight disagreement in the
+randomly generated datasets, but the discrepancies are both expected and
+miniscule.
 
     -- Joseph Fox-Rabinovitz
        23rd September 2018
-
-.. include:: /link-defs.rst
 
 
 .. include:: ../page_break.rst
@@ -1982,16 +1982,16 @@ real argument to the nearest integer:
    K_k = round \left( \frac{\omega_1 x_k + \phi_1}{\pi} \right)
 
 Another way to write :eq:`sin-inv-fx`, applied to :math:`x = x_k`, better
-showcases the nearly linear relationship
+demonstrates the nearly linear relationship
 :math:`\theta_k \approx \omega_2 \; x_k + \phi_2` between :math:`x_k` and
-:math:`\theta_k`, as defined by:
+:math:`\theta_k`, defined by:
 
 .. math::
    :label: sin-theta
 
    \begin{cases}
        \theta_k = (-1)^{K_k} \; arctan \left( \frac{y_k - a_2}
-           {\sqrt{\rho_2^2 - (y_k - a_2)^2}})^2}} \right) + \pi \; \\
+           {\sqrt{\rho_2^2 - (y_k - a_2)^2}^2} \right) + \pi \; \\
        \text{if} \; \rho_2^2 \leq (y_k - a_2)^2 \quad \rightarrow \quad
            atan = +\frac{\pi}{2} \; \text{if} \; y_k > a_2 \; \text{or} \;
            = -\frac{\pi}{2} \; \text{if} \; y_k < a_2
@@ -2103,3 +2103,7 @@ Double Exponential Regression & Double Power Regression
 -----------------------
 Multivariate Regression
 -----------------------
+
+
+
+.. include:: /link-defs.rst
