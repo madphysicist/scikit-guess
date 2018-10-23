@@ -498,5 +498,11 @@ link back to the corresponding location in the translated paper as footnotes.
    the paper appears to be generated for values of :math:`n_p - 1` rather than
    :math:`n_p`. The overall point being made holds regardless, of course.
 
+.. [errata-reei-15] The original figure shows the "exact" :math:`\theta` line
+   slightly elevated above the "exact" :math:`\Phi` line, so as not to obscure
+   the portion of :math:`\Phi` where they match. I have chosen instead to match
+   the lines but make the dotted line thicker, so it is not completely
+   obscured.
+
 
 .. include:: /link-defs.rst

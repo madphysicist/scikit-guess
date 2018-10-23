@@ -1992,7 +1992,7 @@ demonstrates the nearly linear relationship
 
    \begin{cases}
        \theta_k = (-1)^{K_k} \; arctan \left( \frac{y_k - a_2}
-           {\sqrt{\rho_2^2 - (y_k - a_2)^2}^2} \right) + \pi \; \\
+           {\sqrt{\rho_2^2 - (y_k - a_2)^2}^2} \right) + \pi \; K_k \\
        \text{if} \; \rho_2^2 \leq (y_k - a_2)^2 \quad \rightarrow \quad
            atan = +\frac{\pi}{2} \; \text{if} \; y_k > a_2 \; \text{or} \;
            = -\frac{\pi}{2} \; \text{if} \; y_k < a_2
@@ -2005,7 +2005,8 @@ points :math:`(x_k, \theta_k)` represented by squares, some of which coincide.
 .. figure:: /generated/reei/sin-saw-plot.png
    :name: reei-sin-saw-plot
 
-   Transformation of a sawtooth function into a linear regression
+   Transformation of a sawtooth function in preparation for linear regression
+   [errata-reei-15]_
 
 .. table:: Numerical data for the points shown in :numref:`reei-sin-saw-plot`.
    :name: reei-sin-saw-data

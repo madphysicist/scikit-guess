@@ -561,7 +561,8 @@ class Sinusoid:
     described in the paper.
     """
 
-    exact = -0.4, 1.3, -0.6, 2
+    # a, b, c, omega
+    exact = (-0.4, 1.3, -0.6, 2)
 
     x = np.array([
         -1.983, -1.948, -1.837, -1.827, -1.663, -0.815, -0.778, -0.754,
@@ -574,6 +575,15 @@ class Sinusoid:
 
     domain = np.linspace(-2.0, 2.0, 1000)
 
+    def __init__(self):
+        exact = self.model(self.x, *self.exact)
+        self.rho0 = np.hypot(self.exact[1], self.exact[2])
+        self.phi0 = np.arctan2(self.exact[2], self.exact[1])
+        self.rms0 = np.std(self.y - exact)
+
+        # a, rho, omega, phi
+        self.exact2 = (self.exact[0], self.rho0, self.exact[3], self.phi0)
+
     @staticmethod
     def model(x, a, b, c, omega):
         """
@@ -581,6 +591,13 @@ class Sinusoid:
         """
         t = omega * x
         return a + b * np.sin(t) + c * np.cos(t)
+
+    @staticmethod
+    def model2(x, a, rho, omega, phi):
+        """
+        Alternative phrasing for the same model.
+        """
+        return a + rho * np.sin(omega * x + phi)
 
     @staticmethod
     def S(x, a, b, c, omega):
@@ -612,10 +629,10 @@ class Sinusoid:
         t = omega * x
         return b * omega * np.cos(t) - c * omega * np.sin(t)
 
-    @staticmethod
-    def fit1(x, y):
+    @classmethod
+    def fit1(cls, x, y):
         r"""
-        Integral-only fitting function to obtain :math:`\omega_1`.
+        Integral-only fitting function.
         """
         x, y = map(np.asfarray, (x, y))
 
@@ -630,7 +647,57 @@ class Sinusoid:
         M = np.stack((SS, x**2, x, np.ones_like(x)), axis=1)
         (A1, B1, C1, D1), *_ = lstsq(M, y, overwrite_a=True, overwrite_b=False)
 
-        return np.sqrt(-A1)
+        x0 = cls.x[0]
+        omega = np.sqrt(-A1)
+        a = 2 * B1 / omega**2
+        p = B1 * x0**2 + C1 * x0 + D1 - a
+        q = (C1 + 2 * B1 * x0) / omega
+        t = omega * x0
+        b = p * np.sin(t) + q * np.cos(t)
+        c = p * np.cos(t) - q * np.sin(t)
+        return (a, b, c, omega)
+
+    @staticmethod
+    def atan_x(f, rho):
+        r"""
+        Computes :math:`arctan \left(\frac{f}{\sqrt{\rho^2 - f^2}} \right)`
+        for :math:`\rho^2 > f^2`. In all other cases, returns
+        :math:`\frac{\pi}{2} with the same sign as :math:`f`.
+        """
+        out = np.empty_like(f)
+        op = rho**2 - f**2
+        mask = (op > 0)
+        out[mask] = np.arctan(f[mask] / np.sqrt(op[mask]))
+        out[~mask] = np.copysign(np.pi / 2.0, f[~mask])
+        return out
+
+    @classmethod
+    def phi(cls, x, a, rho, omega, phi):
+        r"""
+        Computes
+
+        .. math::
+
+           \Phi(x) = arctan \left( \frac{f(x) - a}
+               {\sqrt{\rho^2 - \left( f(x) - a\right)^2}} \right)
+
+        Based on :math:`f(x) = a + \rho \; sin(\omega \; x + \varphi)`.
+        """
+        f = cls.model2(x, 0.0, rho, omega, phi)
+        return cls.atan_x(f, rho)
+
+    @classmethod
+    def phi2(cls, x, y, a, rho):
+        r"""
+        Computes
+
+        .. math::
+
+           \Phi(x) = arctan \left( \frac{y - a}
+               {\sqrt{\rho^2 - \left( y - a\right)^2}} \right)
+        """
+        f = y - a
+        return cls.atan_x(f, rho)
 
     def gen_omega_cdf(self, tx, ns=None, x_rand=True, y_sigma=0.0, omega=1,
                       samp=10000):
@@ -661,7 +728,7 @@ class Sinusoid:
             y = np.sin(omega_e * x) + np.random.normal(loc=0.0, scale=y_sigma,
                                                        size=x.shape)
             # TODO: This is a good usecase for multiple simultaneous fits.
-            ratios = [self.fit1(*k) for k in zip(x, y)]
+            ratios = [self.fit1(*k)[-1] for k in zip(x, y)]
             ratios = np.array([f / omega_e for f in ratios if not np.isnan(f)])
 
             pdf, bins = np.histogram(ratios, bins=samp // 20, density=True)
@@ -698,10 +765,6 @@ class Sinusoid:
         Generates a figure and table for the exact sinusoidal data in
         the paper.
         """
-        exact = self.model(self.x, *self.exact)
-        rho = np.hypot(self.exact[1], self.exact[2])
-        rms = np.std(self.y - exact)
-
         fig, ax = format_plot(majx=1, minx=1, majy=1, miny=1)
         xlabel(ax, '$x$')
         ylabel(ax, '$y$')
@@ -715,7 +778,7 @@ class Sinusoid:
         extra = [
             '', ('\\omega_e', self.exact[-1], 0), ('a_e', self.exact[0], 1),
             ('b_e', self.exact[1], 1), ('c_e', self.exact[2], 1),
-            ('\\rho_e', rho, 6), ('\\sigma_e', rms, 4),
+            ('\\rho_e', self.rho0, 6), ('\\sigma_e', self.rms0, 4),
         ]
         return fig, gen_table(
             cols=[np.arange(self.x.size) + 1, self.x, self.y, extra],
@@ -821,7 +884,7 @@ class Sinusoid:
         def omega(p):
             x = np.linspace(0.0, 1.0, p)
             y = np.sin(omega_e * x)
-            return self.fit1(x, y)
+            return self.fit1(x, y)[-1]
 
         ratios = np.array([omega(p) / omega_e for p in n])
 
@@ -856,12 +919,57 @@ class Sinusoid:
         return self.gen_omega_cdf(tx=[1.21, 1.14, 1.1, 1.07, 1.04, 1.02],
                                   y_sigma=0.1)
 
+    def sin_saw(self):
+        """
+        Generates a figure showing the transformation of a sawtooth
+        function into a line.
+        """
+        fit = self.fit1(self.x, self.y)
+
+        rho1 = np.hypot(fit[1], fit[2])
+        phi1 = np.arctan2(fit[2], fit[1])
+
+        phi_exact = self.phi(self.domain, *self.exact2)
+        phi_data = self.phi2(self.x, self.y, fit[0], rho1)
+
+        kk_exact = np.round((self.exact[-1] * self.domain + self.phi0) / np.pi)
+        kk_data = np.round((fit[-1] * self.x + phi1) / np.pi)
+
+        theta_exact = (-1)**kk_exact * phi_exact + np.pi * kk_exact
+        theta_data = (-1)**kk_data * phi_data + np.pi * kk_data
+
+        fig, ax = format_plot(aspect=0.4, majx=1, minx=1, majy=1, miny=1)
+        xlabel(ax, '$x_k$')
+
+        ax.plot(self.domain, phi_exact, '--', lw=0.75)
+        ax.plot(self.domain, theta_exact, '-', lw=0.4)
+        ax.plot(self.x, phi_data, '+', markersize=6)
+        ax.plot(self.x, theta_data, 's', lw=0.5, ms=4, markerfacecolor='none')
+
+        annotate(ax, r'$(\Phi)$', (-1.75, 1), (-1.5, 1.6))
+        annotate(ax, r'$(\theta)$', (-1.85, -3.7), (-2, -3))
+
+        fix_plot_zeros(ax)
+
+        return fig, gen_table(
+            cols=[
+                np.arange(kk_data.size) + 1, phi_data,
+                kk_data.astype(np.int), theta_data
+            ],
+            specs=['{:d}', '{:0.6g}', '{:d}', '{:0.6g}'],
+            heading=[
+                ':math:`k`', r':math:`\Phi_k`', ':math:`K_k`',
+                r':math:`\theta_k`'
+            ]
+        )
+
 
 sinusoid = Sinusoid()
 func_list = [
     gauss_pdf, gauss_cdf, erf_test, exp, weibull_cdf,
     sinusoid.sin_exact, sinusoid.sin_nomega, sinusoid.sin_int,
     sinusoid.sin_eq_nd, sinusoid.sin_rand_nd, sinusoid.sin_rand_d,
+    sinusoid.sin_saw,
 ]
 
 
