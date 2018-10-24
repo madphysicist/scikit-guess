@@ -32,7 +32,9 @@ Dependencies
 
 This project strives to be a true scikit, and limit its runtime dependencies to
 just `numpy`_ and `scipy`_. `pandas`_ support will be added at some point, but
-may not result in a dependency, certainly not a mandatory one.
+may not result in a dependency, certainly not a mandatory one. Numpy must be
+version 1.7 or later, since that is when the ``where`` keyword was introduced
+to ufuncs.
 
 At this stage, the code is written in pure python, with all the extensions
 being implemented through the dependencies. That may change at some point in

@@ -150,7 +150,7 @@ if __name__ == '__main__':
         packages=['skg', 'skg.tests'],
         package_dir={'': 'src'},
         install_requires=[
-            'numpy',
+            'numpy >= 1.7',
             'scipy',
         ],
         tests_require=['pytest'],
