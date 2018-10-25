@@ -1498,15 +1498,15 @@ involve any iterative calculations, is presented in the
 
 Before getting into the heart of the matter, a warning must be given regarding
 some of the figures presented here (:numref:`reei-sin-exact-plot`,
-:numref:`reei-sin-nomega-plot`, :numref:`reei-sin-int-plot`, :numref:`sin-d`,
-:numref:`sin-e`). They serve merely as illustrations of the procedures being
-described. To create them, we were obligated to fix on a particuar set of
-numerical data, which are not necessarily representative of the multitudes of
-possible cases. Given these figures alone, it would be absurd to form any
-opinion of the method in question, favorable or otherwise. This is especially
-true as the example has been selected with data that exaggerate all the defects
-that are explained in the text, to allow for easy identification and
-unambiguous discussion.
+:numref:`reei-sin-nomega-plot`, :numref:`reei-sin-int-plot`,
+:numref:`reei-sin-sawtooth-plot`, :numref:`reei-sin-final-plot`). They serve
+merely as illustrations of the procedures being described. To create them, we
+were obligated to fix on a particuar set of numerical data, which are not
+necessarily representative of the multitudes of possible cases. Given these
+figures alone, it would be absurd to form any opinion of the method in
+question, favorable or otherwise. This is especially true as the example has
+been selected with data that exaggerate all the defects that are explained in
+the text, to allow for easy identification and unambiguous discussion.
 
 We see in :numref:`reei-sin-exact-data` that our "experimental" points are
 sparse, very irregularly distributed, and widely dispersed. One might suspect
@@ -1777,11 +1777,12 @@ It is pointless to reiterate the partial derivatives with respect to :math:`A`,
                sin(\omega \; x_1)
    \end{cases}
 
-The results for our sample data are displayed further along in :numref:`sin-j`.
-The numerical values of :math:`\omega_1`, :math:`a_1`, :math:`b_1` and
-:math:`c_1` are shown in :numref:`sin-tj`. To compare the graphical and
-numerical representations with resepect to the data points
-:math:`(x_k, y_k)`, refer to the curve and table column labeled :math:`(1)`.
+The results for our sample data are displayed further along in
+:numref:`reei-sin-final-plot`. The numerical values of :math:`\omega_1`,
+:math:`a_1`, :math:`b_1` and :math:`c_1` are shown in
+:numref:`reei-sin-final-data`. To compare the graphical and numerical
+representations with resepect to the data points :math:`(x_k, y_k)`, refer to
+the curve and table column labeled :math:`(1)`.
 
 Incidentally, it is interesting to compare the results of numerical
 integrations :eq:`sin-int-int1` and :eq:`sin-int-int2` with respect to
@@ -2033,8 +2034,9 @@ Completed by:
 
    b_2 = \rho_2 \; cos(\varphi_2) \quad ; \quad c_2 = \rho_2 \; sin(\varphi_2)
 
-The numerical results are summarized in :numref:`sin-tj` (in the table column
-labeled :math:`(2)`), and the curve is shown in :numref:`sin-tj`.
+The numerical results are summarized in :numref:`reei-sin-final-data` (in the
+table column labeled :math:`(2)`), and the curve is shown in
+:numref:`reei-sin-final-plot`.
 
 The performance measured in terms of the optimization of :math:`\omega` is
 shown in :numref:`reei-sin-rand-nd2-plot` and :numref:`reei-sin-rand-d2-plot`.
@@ -2106,11 +2108,11 @@ the classical method shown in :ref:`Section 2 <reei3-sec2>` can be applied:
 
 This allows us to perform a final optimization of the dimensional parameters of
 the sinusoid, which was not possible in the previous step because :math:`a_2`
-and :math:`\rho_2` were fixed. The final result is presented in :numref:`sin-j`
-The numerical results are summarized in :numref:`sin-tj` (in the table column
-labeled :math:`(3)`). The intermediate results (sinusoids :math:`(1)` and
-:math:`(2)`, along with their respective parameters) are reported in the same
-figure and table.
+and :math:`\rho_2` were fixed. The final result is presented in
+:numref:`reei-sin-final-plot`. The numerical results are summarized in
+:numref:`reei-sin-final-data` (in the table column labeled :math:`(3)`). The
+intermediate results (sinusoids :math:`(1)` and :math:`(2)`, along with their
+respective parameters) are reported in the same figure and table.
 
 .. figure:: /generated/reei/sin-final-plot.png
    :name: reei-sin-final-plot

@@ -736,7 +736,8 @@ class Sinusoid:
         f = y - a
         return cls.atan_x(f, rho)
 
-    def gen_omega_cdf(self, tx, fit, ns=None, x_rand=True, y_sigma=0.0,
+    @staticmethod
+    def gen_omega_cdf(tx, fit, ns=None, x_rand=True, y_sigma=0.0,
                       omega=1, samp=10000, an=None):
         """
         Generate a figure and table with CDFs for each number of
