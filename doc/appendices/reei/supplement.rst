@@ -180,11 +180,11 @@ with a trivial case that is not particularly useful in practice.
 
 The matrix :math:`M` is a concatenation of the final coefficients in
 :eq:`sin-nomega-system`. Assuming that the angular frequency :math:`\omega_e`
-from the equations is given by the Python variable ``w``, we have:
+from the equations is given by the Python variable ``omega``, we have:
 
 .. code-block:: python
 
-   t = w * x
+   t = omega * x
    M = np.stack((np.ones_like(x), np.sin(t), np.cos(t)), axis=1)
 
 :math:`p` is just the vector of raw :math:`y` values for this regression. In
@@ -222,6 +222,74 @@ process summarized in :ref:`reei3-appendix1` and detailed in
 
 :math:`p` is just the vector of raw :math:`y` values for this regression. In
 numpy terms:
+
+.. code-block:: python
+
+   p = y
+
+
+.. _sin-step2-mat:
+
+Further Optimization of Sinusoidal Phase and Frequency
+------------------------------------------------------
+
+The additional optimization step presented in :ref:`reei3-sec5`, in equation
+:eq:`sin-lsq2`. This equation consitutes the second step in the complete
+process summarized in :ref:`reei3-appendix1` and detailed in
+:ref:`reei3-appendix2`.
+
+:math:`M` for a purely linear regression is just ones and :math:`x`
+concatenated column-wise:
+
+.. code-block:: python
+
+   M = np.stack((x, np.ones_like(x)), axis=1)
+
+:math:`p` is less trivial, since it the vector :math:`\theta`, shown in
+:eq:`sin-theta`. This computation assumes that we already have estimates for
+:math:`a_1`, :math:`b_1`, :math:`c_1` and :math:`\omega_1` stored in the
+variables ``a1``, ``b1``, ``c1`` and ``omega1`` from the previous step in the
+algorithm:
+
+.. code-block:: python
+
+   rho1 = np.hypot(c1, b1)
+   phi1 = np.arctan2(c1, b1)
+
+   f = y - a1
+   dis = rho**2 - f**2
+   m = (dis >= 0)
+   Phi = np.arctan(np.divide(f, np.sqrt(dis, where=m), where=m), where=m)
+   np.copysign(np.pi / 2.0, f, where=~m, out=Phi)
+
+   kk = np.round((omega1 * self.x + phi1) / np.pi)
+   theta = (-1)**kk * Phi + np.pi * kk
+
+   p = theta
+
+Due to limitations in numpy, ``kk`` must be a floating-point datatype for the
+expression ``(-1)**kk`` to work properly. Any negative values in ``kk`` would
+raise ``ValueError: Integers to negative integer powers are not allowed.``
+
+.. _sin-step3-mat:
+
+Final Optimization of Sinusoid Once Frequency is Found
+======================================================
+
+The final optimization step is presented in :ref:`reei3-sec6`, in equation
+:eq:`sin-lsq3`. This equation consitutes the third step in the complete
+process summarized in :ref:`reei3-appendix1` and detailed in
+:ref:`reei3-appendix2`.
+
+We assume that the optimized value :math:`omega_2` is stored in the variable
+``omega2`` to compute :math:`M`:
+
+.. code-block:: python
+
+    t = omega2 * x
+    M = np.stack((np.ones_like(x), np.sin(t), np.cos(t)), axis=-1)
+
+:math:`p` is just the vector of :math:`y` values:
 
 .. code-block:: python
 

@@ -38,6 +38,22 @@ img.math {
     text-align: center;
 }
 
-.data-table {
+.data-table, .data-table-brk {
     caption-side: bottom;
+}
+
+.data-table-brk th {
+    text-align: center;
+}
+
+.data-table-brk td + td, .data-table-brk th + th {
+    color: blue;
+}
+
+.data-table-brk td + td + td, .data-table-brk th + th + th {
+    color: red;
+}
+
+.data-table-brk td + td + td + td, .data-table-brk th + th + th + th {
+    color: black;
 }

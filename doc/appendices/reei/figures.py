@@ -108,9 +108,9 @@ def ylabel(ax, label, adjust=50, yloc=1.0, va='center'):
     )
 
 
-def annotate(ax, text, xy, xytext, fs=14):
-    ax.annotate(text, xy=xy, xytext=xytext, fontsize=fs,
-                arrowprops=dict(facecolor='k', arrowstyle='->'))
+def annotate(ax, text, xy, xytext, fs=14, color='k'):
+    ax.annotate(text, xy=xy, xytext=xytext, fontsize=fs, color=color,
+                arrowprops=dict(color=color, arrowstyle='->'))
 
 
 def save_fig(name, fig):
@@ -631,7 +631,7 @@ class Sinusoid:
 
     @classmethod
     def fit1(cls, x, y):
-        r"""
+        """
         Integral-only fitting function.
         """
         x, y = map(np.asfarray, (x, y))
@@ -648,7 +648,7 @@ class Sinusoid:
         (A1, B1, C1, D1), *_ = lstsq(M, y, overwrite_a=True, overwrite_b=False)
 
         x0 = cls.x[0]
-        omega = np.sqrt(-A1)
+        omega = np.sqrt(-A1) if A1 <= 0 else np.nan
         a = 2 * B1 / omega**2
         p = B1 * x0**2 + C1 * x0 + D1 - a
         q = (C1 + 2 * B1 * x0) / omega
@@ -657,6 +657,43 @@ class Sinusoid:
         c = p * np.cos(t) - q * np.sin(t)
         return (a, b, c, omega)
 
+    @classmethod
+    def fit2(cls, x, y):
+        """
+        Second order fit using inverse tangent.
+        """
+        a1, b1, c1, omega1 = cls.fit1(x, y)
+        if np.isnan(a1):
+            return (np.nan,) * 4
+
+        rho1 = np.hypot(c1, b1)
+        phi1 = np.arctan2(c1, b1)
+
+        Phi = cls.atan_x(y - a1, rho1)
+        kk = np.round((omega1 * x + phi1) / np.pi)
+
+        theta = (-1)**kk * Phi + np.pi * kk
+        M = np.stack((x, np.ones_like(x)), axis=-1)
+
+        (omega2, phi2), *_ = lstsq(M, theta,
+                                   overwrite_a=True, overwrite_b=True)
+        a2 = a1
+        b2 = rho1 * np.cos(phi2)
+        c2 = rho1 * np.sin(phi2)
+
+        return (a2, b2, c2, omega2)
+
+    @classmethod
+    def fit3(cls, x, y):
+        """
+        Third order fit using the classical approach.
+        """
+        a2, b2, c2, omega2 = cls.fit2(x, y)
+        t = omega2 * x
+        M = np.stack((np.ones_like(x), np.sin(t), np.cos(t)), axis=-1)
+        fit3, *_ = lstsq(M, y, overwrite_a=True)
+        return tuple(fit3) + (omega2,)
+
     @staticmethod
     def atan_x(f, rho):
         r"""
@@ -664,11 +701,11 @@ class Sinusoid:
         for :math:`\rho^2 > f^2`. In all other cases, returns
         :math:`\frac{\pi}{2} with the same sign as :math:`f`.
         """
-        out = np.empty_like(f)
-        op = rho**2 - f**2
-        mask = (op > 0)
-        out[mask] = np.arctan(f[mask] / np.sqrt(op[mask]))
-        out[~mask] = np.copysign(np.pi / 2.0, f[~mask])
+        dis = rho**2 - f**2
+        m = (dis >= 0)
+        out = np.arctan(np.divide(f, np.sqrt(dis, where=m), where=m), where=m)
+        np.copysign(np.pi / 2.0, f, where=~m, out=out)
+
         return out
 
     @classmethod
@@ -699,12 +736,17 @@ class Sinusoid:
         f = y - a
         return cls.atan_x(f, rho)
 
-    def gen_omega_cdf(self, tx, ns=None, x_rand=True, y_sigma=0.0, omega=1,
-                      samp=10000):
+    def gen_omega_cdf(self, tx, fit, ns=None, x_rand=True, y_sigma=0.0,
+                      omega=1, samp=10000, an=None):
         """
         Generate a figure and table with CDFs for each number of
         points-per-cycle in `ns`.
         """
+        def unpack_tx(tx):
+            if isinstance(tx, tuple):
+                return tx
+            return tx, 0.8
+
         if ns is None:
             ns = [8, 10, 12, 15, 20, 50]
         ns = np.array(ns)
@@ -719,8 +761,11 @@ class Sinusoid:
         xlabel(ax, r'$\frac{{\omega_{}}}{{\omega_e}}$'.format(omega))
         ylabel(ax, '$P$')
 
-        ax.text(0.5 * sum(tx[-2:]), 0.9, '$n_p =$',
-                fontsize=8, va='top', ha='left')
+        if an is None:
+            ax.text(0.5 * sum(tx[-2:]), 0.9, '$n_p =$',
+                    fontsize=8, va='top', ha='left')
+        else:
+            annotate(ax, '$n_p$', unpack_tx(tx[0]), an, fs=8)
 
         for p, t in zip(ns, tx):
             x = np.random.rand(samp, p)
@@ -728,7 +773,7 @@ class Sinusoid:
             y = np.sin(omega_e * x) + np.random.normal(loc=0.0, scale=y_sigma,
                                                        size=x.shape)
             # TODO: This is a good usecase for multiple simultaneous fits.
-            ratios = [self.fit1(*k)[-1] for k in zip(x, y)]
+            ratios = [fit(*k)[-1] for k in zip(x, y)]
             ratios = np.array([f / omega_e for f in ratios if not np.isnan(f)])
 
             pdf, bins = np.histogram(ratios, bins=samp // 20, density=True)
@@ -738,7 +783,8 @@ class Sinusoid:
             wm.append(np.interp(0.5, cdf, bins))
 
             ax.plot(bins, cdf, lw=0.5)
-            ax.text(t, 0.8, '${}$'.format(p), fontsize=8, va='top', ha='left')
+            t, u = unpack_tx(t)
+            ax.text(t, u, '${}$'.format(p), fontsize=8, va='top', ha='left')
 
         wm = np.array(wm)
 
@@ -753,7 +799,7 @@ class Sinusoid:
         fix_plot_zeros(ax)
 
         return fig, gen_table(
-            cols=[ns, wm], specs=['{:d}', '{:0.3f}'],
+            cols=[ns[:len(wm)], wm], specs=['{:d}', '{:0.3f}'],
             heading=[
                 ':math:`n_p`',
                 r':math:`\frac{{\omega_{{{}m}}}}{{\omega_e}}`'.format(omega)
@@ -908,7 +954,9 @@ class Sinusoid:
         on :math:`\omega_1 / \omega_e` for the random, non-dispersive
         sinusoid in the paper.
         """
-        return self.gen_omega_cdf(tx=[1.185, 1.125, 1.09, 1.06, 1.03, 1.01])
+        return self.gen_omega_cdf(
+            fit=self.fit1, tx=[1.185, 1.125, 1.09, 1.06, 1.03, 1.01]
+        )
 
     def sin_rand_d(self):
         r"""
@@ -916,8 +964,9 @@ class Sinusoid:
         on :math:`\omega_1 / \omega_e` for the random, dispersive
         sinusoid in the paper.
         """
-        return self.gen_omega_cdf(tx=[1.21, 1.14, 1.1, 1.07, 1.04, 1.02],
-                                  y_sigma=0.1)
+        return self.gen_omega_cdf(
+            fit=self.fit1, tx=[1.21, 1.14, 1.1, 1.07, 1.04, 1.02], y_sigma=0.1
+        )
 
     def sin_saw(self):
         """
@@ -963,13 +1012,81 @@ class Sinusoid:
             ]
         )
 
+    def sin_rand_nd2(self):
+        r"""
+        Generates a figure and table showing the effects of :math:`n_k`
+        on :math:`\omega_2 / \omega_e` for the random, non-dispersive
+        sinusoid in the paper.
+        """
+        return self.gen_omega_cdf(
+            fit=self.fit2, omega=2, tx=[
+                (1.06, 0.8), (1.04, 0.82), (1.03, 0.84), (1.02, 0.86),
+                (1.01, 0.88)
+            ], an=(1.08, 0.75)
+        )
+
+    def sin_rand_d2(self):
+        r"""
+        Generates a figure and table showing the effects of :math:`n_k`
+        on :math:`\omega_2 / \omega_e` for the random, dispersive
+        sinusoid in the paper.
+        """
+        return self.gen_omega_cdf(
+            fit=self.fit2, omega=2, tx=[1.21, 1.14, 1.1, 1.07, 1.04, 1.01],
+            y_sigma=0.1
+        )
+
+    def sin_final(self):
+        """
+        Generates a figure showing the final, and all intermediate
+        steps, in the optimization.
+        """
+        fit1 = self.fit1(self.x, self.y)
+        fit2 = self.fit2(self.x, self.y)
+        fit3 = self.fit3(self.x, self.y)
+
+        fig, ax = format_plot(majx=1, minx=1, majy=1, miny=1)
+        xlabel(ax, '$x$')
+        ylabel(ax, '$y$')
+
+        ax.plot(self.x, self.y, '+', markersize=6)
+        ax.plot(self.domain, self.model(self.domain, *self.exact),
+                '--', lw=0.5)
+        ax.plot(self.domain, self.model(self.domain, *fit1), 'b-', lw=0.5)
+        ax.plot(self.domain, self.model(self.domain, *fit2), 'r-', lw=0.5)
+        ax.plot(self.domain, self.model(self.domain, *fit3), 'k-', lw=0.5)
+
+        annotate(ax, '$(1)$', (0.45, self.model(0.45, *fit1)), (0.2, 1.22),
+                 fs=8, color='b')
+        annotate(ax, '$(2)$', (0.9, self.model(0.9, *fit2)), (0.85, 1.22),
+                 fs=8, color='r')
+        annotate(ax, '$(3)$', (1.15, self.model(1.15, *fit3)), (1.5, 1.22),
+                 fs=8, color='k')
+
+        fix_plot_zeros(ax)
+
+        def rearrange(fit):
+            a, b, c, omega = fit
+            return [omega, a, b, c, np.hypot(c, b), np.arctan2(c, b)]
+
+        labels = [
+            r':math:`\omega`', ':math:`a`', ':math:`b`', ':math:`c`',
+            r':math:`\rho`', r':math:`\varphi`',
+        ]
+        return fig, gen_table(
+            cols=[labels, rearrange(fit1), rearrange(fit2), rearrange(fit3)],
+            specs=['{}', '{:0.6g}', '{:0.6g}', '{:0.6g}'],
+            heading=['', ':math:`(1)`', ':math:`(2)`', ':math:`(3)`']
+        )
+
 
 sinusoid = Sinusoid()
 func_list = [
     gauss_pdf, gauss_cdf, erf_test, exp, weibull_cdf,
     sinusoid.sin_exact, sinusoid.sin_nomega, sinusoid.sin_int,
     sinusoid.sin_eq_nd, sinusoid.sin_rand_nd, sinusoid.sin_rand_d,
-    sinusoid.sin_saw,
+    sinusoid.sin_saw, sinusoid.sin_rand_nd2, sinusoid.sin_rand_d2,
+    sinusoid.sin_final,
 ]
 
 

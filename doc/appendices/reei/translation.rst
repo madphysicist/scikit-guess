@@ -1777,11 +1777,11 @@ It is pointless to reiterate the partial derivatives with respect to :math:`A`,
                sin(\omega \; x_1)
    \end{cases}
 
-The result set for our sample data is displayed further along in
-:numref:`sin-j`. The numerical values of :math:`\omega_1`, :math:`a_1`,
-:math:`b_1` and :math:`c_1` are shown in :numref:`sin-tj`. To compare the
-graphical and numerical representations with resepect to the data points
-:math:(x_k, y_k), refer to the curve and table column labeled (1).
+The results for our sample data are displayed further along in :numref:`sin-j`.
+The numerical values of :math:`\omega_1`, :math:`a_1`, :math:`b_1` and
+:math:`c_1` are shown in :numref:`sin-tj`. To compare the graphical and
+numerical representations with resepect to the data points
+:math:`(x_k, y_k)`, refer to the curve and table column labeled :math:`(1)`.
 
 Incidentally, it is interesting to compare the results of numerical
 integrations :eq:`sin-int-int1` and :eq:`sin-int-int2` with respect to
@@ -1922,11 +1922,10 @@ data in :numref:`reei-sin-rand-nd-data`).
    Place table next to figure if possible: ``.figure {float: left;}``?
 
 
-
 .. _reei3-sec5:
 
-5. Instances Where :math:`a` and :math:`\rho` Parameters Are Approximately Known
-================================================================================
+5. Further Optimizations Based on Estimates of :math:`a` and :math:`\rho`
+=========================================================================
 
 We now shift our interest to a function :math:`y = f(x)`, expressed in the form
 :eq:`sin-fx2`. The inverse function is an arcsine, but can also be expressed as
@@ -2014,11 +2013,125 @@ points :math:`(x_k, \theta_k)` represented by squares, some of which coincide.
 
    .. include:: /generated/reei/sin-saw-data.rst
 
+It is clear that the points :math:`(x_k, \theta_k)` tend towards a straight
+line, which makes it possible to perform a linear regression to obtain
+:math:`\omega_2` from the slope and :math:`\varphi_2` from the x-intercept.
+Once we have computed :math:`\theta_k` from :eq:`sin-theta`, the result can be
+obtained in the usual manner:
+
+.. math::
+   :label: sin-lsq2
+
+   \begin{bmatrix} \omega_2 \\ \varphi_2 \end{bmatrix} =
+   \begin{bmatrix} \sum (x_k)^2 & \sum x_k \\ \sum x_k & n \end{bmatrix}^{-1}
+   \begin{bmatrix} \sum \theta_k x_k \\ \sum \theta_k \end{bmatrix}
+
+Completed by:
+
+.. math::
+   :label: sin-param2
+
+   b_2 = \rho_2 \; cos(\varphi_2) \quad ; \quad c_2 = \rho_2 \; sin(\varphi_2)
+
+The numerical results are summarized in :numref:`sin-tj` (in the table column
+labeled :math:`(2)`), and the curve is shown in :numref:`sin-tj`.
+
+The performance measured in terms of the optimization of :math:`\omega` is
+shown in :numref:`reei-sin-rand-nd2-plot` and :numref:`reei-sin-rand-d2-plot`.
+Note the improvements in the optimized median value, :math:`\omega_m`, shown in
+:numref:`reei-sin-rand-nd2-data` and :numref:`reei-sin-rand-d2-data`, which was
+the objective of this phase of the algorithm.
+
+.. figure:: /generated/reei/sin-rand-nd2-plot.png
+   :name: reei-sin-rand-nd2-plot
+
+   Cumulative distributions of :math:`\omega_2` (random distribution of
+   :math:`x_k`, non-dispersed :math:`y_k`).
+
+.. todo:: Fix the broken figure
+
+.. table:: Median values of distributions shown in \
+   :numref:`reei-sin-rand-nd2-plot`.
+   :name: reei-sin-rand-nd2-data
+   :class: data-table
+
+   .. include:: /generated/reei/sin-rand-nd2-data.rst
+
+.. todo:: Fix the broken table
+
+.. figure:: /generated/reei/sin-rand-d2-plot.png
+   :name: reei-sin-rand-d2-plot
+
+   Cumulative distributions of :math:`\omega_2` with randomly distributed \
+   ordinates such that :math:`(\sigma_2/\rho_e = 0.1)`
+
+.. todo:: Fix the broken figure
+
+.. table:: Median values of distributions shown in \
+   :numref:`reei-sin-rand-d2-plot`.
+   :name: reei-sin-rand-d2-data
+   :class: data-table
+
+   .. include:: /generated/reei/sin-rand-d2-data.rst
+
+.. todo:: Fix the broken table
+
 
 .. _reei3-sec6:
 
-6. Results of a Complete Optimization
-=====================================
+6. Final Steps and Results
+==========================
+
+As soon as we have a good approximation (:math:`\omega_2`) of :math:`\omega`,
+the classical method shown in :ref:`Section 2 <reei3-sec2>` can be applied:
+
+.. math::
+   :label: sin-lsq3
+
+   \begin{bmatrix} a_3 \\ b_3 \\ c_3 \end{bmatrix} =
+   \begin{bmatrix}
+       n & \sum \text{sin}(\omega_2 \; x_k) &
+           \sum \text{cos}(\omega_2 \; x_k) \\
+       \sum \text{sin}(\omega_2 \; x_k) & \sum \text{sin}^2(\omega_2 \; x_k) &
+           \sum \text{sin}(\omega_2 \; x_k) \; \text{cos}(\omega_2 \; x_k) \\
+       \sum \text{cos}(\omega_2 \; x_k) &
+           \sum \text{sin}(\omega_2 \; x_k) \; \text{cos}(\omega_2 \; x_k) &
+           \sum \text{cos}^2(\omega_2 \; x_k)
+    \end{bmatrix}^{-1}
+    \begin{bmatrix}
+        \sum y_k \\
+        \sum y_k \; \text{sin}(\omega_2 \; x_k) \\
+        \sum y_k \; \text{cos}(\omega_2 \; x_k)
+    \end{bmatrix}
+
+This allows us to perform a final optimization of the dimensional parameters of
+the sinusoid, which was not possible in the previous step because :math:`a_2`
+and :math:`\rho_2` were fixed. The final result is presented in :numref:`sin-j`
+The numerical results are summarized in :numref:`sin-tj` (in the table column
+labeled :math:`(3)`). The intermediate results (sinusoids :math:`(1)` and
+:math:`(2)`, along with their respective parameters) are reported in the same
+figure and table.
+
+.. figure:: /generated/reei/sin-final-plot.png
+   :name: reei-sin-final-plot
+
+   Regression results for a sample sinusoid.
+
+.. table:: Parameters of the results shown in :numref:`reei-sin-final-plot`
+   :name: reei-sin-final-data
+   :class: data-table-brk
+
+   .. include:: /generated/reei/sin-final-data.rst
+
+This figure might give the appearance that the prodedure is apparently
+converging the solid curves with the dotted one with successive approximations.
+However, attempting such an iterative approach would have no effect: repeating
+the calculations would not modify the final result because it is based on the
+initial numerical integrations, whose inherent inaccuracies will not decrease
+with further iterations.
+
+To form an objective opinion of the properties of this method, it is necessary
+to sample a large number of simulations under different conditions.
 
 
 .. _reei3-sec7:
