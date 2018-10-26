@@ -178,8 +178,8 @@ calculate approximations for the following derivatives and integrals with
 
     .. math::
 
-       D_k = \frac{g_{k+1}y_{k+1} - g_{k-1}y_{k-1}}{x_{k+1} - x_{k-1}} \simeq
-       \left(\frac{d}{dx} g(x)y(x) \right)_{\left(x = x_k \right)}
+       D_k = \frac{g_{k+1} y_{k+1} - g_{k-1} y_{k-1}}{x_{k+1} - x_{k-1}} \simeq
+       \left(\frac{d}{dx} g(x) y(x) \right)_{\left( x = x_k \right)}
 
     .. math::
 
@@ -234,7 +234,7 @@ a differential and/or integral equation of the form:
 
 .. math::
 
-   y(x) = A\Phi(x) + B\int G(x)y(x)dx + C\int\int H(x)y(x)dx^2 + ...
+   y(x) = A \; \Phi(x) + B\int G(x)y(x)dx + C\int\int H(x)y(x)dx^2 + ...
         + \alpha\frac{d}{dx}g(x)y(x) + \beta\frac{d^2}{dx^2}h(x)y(x) + ...
 
 with :math:`\Phi(x), G(x), H(x), ..., g(x), h(x), ...` predetermined functions
@@ -245,7 +245,7 @@ approximate values are then respectively (with
 
 .. math::
 
-   D_k = \frac{g_{k+1}y_{k+1} - g_{k-1}y{k-1}}{x_{k+1} - x_{k-1}}
+   D_k = \frac{g_{k+1}y_{k+1} - g_{k-1}y_{k-1}}{x_{k+1} - x_{k-1}}
 
 .. math::
 
@@ -274,8 +274,8 @@ therefore work with the sum of squared differences:
     .. math::
 
        \sum_{k=1}^n \varepsilon_k^2 =
-           \sum_{k=1}^n \left(-y_k + A \Phi_k + B S_k + C SS_k + ... +
-           \alpha D_k + \beta DD_k + ...\right)^2
+           \sum_{k=1}^n \left( -y_k + A \; \Phi_k + B \; S_k + C \; SS_k + ...
+           + \alpha \; D_k + \beta \; DD_k + ... \right)^2
 
 The relationship is linear with respect to
 :math:`A, B, C, ..., \alpha, \beta, ...`. We have therefore returned to
@@ -283,7 +283,7 @@ classical linear regression, which allows us to calculate the optimal values of
 :math:`A_0, B_0, C_0, ..., \alpha_0, \beta_0, ...`. Finally, since
 :math:`A, B, C, ..., \alpha, \beta, ...` are known functions of
 :math:`a, b, c, ...`, we must solve the system of equations
-:math:`A(a, b, c, ...) = A_0 ; B(a, b, c, ...) = B_0 ; ... ; \alpha(a, b, c, ...) = \alpha_0 ; \beta(a, b, c, ...) = \beta_0`
+:math:`A(a, b, c, ...) = A_0 \; ; \; B(a, b, c, ...) = B_0 \; ; \; ... \; ; \; \alpha(a, b, c, ...) = \alpha_0 \; ; \; \beta(a, b, c, ...) = \beta_0`
 to obtain the optimal values of the parameters :math:`a, b, c, ...`.
 
 There are some additional considerations that must be taken into account when
@@ -331,7 +331,7 @@ equation:
 
     .. math::
 
-       y(x) = a + b sin(\omega x) + c cos(\omega x)
+       y(x) = a + b \; \text{sin}(\omega \; x) + c \; \text{cos}(\omega \; x)
 
 This function is the solution to the differential equation:
 
@@ -367,8 +367,9 @@ We will consider a probability density function of two parameters,
     .. math::
        :label: gauss-pdf-fx
 
-       f(x) = \frac{1}{\sigma \sqrt{2 \pi}}
-           exp\left(-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2\right)
+       f(x) = \frac{1}{\sigma \sqrt{2 \pi}} \; \text{exp} \left(
+           -\frac{1}{2} \left( \frac{x - \mu}{\sigma} \right)^2
+       \right)
 
 The general notation :math:`y(x)` of the previous sections is replaced with
 :math:`f(x)` here due to the specific nature of this case.
@@ -379,14 +380,15 @@ The integration :eq:`gauss-pdf-int` leads to the integral equation
     .. math::
        :label: gauss-pdf-int
 
-       \int_{x_1}^x \left(t - \mu\right)f(t)dt =
-           -\sigma^2\left(f(x) - f(x_1)\right)
+       \int_{x_1}^x \left( t - \mu \right) f(t)dt =
+           -\sigma^2 \left( f(x) - f(x_1) \right)
 
     .. math::
        :label: gauss-pdf-eq
 
        \begin{cases}
-           f(x) - f(x_1) = A \int_{x_1}^x f(t)dt + B \int_{x_1}^x t f(t)dt \\
+           f(x) - f(x_1) = A \int_{x_1}^x f(t)dt +
+               B \int_{x_1}^x t \; f(t)dt \\
            \text{with:} \quad A = \frac{\mu}{\sigma^2} \quad
            \text{and} \quad B = -\frac{1}{\sigma^2}
        \end{cases}
@@ -425,7 +427,9 @@ the squares of the residuals:
        :label: gauss-pdf-resid
 
        \sum_{k=1}^n \varepsilon_k^2 =
-           \sum_{k=1}^n \left(-\left(f_k - f_1\right) + A S_k + B T_k\right)^2
+           \sum_{k=1}^n \left(
+               -\left( f_k - f_1 \right) + A \; S_k + B \; T_k
+           \right)^2
 
 Notice that if we had chosen a different lower limit for the integration than
 :math:`x_1`, it would have changed not only the value of :math:`f_1`, but also
@@ -562,8 +566,8 @@ intervals.
 
 .. _reei1-sec4:
 
-4. Comments
-===========
+4. Discussion
+=============
 
 It would be unreasonable to imagine that the method presented here could
 replace currently used methods, implemented in commercial software, and with
@@ -607,16 +611,16 @@ Appendix 1: Review of Linear Regression
 =======================================
 
 When the function that we seek to optimize, :math:`y = F(a, b, c, ...; x)`, can
-be written in the form :math:`y = a f(x) + b g(x) + c h(x) + ...`, according to
-the number of parameters :math:`a, b, c, ...` and with the functions
-:math:`f(x), g(x), h(x), ...` being known, the process is linear with respect
-to the optimization parameters.
+be written in the form :math:`y = a \; f(x) + b \; g(x) + c \; h(x) + ...`,
+according to the number of parameters :math:`a, b, c, ...` and with the
+functions :math:`f(x), g(x), h(x), ...` being known, the algorithm is linear
+with respect to the optimization parameters.
 
 Even more generally, if the function :math:`y = F(a, b, c, ...; x)` can be
-transformed into :math:`F(x, y) = A f(x, y) + B g(x, y) + C h(x, y)` with known
-functions
+transformed into :math:`F(x, y) = A \; f(x, y) + B \; g(x, y) + C \; h(x, y)`
+with known functions
 :math:`F(x, y), f(x, y), g(x, y), h(x, y), ..., A(a, b, c, ...), B(a, b, c, ...), C(a, b, c, ...), ...`
-the process is again linear with respect to the coefficients :math:`A`,
+the algorithm is again linear with respect to the coefficients :math:`A`,
 :math:`B` and :math:`C`, even if it is not linear with respect to
 :math:`a, b, c, ...`. But it always reverts to a linear regression. The method
 of "least squares" effectively consists of finding the minimum of:
@@ -625,10 +629,11 @@ of "least squares" effectively consists of finding the minimum of:
 
        \begin{cases}
            \varepsilon^2_{\left(A, B, C, ...\right)} =
-               \sum_{k=1}^n \left(F_k -
-                   \left(A f_k + B g_k + C h_k + ...\right)\right)^2 \\
-           F_k \equiv F(x_k, y_k) ; f_k \equiv f(x_k, y_k) ;
-               g_k \equiv g(x_k, y_k) ; h_k \equiv h(x_k, y_k)
+               \sum_{k=1}^n \left(
+                   F_k - \left( A \; f_k + B \; g_k + C \; h_k + ... \right)
+               \right)^2 \\
+           F_k \equiv F(x_k, y_k) \; ; \; f_k \equiv f(x_k, y_k) \; ; \;
+               g_k \equiv g(x_k, y_k) \; ; \; h_k \equiv h(x_k, y_k)
        \end{cases}
 
 The partial derivatives with respect to :math:`A, B, C, ...` determine a system
@@ -637,15 +642,24 @@ of equations whose solutions, :math:`A_0, B_0, C_0, ...` are optimal:
     .. math::
 
        \begin{cases}
-           \left(\frac{\partial \left(\varepsilon^2\right)}{\partial A}\right)
-                   _{A_0, B_0, C_0, ...} = -\sum_{k=1}^n \left(F_k - \left(
-               A_0 f_k + B_0 g_k + C_0 h_k, ...\right)\right) f_k = 0 \\
-           \left(\frac{\partial \left(\varepsilon^2\right)}{\partial B}\right)
-                   _{A_0, B_0, C_0, ...} = -\sum_{k=1}^n \left(F_k - \left(
-               A_0 f_k + B_0 g_k + C_0 h_k, ...\right)\right) g_k = 0 \\
-           \left(\frac{\partial \left(\varepsilon^2\right)}{\partial C}\right)
-                   _{A_0, B_0, C_0, ...} = -\sum_{k=1}^n \left(F_k - \left(
-               A_0 f_k + B_0 g_k + C_0 h_k, ...\right)\right) h_k = 0 \\
+           \left(
+               \frac{\partial \left(\varepsilon^2 \right)}{\partial A}
+           \right)_{A_0, B_0, C_0, ...} = -\sum_{k=1}^n \left(
+               F_k - \left( A_0 \; f_k + B_0 \; g_k + C_0 \; h_k, ... \right)
+           \right) f_k = 0 \\
+
+           \left(
+               \frac{\partial \left( \varepsilon^2 \right)}{\partial B}
+           \right)_{A_0, B_0, C_0, ...} = -\sum_{k=1}^n \left(
+               F_k - \left( A_0 \; f_k + B_0 \; g_k + C_0 \; h_k, ... \right)
+           \right) g_k = 0 \\
+
+           \left(
+               \frac{\partial \left( \varepsilon^2 \right)}{\partial C}
+           \right)_{A_0, B_0, C_0, ...} = -\sum_{k=1}^n \left(
+               F_k - \left( A_0 \; f_k + B_0 \; g_k + C_0 \; h_k, ... \right)
+           \right) h_k = 0 \\
+
            ...
        \end{cases}
 
@@ -706,8 +720,10 @@ We consider the cumulative Gaussian distribution function of two parameters,
     .. math::
        :label: gauss-cdf-fx
 
-       F(x) = \frac{1}{\sqrt{2 \pi} \sigma} \int_{-\inf}^x exp\left(
-           -\frac{1}{2}\left(\frac{t - \mu}{\sigma}\right)^2\right)dt
+       F(x) = \frac{1}{\sqrt{2 \pi} \; \sigma}
+           \int_{-\infty}^x \text{exp} \left(
+               -\frac{1}{2} \left( \frac{t - \mu}{\sigma}\right)^2
+           \right) dt
 
 An example is shown in :numref:`reei-gauss-cdf-plot` (the dashed curve).
 
@@ -735,18 +751,21 @@ We can write :math:`F(x)` equivalently in terms of the Erf funcion, pronounced
     .. math::
        :label: gauss-cdf-erf
 
-       erf(z) = \frac{2}{\sqrt{\pi}} \int_0^z exp \left( -\tau^2 \right) d\tau
+       \text{erf}(z) = \frac{2}{\sqrt{\pi}}
+           \int_0^z \text{exp} \left( -\tau^2 \right) d\tau
 
-The changing variable :math:`t = \mu + \sqrt{2}\sigma\tau in :eq:`gauss-cdf-fx`
-gives the relationship:
+The change of variable :math:`t = \mu + \sqrt{2} \; \sigma \; \tau` in
+:eq:`gauss-cdf-fx` gives the relationship:
 
     .. math::
        :label: gauss-cdf-fx2
 
        F(x) = \frac{1}{\sqrt{\pi}}
            \int_{-\infty}^{\frac{x - \mu}{\sqrt{2} \sigma}}
-               exp \left( -\tau^2 \right) d\tau = \frac{1}{2} +
-           \frac{1}{2} erf \left( \frac{x - \mu}{\sqrt{2} \sigma} \right)
+               \text{exp} \left( -\tau^2 \right) d\tau =
+           \frac{1}{2} + \frac{1}{2} \text{erf} \left(
+               \frac{x - \mu}{\sqrt{2} \sigma}
+           \right)
 
 The inverse function to Erf is designated Erf\ :sup:`(-1)`, or Erfinv or
 argErf. We will use the last notation.
@@ -756,7 +775,7 @@ Thus, the inverse relationship to :eq:`gauss-cdf-fx2` can be written:
     .. math::
        :label: gauss-cdf-inv
 
-       \frac{x - \mu}{\sqrt{2} \sigma} = argErf(2F(x) - 1)
+       \frac{x - \mu}{\sqrt{2} \sigma} = \text{argErf}(2F(x) - 1)
 
 Which in turn leads to a linear relationship in :math:`A` and :math:`B`,
 defined by:
@@ -764,7 +783,8 @@ defined by:
     .. math::
        :label: gauss-cdf-ab
 
-       y(x) = argErf(2F(x) - 1) = Ax + B \quad \begin{cases}
+       y(x) = \text{argErf}(2F(x) - 1) = A \; x + B \quad
+       \begin{cases}
            A = \frac{1}{\sqrt{2} \sigma} \\
            B = -\frac{\mu}{\sqrt{2} \sigma}
        \end{cases}
@@ -775,7 +795,7 @@ points :math:`(x_k, y_k)` with :math:`y_k` previously calculated from:
     .. math::
        :label: gauss-cdf-y
 
-       y_k = argErf(2F_k - 1)
+       y_k = \text{argErf}(2F_k - 1)
 
 The optimal values of :math:`A_1` and :math:`B_1` are the solutions to the
 following system:
@@ -794,7 +814,7 @@ following system:
        \end{bmatrix}
 
 with the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
-:math:`sigma_1` and :math:`mu_1` from :eq:`gauss-cdf-ab`:
+:math:`\sigma_1` and :math:`\mu_1` from :eq:`gauss-cdf-ab`:
 
     .. math::
        :label: gauss-cdf-solve
@@ -873,29 +893,29 @@ significant digits of precision. We use the following series expansion:
 
     .. math::
 
-       Erf(x) \simeq \frac{2x}{\sqrt{\pi}}
+       \text{Erf}(x) \simeq \frac{2x}{\sqrt{\pi}}
            \sum_{k=0}^{30} \frac{(-1)^k x^{2k}}{k!(2k + 1)}
        \begin{cases}
            \left| x \right| < 2.7 \\
-           \left| Erf(x) \right| < 0.999866
+           \left| \text{Erf}(x) \right| < 0.999866
        \end{cases}
 
 completed by the asymptotic expansion:
 
 .. math::
 
-   Erf(x) \simeq \pm 1 - \frac{e^{-x^2}}{x \sqrt{\pi}}
+   \text{Erf}(x) \simeq \pm 1 - \frac{e^{-x^2}}{x \sqrt{\pi}}
        \sum_{k=0}^5 \frac{(-1)^k (2k + 1)!!}{x^{2k}}
    \begin{cases}
        + \enspace \text{if} \enspace x > 2.7 \enspace ;
            \enspace - \enspace \text{if} \enspace x < 2.7 \\
        (2k + 1)!! = 1 * 3 * ... * (2k + 1) \\
-       0.999865 < \left| Erf(x) \right| < 1
+       0.999865 < \left| \text{Erf}(x) \right| < 1
    \end{cases}
 
 The inverse function argErf(y) is calculated using Newton-Raphson's method. The
 result is obtained to at least eight significant digits of precision if
-:math:`\left| y \right| < 0.999999999998 \rightarrow \left| argErf(y) \right| < 5`.
+:math:`\left| y \right| < 0.999999999998 \rightarrow \left| \text{argErf}(y) \right| < 5`.
 Outside that domain, the result is insignificant.
 
 The following listing is written in Pascal, and uses only the most elementary
@@ -1010,12 +1030,12 @@ The following two examples of regression will be treated simultaneously:
     .. math::
        :label: pow-fx
 
-       y = a + b X^c \quad (X > 0)
+       y = a + b \; X^c \quad (X > 0)
 
     .. math::
        :label: exp-fx
 
-       y = a + b \; exp(c \; x)
+       y = a + b \; \text{exp}(c \; x)
 
 Indeed, if we take formula :eq:`pow-fx`, with data points
 :math:`(X_1, y_1), ..., (X_k, y_k), ..., (X_n, y_n)`, we can pre-calculate
@@ -1023,18 +1043,21 @@ Indeed, if we take formula :eq:`pow-fx`, with data points
     .. math::
        :label: exp-pow-conv
 
-       x_k = ln(X_k)
+       x_k = \text{ln}(X_k)
 
 which turns into :eq:`exp-fx` with the data points
 :math:`(x_1, y_1), ..., (x_k, y_k), ..., (x_n, y_n)`.
 
 Various other equations can be transformed into these two formulae:
 
-- The equation :math:`y = a + b' exp(c(x - \mu))` is identical to :eq:`exp-fx`
-  by substituting :math:`b = b' exp(-c \mu)`.
-- The equation :math:`y = \alpha + \beta \; ln(x - \gamma)` turns into
-  :eq:`exp-fx` when we invert the :math:`x` and :math:`y` values. This
+- The equation :math:`y = a + b' \; \text{exp}(c \; (x - \mu))` is identical to
+  :eq:`exp-fx` with the substitution :math:`b = b' \; \text{exp}(-c \; \mu)`.
+- The equation :math:`y = \alpha + \beta \; \text{ln}(x - \gamma)` turns into
+  :eq:`exp-fx` when we interchange the :math:`x` and :math:`y` values. This
   motivates the regression of logarithmic functions of three parameters.
+
+  .. todo:: Add to scikit
+
 - And so on. In particular, the case of the Weibull function of three
   parameters will be treated in :ref:`Section 3 <reei2-sec3>`.
 
@@ -1044,8 +1067,8 @@ article :ref:`reei1-paper`.
 
 .. _reei2-sec2:
 
-2. Regression of Functions of the Form :math:`y(x) = a + b \; exp(c \; x)`
-==========================================================================
+2. Regression of Functions of the Form :math:`y(x) = a + b \; \text{exp}(c \; x)`
+=================================================================================
 
 Integating the function :math:`y(x)` results in:
 
@@ -1053,22 +1076,22 @@ Integating the function :math:`y(x)` results in:
        :label: exp-int1
 
        \int_{x1}^x y(u)du = a \; (x - x_1) +
-           \frac{b}{c} \; exp(c x) - \frac{b}{c} \; exp(c x_1)
+           \frac{b}{c} \; \text{exp}(c x) - \frac{b}{c} \; \text{exp}(c x_1)
 
-Replacing :math:`exp(c \; x)` with :eq:`exp-fx`:
+Replacing :math:`\text{exp}(c \; x)` with :eq:`exp-fx`:
 
     .. math::
        :label: exp-int2
 
        \int_{x1}^x y(u)du = a \; (x - x_1) +
-           \frac{1}{c} \; (y - a) - \frac{b}{c} \; exp(c \; x_1)
+           \frac{1}{c} \; (y - a) - \frac{b}{c} \; \text{exp}(c \; x_1)
 
 From which we have the integral equation to be used:
 
     .. math::
        :label: exp-eq
 
-       y - (a + b \; exp(c \; x_1)) =
+       y - (a + b \; \text{exp}(c \; x_1)) =
            -a \; c \; (x - x_1) + c \int_{x_1}^x y(u)du
 
 The numerical approximations of the integral for :math:`x = x_k` are calculated
@@ -1120,7 +1143,7 @@ the usual manner (with the convention that :math:`\sum \equiv \sum_{k=1}^n`):
        \end{bmatrix}^{-1}
        \begin{bmatrix}
            \sum (y_k - y_1)(x_k - x_1) \\
-           \sum (y_k - y_1) S_k
+           \sum (y_k - y_1) \; S_k
        \end{bmatrix}
 
 We the get the optimal values :math:`a_1` and :math:`c_1` according to
@@ -1141,14 +1164,14 @@ computing the regression on both :math:`a` and :math:`b`:
        :label: exp-resid2
 
        \sum_{k=1}^n \varepsilon_k^2 =
-           \sum_{k=1}^n (a + b \; exp(c_1 \; x_k) - y_k)^2
+           \sum_{k=1}^n \left( a + b \; \text{exp}(c_1 \; x_k) - y_k \right)^2
 
-Assigning:
+Setting:
 
     .. math:: 
        :label: exp-param2
 
-       c_2 = c_1 \quad ; \quad \theta_k = exp(c_2 \; x_k)
+       c_2 = c_1 \quad ; \quad \theta_k = \text{exp}(c_2 \; x_k)
 
 the resulting regression is:
 
@@ -1177,11 +1200,11 @@ Here is a summary of the computation:
 
        .. math:: (X_1, y_1), (X_2, y_2), ..., (X_k, y_k), ..., (X_n, y_n)
 
-   - Compute :math:`x_k = ln(X_k)`
+   - Compute :math:`x_k = \text{ln}(X_k)`
 
-   **Data in the case** :math:`y = a + b \; exp(c \; x)`
+   **Data in the case** :math:`y = a + b \; \text{exp}(c \; x)`
 
-       .. math:: (X_1, y_1), (X_2, y_2), ..., (X_k, y_k), ..., (X_n, y_n)
+       .. math:: (x_1, y_1), (x_2, y_2), ..., (x_k, y_k), ..., (x_n, y_n)
 
    - Rank points in order of ascending :math:`x_k`
 
@@ -1218,7 +1241,7 @@ Finally, the result :math:`(a_2, b_2, c_2)` is substituted into equation
 .. figure:: /generated/reei/exp-plot.png
    :name: reei-exp-plot
 
-   A sample regression for the function :math:`y = a + b \; exp(c \; x)`
+   A sample regression for the function :math:`y = a + b \; \text{exp}(c \; x)`
 
 .. table:: Numerical values corresponding to the example in \
    :numref:`reei-exp-plot`.
@@ -1245,7 +1268,7 @@ The Weibull cumulative distribution function of three parameters
     .. math::
        :label: weibull-cdf-fx
 
-       F(t) = 1 - exp\left(
+       F(t) = 1 - \text{exp} \left(
            -\left( \frac{t - \mu}{\beta} \right)^\alpha
        \right)
 
@@ -1259,14 +1282,14 @@ The inverse function of :eq:`weibull-cdf-fx` is:
     .. math::
        :label: weibull-cdf-inv
 
-       t = \mu + \beta \left( -ln(1 - F) \right)^{\frac{1}{\alpha}}
+       t = \mu + \beta \left( -\text{ln}(1 - F) \right)^{\frac{1}{\alpha}}
 
 Setting:
 
     .. math::
        :label: weibull-cdf-subst
 
-       x = ln \left( -ln(1 - F) \right)
+       x = \text{ln} \left( -\text{ln}(1 - F) \right)
 
 and:
 
@@ -1277,7 +1300,7 @@ and:
            \quad c = \frac{1}{\alpha}
 
 We can see immediately that we have transformed the problem into :eq:`exp-fx`,
-shown above: :math:`y = a + b \; exp(c \; x)`.
+shown above: :math:`y = a + b \; \text{exp}(c \; x)`.
 
 The algorithm is deduced immediately as we transpose the notation:
 
@@ -1296,7 +1319,7 @@ The algorithm is deduced immediately as we transpose the notation:
 
    - Rank points in order of ascending :math:`F_k`
 
-   - Compute :math:`x_k = ln\left(-ln(1 - F_k)\right)`
+   - Compute :math:`x_k = \text{ln} \left( -\text{ln}(1 - F_k) \right)`
 
    - Compute :math:`S_k`:
 
@@ -1323,7 +1346,7 @@ The algorithm is deduced immediately as we transpose the notation:
 
    - Obtain :math:`\alpha_c = \frac{1}{B}`
 
-   - Compute :math:`\theta_k = exp(B \; x_k)`
+   - Compute :math:`\theta_k = \text{exp}(B \; x_k)`
 
    - Compute :math:`\beta_c` and :math:`\mu_c`:
      :math:`\begin{bmatrix}\mu_c \\ \beta_c\end{bmatrix} = \begin{bmatrix}n & \sum \theta_k \\ \sum \theta_k & \sum \theta_k^2 \end{bmatrix}^{-1} \begin{bmatrix}\sum t_k \\ \sum t_k \theta_k\end{bmatrix}`
@@ -1331,11 +1354,11 @@ The algorithm is deduced immediately as we transpose the notation:
    **Result:** :math:`\alpha_c`, :math:`\beta_c` and :math:`\mu_c` are the
    approximations of :math:`\alpha`, :math:`\beta` and :math:`\mu`
 
-In graphical representations, it is customary to display :math:`ln(t_k)` as
-the abscissa and :math:`ln(-ln(1 - F_k))` as the ordinate. This is a legacy of
-the graphical linearization method used for the case where :math:`\mu = 0`.
-In order to respect this tradition, we will swap the axes and display
-:math:`ln(t_k)` as the abscissa and :math:`x_k` as the ordinate.
+In graphical representations, it is customary to display :math:`\text{ln}(t_k)`
+as the abscissa and :math:`\text{ln}(-\text{ln}(1 - F_k))` as the ordinate.
+This is a legacy of the graphical linearization method used for the case where
+:math:`\mu = 0`. In order to respect this tradition, we will swap the axes and
+display :math:`\text{ln}(t_k)` as the abscissa and :math:`x_k` as the ordinate.
 
 Weibull's law applies generally to the failure of materials and objects. Since
 the variable :math:`t` is time, the :math:`t_k` and :math:`F_k` are effectively
@@ -1356,7 +1379,7 @@ the "fitted" function :math:`F_c(t)` (whose curve is plotted as a solid line):
     .. math::
        :label: weibull-cdf-solved
 
-       F_c(t) = 1 - exp \left(
+       F_c(t) = 1 - \text{exp} \left(
            - \left( \frac{t - \mu_c}{\beta_c} \right)^{\alpha_c}
        \right)
 
@@ -1382,7 +1405,7 @@ may be substituted for the traditional method, appreciably improving the fit.
 
 .. _reei2-sec4:
 
-4. Conclusion
+4. Discussion
 =============
 
 The preceding examples (:ref:`Section 2 <reei2-sec2>` and
@@ -1434,7 +1457,7 @@ parameters :math:`a`, :math:`b`, :math:`c`, and :math:`\omega`:
 .. math::
    :label: sin-fx
 
-   f(x) = a + b \; sin(\omega \; x) + c \; cos(\omega \; x)
+   f(x) = a + b \; \text{sin}(\omega \; x) + c \; \text{cos}(\omega \; x)
 
 This function is equivalent to:
 
@@ -1442,9 +1465,10 @@ This function is equivalent to:
    :label: sin-fx2
 
    \begin{cases}
-       f(x) = a + \rho \; sin(\omega \; x + \varphi) \\
-       \rho = \sqrt{b^2 + c^2} \quad ; \quad b = \rho \; cos(\varphi) \quad ;
-           \quad c = \rho \; sin(\varphi)
+       f(x) = a + \rho \; \text{sin}(\omega \; x + \varphi) \\
+       \rho = \sqrt{b^2 + c^2} \quad ; \quad
+       b = \rho \; \text{cos}(\varphi) \quad ; \quad
+       c = \rho \; \text{sin}(\varphi)
    \end{cases}
 
 The expression "as close as possible" implies an optimization criterion.
@@ -1454,9 +1478,9 @@ Specifically, we consider the sum of the squared residuals:
    :label: sin-resid
 
    \varepsilon^2_{a, b, c, \omega} =
-       \sum_{k=1}^n \left( y_k - f(x_k)\right )^2 =
+       \sum_{k=1}^n \left( y_k - f(x_k) \right )^2 =
        \sum_{k=1}^n \left( y_k - \left(
-           a + b \; sin(\omega \; x_k) + c \; cos(\omega \; x_k)
+           a + b \; \text{sin}(\omega \; x_k) + c \; \text{cos}(\omega \; x_k)
        \right) \right)^2
 
 That is the sum that we wisth to minimize, from which we get the generic name
@@ -1499,9 +1523,9 @@ involve any iterative calculations, is presented in the
 Before getting into the heart of the matter, a warning must be given regarding
 some of the figures presented here (:numref:`reei-sin-exact-plot`,
 :numref:`reei-sin-nomega-plot`, :numref:`reei-sin-int-plot`,
-:numref:`reei-sin-sawtooth-plot`, :numref:`reei-sin-final-plot`). They serve
-merely as illustrations of the procedures being described. To create them, we
-were obligated to fix on a particuar set of numerical data, which are not
+:numref:`reei-sin-saw-plot`, :numref:`reei-sin-final-plot`). They serve merely
+as illustrations of the procedures being described. To create them, we were
+obligated to fix on a particuar set of numerical data, which are not
 necessarily representative of the multitudes of possible cases. Given these
 figures alone, it would be absurd to form any opinion of the method in
 question, favorable or otherwise. This is especially true as the example has
@@ -1581,18 +1605,18 @@ the optimization parameters result in a system of three equations:
    \begin{cases}
        \left( \frac{\partial \varepsilon^2}{\partial a} \right)_
            {(a_0, b_0, c_0)} = -2 \sum_{k=1}^n \left( y_k -
-           \left( a_0 + b_0 \; sin(\omega_e \; x_k) +
-           c_0 \; cos(\omega_e \; x_k)\right) \right) = 0 \\
+           \left( a_0 + b_0 \; \text{sin}(\omega_e \; x_k) +
+           c_0 \; \text{cos}(\omega_e \; x_k)\right) \right) = 0 \\
        \left( \frac{\partial \varepsilon^2}{\partial b} \right)_
            {(a_0, b_0, c_0)} = -2 \sum_{k=1}^n \left( y_k -
-           \left( a_0 + b_0 \; sin(\omega_e \; x_k) +
-           c_0 \; cos(\omega_e \; x_k)\right) \right) \;
-           sin(\omega_e \; x_k) = 0 \\
+           \left( a_0 + b_0 \; \text{sin}(\omega_e \; x_k) +
+           c_0 \; \text{cos}(\omega_e \; x_k)\right) \right) \;
+           \text{sin}(\omega_e \; x_k) = 0 \\
        \left( \frac{\partial \varepsilon^2}{\partial c} \right)_
            {(a_0, b_0, c_0)} = -2 \sum_{k=1}^n \left( y_k -
-           \left( a_0 + b_0 \; sin(\omega_e \; x_k) +
-           c_0 \; cos(\omega_e \; x_k)\right) \right) \;
-           cos(\omega_e \; x_k) = 0 \\
+           \left( a_0 + b_0 \; \text{sin}(\omega_e \; x_k) +
+           c_0 \; \text{cos}(\omega_e \; x_k)\right) \right) \;
+           \text{cos}(\omega_e \; x_k) = 0 \\
    \end{cases}
 
 The solution is given in the following system :eq:`sin-nomega-lsq`, with the
@@ -1603,14 +1627,16 @@ convention that :math:`\sum \equiv \sum_{k=1}^n`:
 
    \begin{bmatrix} a_0 \\ b_0 \\ c_0 \end{bmatrix} =
    \begin{bmatrix}
-       n & \sum sin(\omega_e x_k) & \sum cos(\omega_e x_k) \\
-       \sum sin(\omega_e x_k) & \sum sin^2(\omega_e x_k) &
-           \sum sin(\omega_e x_k) cos(\omega_e x_k) \\
-       \sum cos(\omega_e x_k) & \sum sin(\omega_e x_k) cos(\omega_e x_k) &
-           \sum cos^2(\omega_e x_k)
+       n & \sum \text{sin}(\omega_e x_k) & \sum \text{cos}(\omega_e x_k) \\
+       \sum \text{sin}(\omega_e x_k) & \sum \text{sin}^2(\omega_e x_k) &
+           \sum \text{sin}(\omega_e x_k) \text{cos}(\omega_e x_k) \\
+       \sum \text{cos}(\omega_e x_k) & \sum \text{sin}(\omega_e x_k)
+           \text{cos}(\omega_e x_k) & \sum \text{cos}^2(\omega_e x_k)
    \end{bmatrix}^{-1}
    \begin{bmatrix}
-       \sum y_k \\ \sum y_k sin(\omega_e x_k) \\ \sum y_k cos(\omega_e x_k)
+       \sum y_k \\
+       \sum y_k \; \text{sin}(\omega_e x_k) \\
+       \sum y_k \; \text{cos}(\omega_e x_k)
    \end{bmatrix}
 
 The result is presented in figure :numref:`reei-sin-nomega-plot`. We note that
@@ -1701,12 +1727,12 @@ regard to the quantity of interest, the optimized value of :math:`\omega`
    \text{with:} \;
    \begin{cases}
        SS(x) = \int_{x_1}^x \int_{x_1}^v f(u) du \; dv \quad ;
-           \quad A = -\omega^2 \quad ; \quad B = \frac{1}{2}a\omega^2 \\
-       C = -a \; \omega^2 \; x_1 + b \; \omega \; cos(\omega \; x_1) -
-           c \; \omega \; cos(\omega \; x_1) \\
+           \quad A = -\omega^2 \quad ; \quad B = \frac{1}{2}a \; \omega^2 \\
+       C = -a \; \omega^2 \; x_1 + b \; \omega \; \text{cos}(\omega \; x_1) -
+           c \; \omega \; \text{cos}(\omega \; x_1) \\
        D = a + \frac{1}{2} \; a \; \omega^2 \; x_1^2 +
-           (b + c \; \omega \; x_1) \; sin(\omega \; x_1) +
-           (c - b \; \omega \; x_1) \; cos(\omega \; x_1)
+           (b + c \; \omega \; x_1) \; \text{sin}(\omega \; x_1) +
+           (c - b \; \omega \; x_1) \; \text{cos}(\omega \; x_1)
    \end{cases}
 
 The coefficients :math:`A`, :math:`B`, :math:`C`, :math:`D` are unknown.
@@ -1752,14 +1778,14 @@ It is pointless to reiterate the partial derivatives with respect to :math:`A`,
 
    \begin{bmatrix} A_1 \\ B_1 \\ C_1 \\ D_1 \end{bmatrix} =
    \begin{bmatrix}
-       \sum \left( SS_k \right)^2 & \sum x_k^2 SS_k &
-           \sum x_k SS_k & \sum SS_k \\
-       \sum x_k^2 SS_k & \sum x_k^4 & \sum x_k^3 & \sum x_k^2 \\
-       \sum x_k SS_k   & \sum x_k^3 & \sum x_k^2 & \sum x_k \\
-       \sum SS_k       & \sum x_k^2 & \sum x_k   & n
+       \sum \left( SS_k \right)^2 & \sum x_k^2 \; SS_k &
+           \sum x_k \; SS_k & \sum SS_k \\
+       \sum x_k^2 \; SS_k & \sum x_k^4 & \sum x_k^3 & \sum x_k^2 \\
+       \sum x_k \; SS_k   & \sum x_k^3 & \sum x_k^2 & \sum x_k \\
+       \sum SS_k          & \sum x_k^2 & \sum x_k   & n
    \end{bmatrix}^{-1}
    \begin{bmatrix}
-       \sum y_k SS_k \\ \sum y_k x_k^2 \\ \sum y_k x_k \\ \sum y_k
+       \sum y_k \; SS_k \\ \sum y_k x_k^2 \\ \sum y_k x_k \\ \sum y_k
    \end{bmatrix}
 
 .. math::
@@ -1767,14 +1793,14 @@ It is pointless to reiterate the partial derivatives with respect to :math:`A`,
 
    \begin{cases}
        \omega_1 = \sqrt{-A_1} \quad ; \quad a_1 = \frac{2 B_1}{\omega_1^2} \\
-       b_1 = \left( B_1 x_1^2 + C_1 x_1 + D_1 - a_1 \right)
-           sin(\omega \; x_1) +
+       b_1 = \left( B_1 \; x_1^2 + C_1 \; x_1 + D_1 - a_1 \right)
+           \text{sin}(\omega \; x_1) +
            \frac{1}{\omega_1} \left( C_1 + 2 B_1 x_1 \right)
-               cos(\omega \; x_1) \\
-       c_1 = \left( B_1 x_1^2 + C_1 x_1 + D_1 - a_1 \right)
-           cos(\omega \; x_1) -
+               \text{cos}(\omega \; x_1) \\
+       c_1 = \left( B_1 \; x_1^2 + C_1 \; x_1 + D_1 - a_1 \right)
+           \text{cos}(\omega \; x_1) -
            \frac{1}{\omega_1} \left( C_1 + 2 B_1 x_1 \right)
-               sin(\omega \; x_1)
+               \text{sin}(\omega \; x_1)
    \end{cases}
 
 The results for our sample data are displayed further along in
@@ -1825,8 +1851,10 @@ most influential factors are:
 
   - The number of points, :math:`n_p`, in each period of the sinusoid.
   - The distribution of samples in the domain:
+
     - Either uniform: :math:`x_{k+1} - x_k = constant`
     - Or random: :math:`x_k` is drawn at random from the available domain.
+
   - The scatter of the ordinates :math:`y_k`, characterized by
     :math:`(\sigma_1 / \rho_e)`, the ratio of the root mean squared error
     :eq:`sin-rms` to the amplitude of the sinusoid.
@@ -1848,7 +1876,7 @@ described in :ref:`Section 5 <reei3-sec5>`, seems more appropriate.
 .. figure:: /generated/reei/sin-eq-nd-plot.png
    :name: reei-sin-eq-nd-plot
 
-   Effect of the number of points per period, with an equidistant distribution.
+   Effect of the number of points per period, with a uniform distribution.
 
 .. table:: Numerical results corresponding to :numref:`reei-sin-eq-nd-plot`.\
    [errata-reei-14]_
@@ -1871,7 +1899,7 @@ Since :math:`x_k` are randomly distributed, the dispersion in the calculated
 values of :math:`\omega_1` increases as :math:`n_p` becomes small. For a fixed
 value of :math:`n_p`, the cumulative distribution (computed from 10000
 simulations), is represented in :numref:`reei-sin-rand-nd-plot`. It can be seen
-that the expected median :math:`\omega_1m / \omega_e`, which is expected to be
+that the expected median :math:`\omega_{1m} / \omega_e`, which is expected to be
 equal to 1, is affected even more than under the conditions described in
 :ref:`Section 4.1 <reei3-sec4-1>`.
 
@@ -1936,7 +1964,7 @@ an arctangent:
    :label: sin-inv-fx
 
    \begin{cases}
-       \Phi(x) = arctan \left( \frac{f(x) - a}
+       \Phi(x) = \text{arctan} \left( \frac{f(x) - a}
            {\sqrt{\rho^2 - \left( f(x) - a \right)^2}} \right) \\
        \omega \; x + \varphi = \pm \Phi(x) + \pi K_{(x)}
    \end{cases}
@@ -1966,12 +1994,12 @@ the subscript 2, we posit that:
    :label: sin-param-2
 
    a_2 = a_1 \quad ; \quad \rho_2 = \rho_1 = \sqrt{b_1^2 + c_1^2} \quad ; \quad
-       \rho_1 \; cos(\varphi_1) = b_1 \quad ; \quad
-       \rho_1 \; sin(\varphi_1) = c_1 \\
+       \rho_1 \; \text{cos}(\varphi_1) = b_1 \quad ; \quad
+       \rho_1 \; \text{sin}(\varphi_1) = c_1 \\
    \text{If} \; b_1 > 0 \quad \rightarrow \quad
-       \varphi_1 = arctan \left( \frac{c_1}{b_1} \right) \quad ; \quad
+       \varphi_1 = \text{arctan} \left( \frac{c_1}{b_1} \right) \quad ; \quad
        \text{if} \; b_1 < 0 \quad \rightarrow \quad
-       \varphi_1 = arctan \left( \frac{c_1}{b_1}\right) + \pi
+       \varphi_1 = \text{arctan} \left( \frac{c_1}{b_1}\right) + \pi
 
 Now it is possible to calculate :math:`K_1, K_2, ..., K_k, ..., K_n` in number
 of different ways. One possibility is as follows, with :math:`round` rounds the
@@ -1980,7 +2008,7 @@ real argument to the nearest integer:
 .. math::
    :label: sin-k
 
-   K_k = round \left( \frac{\omega_1 x_k + \varphi_1}{\pi} \right)
+   K_k = \text{round} \left( \frac{\omega_1 \; x_k + \varphi_1}{\pi} \right)
 
 Another way to write :eq:`sin-inv-fx`, applied to :math:`x = x_k`, better
 demonstrates the nearly linear relationship
@@ -1991,11 +2019,12 @@ demonstrates the nearly linear relationship
    :label: sin-theta
 
    \begin{cases}
-       \theta_k = (-1)^{K_k} \; arctan \left( \frac{y_k - a_2}
-           {\sqrt{\rho_2^2 - (y_k - a_2)^2}^2} \right) + \pi \; K_k \\
+       \theta_k = (-1)^{K_k} \; \text{arctan} \left( \frac{y_k - a_2}
+           {\sqrt{\rho_2^2 - (y_k - a_2)^2}^2} \right) + \pi K_k \\
        \text{if} \; \rho_2^2 \leq (y_k - a_2)^2 \quad \rightarrow \quad
-           atan = +\frac{\pi}{2} \; \text{if} \; y_k > a_2 \; \text{or} \;
-           = -\frac{\pi}{2} \; \text{if} \; y_k < a_2
+           \text{arctan} = +\frac{\pi}{2} \;
+           \text{if} \; y_k > a_2 \; \text{or} \; = -\frac{\pi}{2} \;
+           \text{if} \; y_k < a_2
    \end{cases}
 
 We see in :numref:`reei-sin-saw-plot`, that the series of points
@@ -2032,7 +2061,8 @@ Completed by:
 .. math::
    :label: sin-param2
 
-   b_2 = \rho_2 \; cos(\varphi_2) \quad ; \quad c_2 = \rho_2 \; sin(\varphi_2)
+   b_2 = \rho_2 \; \text{cos}(\varphi_2) \quad ; \quad
+       c_2 = \rho_2 \; \text{sin}(\varphi_2)
 
 The numerical results are summarized in :numref:`reei-sin-final-data` (in the
 table column labeled :math:`(2)`), and the curve is shown in
@@ -2138,7 +2168,7 @@ to sample a large number of simulations under different conditions.
 
 .. _reei3-sec7:
 
-7. Commentary
+7. Discussion
 =============
 
 

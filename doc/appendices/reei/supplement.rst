@@ -457,7 +457,7 @@ link back to the corresponding location in the translated paper as footnotes.
    The portion :math:`; \alpha_k = \alpha(x_k); \beta_k = \beta(x_k); ...` does
    not appear to be correct. The list is referring to functions of :math:`x_k`,
    which :math:`\alpha` and :math:`\beta` are definitely not. Subscripting them
-   is probably an error.
+   is an error. Author confirms.
 
 .. [errata-reei-2] The original equations :eq:`gauss-pdf-int` and :eq:`gauss-pdf-eq`
    read:

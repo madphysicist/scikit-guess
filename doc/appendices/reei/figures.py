@@ -332,7 +332,7 @@ def gauss_cdf():
             ':math:`\\{}` = {: 0.6g}'
         ], heading=[
             ':math:`k`', ':math:`x_k`', ':math:`F_k`',
-            ':math:`argErf(2 F_k - 1)`', ''
+            r':math:`\text{argErf}(2 F_k - 1)`', ''
         ]
     )
 
@@ -353,7 +353,7 @@ def erf_test():
          0.9998648953, 0.998664351, 0.9999999846, 0.9999999999984]
     return None, gen_table(
         cols=[x, y], specs=['{:0.4g}', '{:0.13g}'],
-        heading=[':math:`x = argErf(y)`', ':math:`Erf(x) = y`']
+        heading=[r':math:`x = \text{argErf}(y)`', r':math:`\text{Erf}(x) = y`']
     )
 
 
@@ -468,8 +468,9 @@ def weibull_cdf():
     ax.set_xlim(0, 1.5)
     ax.spines['left'].set_bounds(-4, 1.55)
     ax.set_ylim(*ytrans([0.01, 0.995]))
-    xlabel(ax, '$ln(t)$', xloc=1.15, adjust=40)
-    ylabel(ax, '$ln(-ln(1-F))$', va='bottom', adjust=325, yloc=0.99)
+    xlabel(ax, 'ln$(t)$', xloc=1.15, adjust=40)
+    ylabel(ax, 'ln$(-$ln$(1 - F))$',
+           va='bottom', adjust=325, yloc=0.99)
 
     # Add parasite axes
     fig.subplots_adjust(left=0.25, bottom=0.25)
@@ -543,10 +544,10 @@ def weibull_cdf():
     return fig, gen_table(
         cols=[np.arange(x.size) + 1, t, F, x, s, extra], specs=[
             '{:d}', '{: 0.4g}', '{: 0.3g}', '{: 0.6g}', '{: 0.6g}',
-            ':math:`\\{}` = {: 0.{}g}'
+            r':math:`\{}` = {: 0.{}g}'
         ], heading=[
             ':math:`k`', ':math:`t_k`', ':math:`F_k`',
-            ':math:`ln(-ln(1 - F_k))`', ':math:`S_k`', ''
+            r':math:`\text{ln}(-\text{ln}(1 - F_k))`', ':math:`S_k`', ''
         ]
     )
 
@@ -715,7 +716,7 @@ class Sinusoid:
 
         .. math::
 
-           \Phi(x) = arctan \left( \frac{f(x) - a}
+           \Phi(x) = \text{arctan} \left( \frac{f(x) - a}
                {\sqrt{\rho^2 - \left( f(x) - a\right)^2}} \right)
 
         Based on :math:`f(x) = a + \rho \; sin(\omega \; x + \varphi)`.
@@ -730,7 +731,7 @@ class Sinusoid:
 
         .. math::
 
-           \Phi(x) = arctan \left( \frac{y - a}
+           \Phi(x) = \text{arctan} \left( \frac{y - a}
                {\sqrt{\rho^2 - \left( y - a\right)^2}} \right)
         """
         f = y - a
