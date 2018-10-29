@@ -50,8 +50,8 @@ material is in French and some in English. I have attempted to translate the
 French as faithfully as I could. I have also attempted to conform the English
 portions to what I consider to be modern American usage.
 
-There are going to be plenty of imperfections and probably outright errors in
-the translation. The translation is not meant to be a monolith. It is presented
+There are certain to be some imperfections and probably outright errors in the
+translation. The translation is not meant to be a monolith. It is presented
 on GitHub so that readers so inclined can easily submit corrections and
 improvements.
 
@@ -96,7 +96,7 @@ method for solving certain types of non-linear regression problems.
 
 The key to the method presented in this paper is the principle of linearization
 through differential and integral equations, which enables the conversion of a
-complicated non-linear problem into simple linear regression.
+complex non-linear problem into simple linear regression.
 
 The calculus shown shown here has a fundamental difference from traditional
 solutions to similar problems in that it is non-recursive, and therefore does
@@ -135,31 +135,31 @@ The study presented here falls into the general framework of regression
 problems. For example, given the coordinates of a sequence of :math:`n` points:
 :math:`(x_1, y_1), (x_2, y_2), ..., (x_k, y_k), ..., (x_n, y_n)`, we wish to
 find the function :math:`y = F(a, b, c, ...; x)` which lies as close as
-possible to the sequence by optimizing the parameters :math:`a, b, c, ...`
+possible to the data by optimizing the parameters :math:`a, b, c, ...`
 
 The commonly known solution to linear regression merits only a brief
 discussion, which is to be found in :ref:`Appendix 1 <reei1-appendix1>`. Some
 problems can be solved through linear regression even though they appear
-non-linear at first glance. The Gaussian distribution is an example of such a
-function, and is discussed in :ref:`Appendix 2 <reei1-appendix2>`.
+non-linear at first glance. The Gaussian cumulative distribution function is a
+specific example which is discussed in :ref:`Appendix 2 <reei1-appendix2>`.
 
 Excepting such simple cases, we are confronted with the daunting problem of
-non-linear regression. The literature on the subject is quite extensive. Even
-the briefest review would derail us from the purpose of this paper. It is also
-unnecessary because our goal is to reduce some non-linear problems to linear
+non-linear regression. There is extensive literature on the subject. Even the
+most cursort review would derail us from the purpose of this paper. It is also
+unnecessary because our goal is to reduce non-linear problems to linear
 regression through non-iterative and non-recursive procedures (otherwise, how
-would our method be innovative with respect to existing methods?).
+would our proposed method be innovative with respect to existing methods?).
 
-In the next section, we will proceed to the heart of the matter: that is to
-say, to render a non-linear problem to a linear form by means of a suitable
-differential and/or integral equation. The preliminary discussion shows that in
-the context of such problems, integral equations tend to be more numerically
-stable than differential equations.
+In the next section, we will proceed to the heart of the matter: rendering
+non-linear problems to linear form by means of suitable differential and/or
+integral equations. The preliminary discussion will show that in the context of
+such problems, integral equations tend to be more numerically stable than
+differential equations, with very few exceptions.
 
 The principle of using integral equations will be explained and demonstrated in
-practice using the Gaussian distribution as a concrete example. Other examples
-of regression using integral equations will be described in a detailed manner
-in the two following papers:
+practice using the Gaussian probability distribution function as a concrete
+example. Other examples of regression using integral equations will be
+described in a detailed manner in the two following papers:
 
 - :ref:`reei2`
 - :ref:`reei3`
@@ -170,21 +170,21 @@ in the two following papers:
 2. Principle of Linearization Through Differential and/or Integral Equations
 ============================================================================
 
-Let us begin with a summary of numerical methods for approximating derivatives
-and integrals. Given :math:`n` points :math:`(x_k, y_k)` located near the curve
-of a function :math:`y(x)`, and given another function :math:`g(x)`, we can
+We begin with a summary of numerical methods for approximating derivatives and
+integrals. Given :math:`n` points :math:`(x_k, y_k)` located near the curve of
+a function :math:`y(x)`, and given another function :math:`g(x)`, we can
 calculate approximations for the following derivatives and integrals with
 :math:`g_k = g(x_k)`:
 
     .. math::
 
        D_k = \frac{g_{k+1} y_{k+1} - g_{k-1} y_{k-1}}{x_{k+1} - x_{k-1}} \simeq
-       \left(\frac{d}{dx} g(x) y(x) \right)_{\left( x = x_k \right)}
+           \left( \frac{d}{dx} g(x) y(x) \right)_{\left( x = x_k \right)}
 
     .. math::
 
        DD_k = \frac{D_{k+1} - D_{k-1}}{x_{k+1} - x_{k-1}} \simeq
-       \left(\frac{d^2}{dx^2} g(x)y(x)\right)_{\left(x = x_k\right)}
+           \left( \frac{d^2}{dx^2} g(x)y(x) \right)_{\left( x = x_k \right)}
 
     And so on, for subsequent derivatives, as necessary.
 
@@ -194,15 +194,15 @@ calculate approximations for the following derivatives and integrals with
        \begin{cases}
            S_1 = 0 \hfill \text{and for $k = 2 \rightarrow n$:} & \\
            S_k = S_{k-1} +
-           \frac{1}{2}(g_ky_k + g_{k-1}y_{k-1})(x_k - x_{k-1}) &
+               \frac{1}{2} (g_ky_k + g_{k-1}y_{k-1})(x_k - x_{k-1}) &
        \end{cases}
 
     .. math::
 
-       SS_k \simeq \int_{x_1}^x \left(\int_{x_1}^v g(u)y(u)du\right)dv \quad
+       SS_k \simeq \int_{x_1}^x \left( \int_{x_1}^v g(u)y(u)du \right)dv \quad
        \begin{cases}
            SS_1 = 0 \hfill \text{and for $k = 2 \rightarrow n$:} & \\
-           SS_k = SS_{k-1} + \frac{1}{2}(S_k + S_{k-1})(x_k - x_{k-1}) &
+           SS_k = SS_{k-1} + \frac{1}{2} (S_k + S_{k-1})(x_k - x_{k-1}) &
        \end{cases}
 
     And do on, for subsequent integrals, as necessary.
@@ -269,7 +269,7 @@ approximate values are then respectively (with
 
 If we replace the exact derivatives and/or anti-derivatives with their
 numerical approximations, the equation will no longer hold true. We can
-therefore work with the sum of squared differences:
+therefore work with the sum of the squares of the residuals:
 
     .. math::
 
@@ -296,18 +296,18 @@ should preferably have as many coefficients
 additional regression (or regressions) will be necessary to calculate the
 coefficients that do not figure explicitly in the equation.
 
-Moreover, to avoid overloading the explanation, we have been considering a
+Moreover, to avoid an overburdened explanation, we have been considering a
 simplified form of differential and/or integral equation. In fact, the equation
 could have any number of different functions :math:`\Phi(x)`, several different
 derivatives (corresponding to various choices of :math:`g(x)`), several
 different integrals (corresponding to various choice of :math:`G(x)`), and so
 on for subsequent multiple derivatives and integrals.
 
-We see that there is a multitude of choices of differential and/or integral
-equation that we can bring to bear on the problem. However, practical
+Clearly, there is a multitude of choices for the differential and/or integral
+equation that we bring to bear on the problem. However, practical
 considerations limit our choices. One of the main stumbling blocks is the
 difficulty inherent in numerical approximation of derivatives. In fact, in
-cases where the points have an irregular distribution, and are too sparse and
+cases where the points have an irregular distribution, and are too sparse, and
 if, to make matters worse, the values of :math:`y_k` are not sufficiently
 precise, the computed derivatives will fluctuate so much and be so dispersed as
 to render the regression ineffective. On the other hand, numerical
@@ -345,15 +345,15 @@ themselves (very simple) functions of :math:`a` and :math:`\omega`. Moreover,
 the parameters :math:`b` and :math:`c` no longer figure in the differential
 equation directly. This case is therefore a typical application of the method,
 and among the easiest to implement, except that it contains a second
-derivative, which makes it immediately suspect. Fortunately, there is no
-a-priori indication that it would be better to use an integral equation whose
-solution is a sinusoid instead. This method is hardly complicated and gives
-largely satisfactory results (which are studied in detail in the attached
-paper: :ref:`reei3`).
+derivative, which makes it virtually useless. Fortunately, there is no a-priori
+reason not to use an integral equation whose solution is a sinusoid instead.
+The integral method is hardly any more complicated and gives largely
+satisfactory results (which are studied in detail in the attached paper:
+:ref:`reei3`).
 
-As a first demonstration of the calculation, let us look for a simpler example.
-In the following section, we will apply the method of regression through an
-integral equation to the Gaussian probability density function.
+For our first demonstration of the method, let us look for a simpler example.
+In the following section, the method of regression through an integral equation
+will be applied to the Gaussian probability density function.
 
 
 .. _reei1-sec3:
@@ -361,8 +361,8 @@ integral equation to the Gaussian probability density function.
 3. Example: Illustration of the Gaussian Probability Density Function
 =====================================================================
 
-We will consider a probability density function of two parameters,
-:math:`\sigma` and :math:`\mu`, defined by
+We consider a probability density function of two parameters, :math:`\sigma`
+and :math:`\mu`, defined by
 
     .. math::
        :label: gauss-pdf-fx
@@ -372,7 +372,7 @@ We will consider a probability density function of two parameters,
        \right)
 
 The general notation :math:`y(x)` of the previous sections is replaced with
-:math:`f(x)` here due to the specific nature of this case.
+:math:`f(x)` here due to the specificity of this case.
 
 The integration :eq:`gauss-pdf-int` leads to the integral equation
 :eq:`gauss-pdf-eq`, of which :math:`f(x)` is the solution\ [errata-reei-2]_:
@@ -394,7 +394,7 @@ The integration :eq:`gauss-pdf-int` leads to the integral equation
        \end{cases}
 
 This is a linear integral equation, consisting of two simple integrals, which
-places it among the extensions mentioned in the previous section. We compute
+places it among the applications mentioned in the previous section. We compute
 the respective approximations, the first denoted :math:`S` with
 :math:`G(x) = 1`, and the second denoted :math:`T` with :math:`G(x) = x`:
 
@@ -431,7 +431,7 @@ the squares of the residuals:
                -\left( f_k - f_1 \right) + A \; S_k + B \; T_k
            \right)^2
 
-Notice that if we had chosen a different lower limit for the integration than
+Notice that had we chosen a lower limit of integration different from
 :math:`x_1`, it would have changed not only the value of :math:`f_1`, but also
 the numerical values of :math:`S_k` and :math:`T_k`, in a way that would cancel
 out the differences without changing the final result.
@@ -453,7 +453,7 @@ of a linear regression, which we know how to optimize for the parameters
            \sum \left(f_k - f_1\right) T_k
        \end{bmatrix}
 
-With the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
+By convention, :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
 :math:`\sigma_1` and :math:`\mu_1` according to :eq:`gauss-pdf-eq`\ [errata-reei-4]_:
 
     .. math::
@@ -503,7 +503,7 @@ Here is a summary of the numerical computation:
         \begin{bmatrix}
             \sum \left(S_k\right)^2 & \sum S_k T_k \\
             \sum S_k T_k            & \sum \left(T_k\right)^2
-        \end{bmatrix}
+        \end{bmatrix}^{-1}
         \begin{bmatrix}
             \sum \left(f_k - f_1\right) S_k \\
             \sum \left(f_k - f_1\right) T_k
@@ -517,16 +517,16 @@ Here is a summary of the numerical computation:
 
 To illustrate the calculation (:numref:`reei-gauss-pdf-plot`), numerical data
 (:numref:`reei-gauss-pdf-data`) was genererated in the following manner:
-:math:`x_k` values were chosen at random from the domain. From the "exact"
-values :math:`\sigma_e` and :math:`\mu_e` (defining the "exact" function
-:math:`f(x)`, whose representative curve is plotted as a dashed line in
-:numref:`reei-gauss-pdf-plot`), we computed the exact values of :math:`f(x_k)`
-given by equation :eq:`gauss-pdf-fx`\ [errata-reei-7]_. Then we added
-deviations randomly drawn from a range - to +10% of :math:`f(x_k)`, which gave
-us the numerical values of :math:`f_k` in :numref:`reei-gauss-pdf-data`, after
-rounding.
+:math:`x_k` values were chosen at random from the domain under consideration.
+From the "exact" values :math:`\sigma_e` and :math:`\mu_e` (defining the
+"exact" function :math:`f(x)`, whose representative curve is plotted as a
+dashed line in :numref:`reei-gauss-pdf-plot`), we computed the exact values of
+:math:`f(x_k)` given by equation :eq:`gauss-pdf-fx`\ [errata-reei-7]_. We then
+added perturbations whose amplitude was drawn randomly from a range - to +10%
+of :math:`f(x_k)`, which, after rounding, gave us the numerical values of
+:math:`f_k` in :numref:`reei-gauss-pdf-data`.
 
-The outrageous error modeling is motivated by the need for legibility in the
+The outrageous error model is motivated by the need for legibility in the
 figure, so that the so called "experimental" points, represented by crosses,
 lie far enough from the dashed curve to be clearly distinguishable. In the same
 vein, only a handful of points was chosen so that the deviations between the
@@ -570,9 +570,9 @@ intervals.
 =============
 
 It would be unreasonable to imagine that the method presented here could
-replace currently used methods, implemented in commercial software, and with
-the benefits of long term study, experimentation and improvements. We must ask
-then, what is the motivation behind this work.
+replace what is currently in use in commercial software, which has the benefits
+of long term study, experimentation and improvements. We must ask then, what is
+the motivation behind this work.
 
 Of course, recursive methods generally require a first approximation within the
 same order of magnitude as the target value. This is not generally a handicap
@@ -600,7 +600,7 @@ It is out of the question to compete against what already exists, and what is
 more imporant, works well. On the other hand, it would be a pity to forget a
 method that might potentially help resolve future problems: the method that has
 been the subject of this paper, whose essence is presented in
-:ref:`section 2 <reei1-sec2>`.
+:ref:`Section 2 <reei1-sec2>`.
 
 
 .. rst-class:: center
@@ -612,9 +612,9 @@ Appendix 1: Review of Linear Regression
 
 When the function that we seek to optimize, :math:`y = F(a, b, c, ...; x)`, can
 be written in the form :math:`y = a \; f(x) + b \; g(x) + c \; h(x) + ...`,
-according to the number of parameters :math:`a, b, c, ...` and with the
-functions :math:`f(x), g(x), h(x), ...` being known, the algorithm is linear
-with respect to the optimization parameters.
+according to some number of parameters :math:`a, b, c, ...` and with known
+functions :math:`f(x), g(x), h(x), ...`, the algorithm is linear with respect
+to the optimization parameters.
 
 Even more generally, if the function :math:`y = F(a, b, c, ...; x)` can be
 transformed into :math:`F(x, y) = A \; f(x, y) + B \; g(x, y) + C \; h(x, y)`
@@ -622,8 +622,8 @@ with known functions
 :math:`F(x, y), f(x, y), g(x, y), h(x, y), ..., A(a, b, c, ...), B(a, b, c, ...), C(a, b, c, ...), ...`
 the algorithm is again linear with respect to the coefficients :math:`A`,
 :math:`B` and :math:`C`, even if it is not linear with respect to
-:math:`a, b, c, ...`. But it always reverts to a linear regression. The method
-of "least squares" effectively consists of finding the minimum of:
+:math:`a, b, c, ...`. But it always reverts to a linear regression. The "least
+squares" method effectively consists of finding the minimum of:
 
     .. math::
 
@@ -637,7 +637,7 @@ of "least squares" effectively consists of finding the minimum of:
        \end{cases}
 
 The partial derivatives with respect to :math:`A, B, C, ...` determine a system
-of equations whose solutions, :math:`A_0, B_0, C_0, ...` are optimal:
+of equations for which solutions, :math:`A_0, B_0, C_0, ...` are optimal:
 
     .. math::
 
@@ -702,7 +702,7 @@ Of course, this can be further extended by considering more variables, for
 example :math:`x, y, z, t, ...`, instead of just :math:`x, y`, thus working in
 3D, or 4D, ..., instead of 2D. Everything mentioned here figures in literature
 in a more detailed and more structured manner, with presentations adapted to
-the exposition of general theory. The purpose was only to present a brief
+the exposition of general theory. The purpose here was only to present a brief
 review, with a specific notation to be used consistently throughout the
 remainder of the work.
 
@@ -805,7 +805,7 @@ following system:
 
        \begin{bmatrix} A_1 \\ B_1 \end{bmatrix} =
        \begin{bmatrix}
-           \sum \left(x_k\right)^2 & \sum x_k
+           \sum \left(x_k\right)^2 & \sum x_k \\
            \sum x_k                & n
        \end{bmatrix}^{-1}
        \begin{bmatrix}
@@ -853,7 +853,7 @@ Here is a summary of the very simple numerical computation:
 
         \begin{bmatrix} A_1 \\ B_1 \end{bmatrix} =
         \begin{bmatrix}
-            \sum \left(x_k\right)^2 & \sum x_k
+            \sum \left(x_k\right)^2 & \sum x_k \\
             \sum x_k                & n
         \end{bmatrix}^{-1}
         \begin{bmatrix}
@@ -913,8 +913,9 @@ completed by the asymptotic expansion:
        0.999865 < \left| \text{Erf}(x) \right| < 1
    \end{cases}
 
-The inverse function argErf(y) is calculated using Newton-Raphson's method. The
-result is obtained to at least eight significant digits of precision if
+The inverse function :math:`\text{argErf}(y)` is calculated using
+Newton-Raphson's method. The result is obtained to at least eight significant
+digits of precision if
 :math:`\left| y \right| < 0.999999999998 \rightarrow \left| \text{argErf}(y) \right| < 5`.
 Outside that domain, the result is insignificant.
 
@@ -1154,8 +1155,8 @@ We the get the optimal values :math:`a_1` and :math:`c_1` according to
 
        a_1 = -\frac{A_1}{B_1} \quad ; \quad c_1 = B_1
 
-Only two parameters are resolvable from the chosen form of our integral
-equation. The third parameter appears in the numerical calculations, but not
+Only two parameters are resolvable from the form of integral equation that we
+chose. The third parameter appears in the numerical calculations, but not
 directly in the equation, so another regression is necessary to obtain it. In
 fact, considering :eq:`exp-fx`, the result would be further improved by
 computing the regression on both :math:`a` and :math:`b`:
@@ -1230,13 +1231,13 @@ generated in the following manner: :math:`x_k` were drawn at random from the
 domain under consideration. Initially, "exact" values :math:`a_e`, :math:`b_e`
 and :math:`c_e` defined the function :math:`y(x)`, which we call the "true"
 form of equation :eq:`exp-fx`, and whose curve is traced by a dotted line in
-the figure. The exact values of :math:`y(x_k)` were then assigned deviations
-whose amplitude is drawn at random from a range between - and +10% of
-:math:`y(x_k)`, which produced, after rounding, the numrical values of
+the figure. The exact values of :math:`y(x_k)` were then assigned perturbations
+of an amplitude drawn at random from a range between - and +10% of
+:math:`y(x_k)`, which, after rounding, produced the numrical values of
 :math:`y_k` in :numref:`reei-exp-data`, represented by crosses in the figure.
 
-Finally, the result :math:`(a_2, b_2, c_2)` is substituted into equation
-:eq:`exp-fx`, to obtain the fitted curve, drawn in a solid line.
+Finally, the result :math:`(a_2, b_2, c_2)` was substituted into equation
+:eq:`exp-fx`, to obtain the fitted curve, plotted as a solid line.
 
 .. figure:: /generated/reei/exp-plot.png
    :name: reei-exp-plot
@@ -1254,7 +1255,7 @@ To form an objective opinion of the qualities and defects of the method
 presented here, it would be necessary to perform a systematic study of a very
 large number of cases and examples. It is certain even now that the deviations
 caused by errors in numerical integration would be considerably reduced as the
-number of points increased and their spacing became more regular.
+number of points increases and their spacing becomes more uniform.
 
 
 .. _reei2-sec3:
@@ -1275,7 +1276,7 @@ The Weibull cumulative distribution function of three parameters
 For data given as :math:`(t_1, F_1), ..., (t_k, F_k), ..., (t_n, F_n)`, we seek
 to optimize :math:`\mu`, :math:`\beta`, and :math:`\alpha` in such a way that
 relationship :eq:`weibull-cdf-fx` is approximately and optimally satisfied
-across the :math:`n` points.
+across the :math:`n` data points.
 
 The inverse function of :eq:`weibull-cdf-fx` is:
 
@@ -1357,8 +1358,9 @@ The algorithm is deduced immediately as we transpose the notation:
 In graphical representations, it is customary to display :math:`\text{ln}(t_k)`
 as the abscissa and :math:`\text{ln}(-\text{ln}(1 - F_k))` as the ordinate.
 This is a legacy of the graphical linearization method used for the case where
-:math:`\mu = 0`. In order to respect this tradition, we will swap the axes and
-display :math:`\text{ln}(t_k)` as the abscissa and :math:`x_k` as the ordinate.
+:math:`\mu = 0`. In order to respect this tradition, we will interchange the
+axes and display :math:`\text{ln}(t_k)` as the abscissa and :math:`x_k` as the
+ordinate.
 
 Weibull's law applies generally to the failure of materials and objects. Since
 the variable :math:`t` is time, the :math:`t_k` and :math:`F_k` are effectively
@@ -1450,7 +1452,7 @@ As with any number of similar problems, the data is comprised of :math:`n`
 experimental points
 :math:`(x_1, y_1), (x_2, y_2), ..., (x_k, y_k), ..., (x_n, y_n)`. We seek to
 adjust the parameters of a function :math:`y = f(x)` in such a way that its
-curve passes "as close as possible" to the data points. In this particular
+curve passes "as closely as possible" to the data points. In this particular
 case, we will deal with the following sinusoidal function of the four
 parameters :math:`a`, :math:`b`, :math:`c`, and :math:`\omega`:
 
@@ -1471,7 +1473,7 @@ This function is equivalent to:
        c = \rho \; \text{sin}(\varphi)
    \end{cases}
 
-The expression "as close as possible" implies an optimization criterion.
+The expression "as closely as possible" implies an optimization criterion.
 Specifically, we consider the sum of the squared residuals:
 
 .. math::
@@ -1483,13 +1485,13 @@ Specifically, we consider the sum of the squared residuals:
            a + b \; \text{sin}(\omega \; x_k) + c \; \text{cos}(\omega \; x_k)
        \right) \right)^2
 
-That is the sum that we wisth to minimize, from which we get the generic name
+Since that is the sum that we wish to minimize, we have the generic name
 "least squares method".
 
-When :math:`\omega` is known a-priori, the solution is trivial. In effect,
-equation :eq:`sin-fx` becomes linear in the optimization parameters (:math:`a`,
-:math:`b` and :math:`c`). This well known case merits only the briefest
-mention, which will be made in the next section.
+When :math:`\omega` is known a-priori, the solution is trivial. Equation
+:eq:`sin-fx` effectively becomes linear in the optimization parameters
+(:math:`a`, :math:`b` and :math:`c`). This well defined case merits only the
+briefest mention, which will be made in the next section.
 
 In all other cases, the regression (or optimization) is non-linear, due to the
 fact that the sum of squares has a non-linear dependency on :math:`\omega`.
@@ -1506,7 +1508,7 @@ differ from more accomodating non-linear functions: The more periods that the
 :math:`x_k` span, the more randomly they are distributed, or the more noise is
 present in the :math:`y_k` values, the more the condition "good enough" must be
 replaced with "very good", tending to "with great precision". In other words,
-should know the value of :math:`\omega` we are looking for in advance!
+we must know the value of :math:`\omega` we are looking for in advance!
 
 The original method proposed in :ref:`Section 3 <reei3-sec3>` provides a
 starting point for addressing this challenge. Admittedly, it would be wrong to
@@ -1518,24 +1520,24 @@ approximation of :math:`\omega` through an improved linearization. Finally,
 :ref:`Section 6 <reei3-sec6>` presents a summary of preformance in the course
 of systematic experiments. A synopsis of the entire method, which does not
 involve any iterative calculations, is presented in the
-:ref:`Appendix <reei3-appendix1>`.
+:ref:`Appendices <reei3-appendix1>`.
 
 Before getting into the heart of the matter, a warning must be given regarding
 some of the figures presented here (:numref:`reei-sin-exact-plot`,
 :numref:`reei-sin-nomega-plot`, :numref:`reei-sin-int-plot`,
 :numref:`reei-sin-saw-plot`, :numref:`reei-sin-final-plot`). They serve merely
 as illustrations of the procedures being described. To create them, we were
-obligated to fix on a particuar set of numerical data, which are not
-necessarily representative of the multitudes of possible cases. Given these
-figures alone, it would be absurd to form any opinion of the method in
-question, favorable or otherwise. This is especially true as the example has
-been selected with data that exaggerate all the defects that are explained in
-the text, to allow for easy identification and unambiguous discussion.
+obligated to fix on a particuar numeroical data set, which is not necessarily
+representative of the multitudes of possible cases. Given these figures alone,
+it would be absurd to form any opinion of the method in question, favorable or
+otherwise. This is especially true as the example has been selected with data
+that exaggerate all the defects that are explained in the text, to allow for
+easy identification and unambiguous discussion of the important features.
 
 We see in :numref:`reei-sin-exact-data` that our "experimental" points are
-sparse, very irregularly distributed, and widely dispersed. One might suspect
-that this is not real experimental data, but rather a simulation obtained in
-the following way: An "exact" function is given, along with the coefficients
+sparse, non-uniformly distributed, and widely dispersed. One might suspect that
+this is not real experimental data, but rather a simulation obtained in the
+following way: An "exact" function is given, along with the coefficients
 :math:`a_e`, :math:`b_e`, :math:`c_e`, and :math:`\omega_e`, indicated in
 :numref:`reei-sin-exact-data`. The curve is plotted in
 :numref:`reei-sin-exact-plot` with a dashed line. The :math:`x_k` were selected
@@ -1643,7 +1645,7 @@ The result is presented in figure :numref:`reei-sin-nomega-plot`. We note that
 the root mean square :math:`\sigma_0` is practically identical to
 :math:`\sigma_e` in :numref:`reei-sin-exact-data`. This indicates that the
 regression did not increase the residuals of the fitted sinusoid relative to
-the "exact" one. Obviosly, this is too good to always be true. So, after this
+the "exact" one. Obviously, this is too good to always be true. So, after this
 brief review, we must tackle the crux of the problem: to compute a sufficiently
 accurate approximation for :math:`\omega`, since it will not be know a-priori
 as it was in the preceding example.
@@ -1736,9 +1738,9 @@ regard to the quantity of interest, the optimized value of :math:`\omega`
    \end{cases}
 
 The coefficients :math:`A`, :math:`B`, :math:`C`, :math:`D` are unknown.
-However, they can be approximated through linear regression, based on the
-values of :math:`SS_k` computed beforehand. To accomplish this, we perform two
-numeric integrations:
+However, they can be approximated through linear regression based on the values
+of :math:`SS_k` computed beforehand. To accomplish this, we perform two numeric
+integrations:
 
 .. math::
    :label: sin-int-int1
@@ -1768,10 +1770,11 @@ is the following\ [errata-reei-12]_:
    \varepsilon^2_{a, b, c, \omega} = \sum_{k=1}^n \left( y_k -
        \left( A \; SS_k + B \; x_k^2 + C \; x_k  + D \right) \right)^2
 
-It is pointless to reiterate the partial derivatives with respect to :math:`A`,
-:math:`B`, :math:`C` and :math:`D`, used to obtain the optimized :math:`A_1`,
-:math:`B_1`, :math:`C_1` and :math:`D_1`, followed by :math:`a_1`, :math:`b_1`,
-:math:`c_1` and :math:`\omega_1` (according to :eq:`sin-int-vars`):
+It would be fruitless to reiterate the partial derivatives with respect to
+:math:`A`, :math:`B`, :math:`C` and :math:`D`, used to obtain the optimized
+:math:`A_1`, :math:`B_1`, :math:`C_1` and :math:`D_1`, followed by :math:`a_1`,
+:math:`b_1`, :math:`c_1` and :math:`\omega_1` (according to
+:eq:`sin-int-vars`):
 
 .. math::
    :label: sin-int-lsq
@@ -1803,7 +1806,7 @@ It is pointless to reiterate the partial derivatives with respect to :math:`A`,
                \text{sin}(\omega \; x_1)
    \end{cases}
 
-The results for our sample data are displayed further along in
+The results for our sample dataset are displayed further along in
 :numref:`reei-sin-final-plot`. The numerical values of :math:`\omega_1`,
 :math:`a_1`, :math:`b_1` and :math:`c_1` are shown in
 :numref:`reei-sin-final-data`. To compare the graphical and numerical
@@ -1813,11 +1816,10 @@ the curve and table column labeled :math:`(1)`.
 Incidentally, it is interesting to compare the results of numerical
 integrations :eq:`sin-int-int1` and :eq:`sin-int-int2` with respect to
 differentiation (:numref:`reei-sin-int-plot`). Observing the significant
-oscillations of the latter (a sample point is noted :math:`f_k` on the plot),
+oscillations of the latter (a sample point is noted :math:`f'_k` on the plot),
 and how they would be exacerbated by further differentiation (not shown due to
 the excessive fluctuation amplitude), it becomes patently obvious that a
-solution based on integral equations is going to be more feasible than one
-based on a differential equation.
+feasible solution must be based on integral equations rather than differential.
 
 .. figure:: /generated/reei/sin-int-plot.png
    :name: reei-sin-int-plot
@@ -1831,10 +1833,10 @@ based on a differential equation.
 
    .. include:: /generated/reei/sin-int-data.rst
 
-Nevertheless, we retain sight of the fact that with more numerous and evenly
-distributed :math:`x_k`, and less scattered :math:`y_k`, the fluctuations would
-have a more acceptable amplitude. However, let us remember that we seek to
-handle not only the easy cases, but the hard ones as well.
+While keeping in mind that with more numerous and uniformly distributed
+:math:`x_k`, coupled with less scattered :math:`y_k` would result in more
+acceptable fluctuations in the derivatives, we must also remember that a good
+solution must apply not only to the easy cases, but the hard ones as well.
 
 
 .. _reei3-sec4:
@@ -1969,12 +1971,12 @@ an arctangent:
        \omega \; x + \varphi = \pm \Phi(x) + \pi K_{(x)}
    \end{cases}
 
-:math:`arctan` denotes the principal values (between :math:`-\frac{\pi}{2}` and
-:math:`\frac{\pi}{2}`) of the multivalued function. The sign of :math:`\Phi`
-and the integer :math:`K_{(x)}` depend on the half-period of the sinusoid in
-which the point :math:`(x, y)` is found, making their dependence on :math:`x`
-discontinuous. Additionally, we can show that the sign is + when
-:math:`K_{(x)}` is even and - when odd.
+:math:`\text{arctan}` denotes the principal values (between
+:math:`-\frac{\pi}{2}` and :math:`\frac{\pi}{2}`) of the multivalued function.
+The sign of :math:`\Phi` and the integer :math:`K_{(x)}` depend on the
+half-period of the sinusoid in which the point :math:`(x, y)` is found, making
+their dependence on :math:`x` discontinuous. Additionally, we can show that the
+sign is + when :math:`K_{(x)}` is even and - when odd.
 
 If we consider :math:`\Phi(x)` by itself, it is a sawtooth function, as shown
 in :numref:`reei-sin-saw-plot` by the dotted curve. The points
@@ -2002,8 +2004,8 @@ the subscript 2, we posit that:
        \varphi_1 = \text{arctan} \left( \frac{c_1}{b_1}\right) + \pi
 
 Now it is possible to calculate :math:`K_1, K_2, ..., K_k, ..., K_n` in number
-of different ways. One possibility is as follows, with :math:`round` rounds the
-real argument to the nearest integer:
+of different ways. One possibility is as follows, where :math:`\text{round}`
+rounds the real argument to the nearest integer:
 
 .. math::
    :label: sin-k
@@ -2157,10 +2159,10 @@ respective parameters) are reported in the same figure and table.
 
 This figure might give the appearance that the prodedure is apparently
 converging the solid curves with the dotted one with successive approximations.
-However, attempting such an iterative approach would have no effect: repeating
-the calculations would not modify the final result because it is based on the
-initial numerical integrations, whose inherent inaccuracies will not decrease
-with further iterations.
+However, attempts to use this approach iteratively would have no effect:
+repeating the calculations would not modify the final result because it is
+based on the initial numerical integrations, whose inherent inaccuracies will
+not decrease with further iterations.
 
 To form an objective opinion of the properties of this method, it is necessary
 to sample a large number of simulations under different conditions.
