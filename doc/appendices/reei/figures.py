@@ -8,7 +8,7 @@ terminal output, respectively.
 
 from itertools import chain, repeat, starmap
 from os import makedirs
-from os.path import join
+from os.path import join, isfile
 
 import numpy as np
 from scipy.linalg import lstsq
@@ -31,6 +31,38 @@ OUTPUT_FOLDER = 'generated/reei'
 #############
 # Utilities #
 #############
+
+func_list = []
+
+def expected_outputs(*args, figure=True, table=True):
+    """
+    Decorates a function, or returns a decorator, to have `figure` and
+    `table` attributes. Does not modify the function.
+    """
+    def decorator(func):
+        func.figure = figure
+        func.table = table
+        func_list.append(func)
+        return func
+
+    if args:
+        # act as a decorator
+        return decorator(*args)
+    # act as a function returning a decorator
+    return decorator
+
+
+def expected_class(cls):
+    """
+    Fixes the decorated methods in `cls` previously handled by `decorator`.
+
+    `cls` must have a no-arg constructor.
+    """
+    instance = cls()
+    for name, func in cls.__dict__.items():
+        if callable(func) and func in func_list:
+            func_list[func_list.index(func)] = getattr(instance, name)
+    return cls
 
 
 def format_plot(aspect='equal', x_zero=True, y_zero=True,
@@ -113,13 +145,12 @@ def annotate(ax, text, xy, xytext, fs=14, color='k'):
                 arrowprops=dict(color=color, arrowstyle='->'))
 
 
-def save_fig(name, fig):
-    fig.savefig(join(OUTPUT_FOLDER, name + '.png'),
-                dpi=300, bbox_inches='tight')
+def save_fig(fname, fig):
+    fig.savefig(fname, dpi=300, bbox_inches='tight')
 
 
-def save_table(name, string):
-    with open(join(OUTPUT_FOLDER, name + '.rst'), 'w') as file:
+def save_table(tname, string):
+    with open(tname, 'w') as file:
         file.write(string)
 
 
@@ -213,6 +244,7 @@ plt.ioff()
 # Gauss PDF #
 #############
 
+@expected_outputs
 def gauss_pdf():
     """
     Generates a figure and table for the Gauss PDF data in the paper.
@@ -288,6 +320,7 @@ def gauss_pdf():
 # Gauss CDF #
 #############
 
+@expected_outputs
 def gauss_cdf():
     """
     Generates a figure and table for the Gauss CDF data in the paper.
@@ -341,6 +374,7 @@ def gauss_cdf():
 # Erf Test #
 ############
 
+@expected_outputs(figure=False)
 def erf_test():
     """
     Generates a table of test data for the Erf and argErf listings in
@@ -361,6 +395,7 @@ def erf_test():
 # Exp #
 #######
 
+@expected_outputs
 def exp():
     """
     Generates a figure and table for the exponential data in the paper.
@@ -430,6 +465,7 @@ def exp():
 # Weibull CDF #
 ###############
 
+@expected_outputs
 def weibull_cdf():
     """
     Generates a figure and table for the Weibull CDF data in the paper.
@@ -556,6 +592,7 @@ def weibull_cdf():
 # Sinusoids #
 #############
 
+@expected_class
 class Sinusoid:
     """
     Keeps track of the shared data for all the sinusoidal regressions
@@ -678,11 +715,10 @@ class Sinusoid:
 
         (omega2, phi2), *_ = lstsq(M, theta,
                                    overwrite_a=True, overwrite_b=True)
-        a2 = a1
         b2 = rho1 * np.cos(phi2)
         c2 = rho1 * np.sin(phi2)
 
-        return (a2, b2, c2, omega2)
+        return (a1, b2, c2, omega2)
 
     @classmethod
     def fit3(cls, x, y):
@@ -738,8 +774,8 @@ class Sinusoid:
         return cls.atan_x(f, rho)
 
     @staticmethod
-    def gen_omega_cdf(tx, fit, ns=None, x_rand=True, y_sigma=0.0,
-                      omega=1, samp=10000, an=None):
+    def gen_omega_cdf(tx, fit, npxy, ns=None, x_rand=True, y_sigma=0.0,
+                      omega=1, samp=10000, npan=None):
         """
         Generate a figure and table with CDFs for each number of
         points-per-cycle in `ns`.
@@ -763,11 +799,10 @@ class Sinusoid:
         xlabel(ax, r'$\frac{{\omega_{}}}{{\omega_e}}$'.format(omega))
         ylabel(ax, '$P$')
 
-        if an is None:
-            ax.text(0.5 * sum(tx[-2:]), 0.9, '$n_p =$',
-                    fontsize=8, va='top', ha='left')
+        if npan is None:
+            ax.text(*npxy, '$n_p =$', fontsize=8, va='top', ha='left')
         else:
-            annotate(ax, '$n_p$', unpack_tx(tx[0]), an, fs=8)
+            annotate(ax, '$n_p$', xy=npan, xytext=npxy, fs=8)
 
         for p, t in zip(ns, tx):
             x = np.random.rand(samp, p)
@@ -808,6 +843,7 @@ class Sinusoid:
             ]
         )
 
+    @expected_outputs
     def sin_exact(self):
         """
         Generates a figure and table for the exact sinusoidal data in
@@ -834,6 +870,7 @@ class Sinusoid:
             heading=[':math:`k`', ':math:`x_k`', ':math:`y_k`', '']
         )
 
+    @expected_outputs
     def sin_nomega(self):
         """
         Generates a figure and table for the sinusoid with known
@@ -870,6 +907,7 @@ class Sinusoid:
             cols=[extra], specs=[':math:`{}` = {:.{}f}'], heading=None
         )
 
+    @expected_outputs
     def sin_int(self):
         """
         Generates a figure and table for the integral-only sinudoidal
@@ -920,6 +958,7 @@ class Sinusoid:
             heading=[':math:`k`', ':math:`S_k`', ':math:`SS_k`']
         )
 
+    @expected_outputs
     def sin_eq_nd(self):
         r"""
         Generates a figure and table showing the effects of :math:`n_k`
@@ -950,6 +989,7 @@ class Sinusoid:
             heading=[':math:`n_p`', r':math:`\frac{\omega_1}{\omega_e}`']
         )
 
+    @expected_outputs
     def sin_rand_nd(self):
         r"""
         Generates a figure and table showing the effects of :math:`n_k`
@@ -957,9 +997,11 @@ class Sinusoid:
         sinusoid in the paper.
         """
         return self.gen_omega_cdf(
-            fit=self.fit1, tx=[1.185, 1.125, 1.09, 1.06, 1.03, 1.01]
+            fit=self.fit1, tx=[1.185, 1.125, 1.09, 1.06, 1.03, 1.01],
+            npxy=(1.02, 0.9)
         )
 
+    @expected_outputs
     def sin_rand_d(self):
         r"""
         Generates a figure and table showing the effects of :math:`n_k`
@@ -967,9 +1009,11 @@ class Sinusoid:
         sinusoid in the paper.
         """
         return self.gen_omega_cdf(
-            fit=self.fit1, tx=[1.21, 1.14, 1.1, 1.07, 1.04, 1.02], y_sigma=0.1
+            fit=self.fit1, tx=[1.21, 1.14, 1.1, 1.07, 1.04, 1.02], y_sigma=0.1,
+            npxy=(1.03, 0.9)
         )
 
+    @expected_outputs
     def sin_saw(self):
         """
         Generates a figure showing the transformation of a sawtooth
@@ -1014,19 +1058,21 @@ class Sinusoid:
             ]
         )
 
+    @expected_outputs
     def sin_rand_nd2(self):
         r"""
         Generates a figure and table showing the effects of :math:`n_k`
-        on :math:`\omega_2 / \omega_e` for the random, non-dispersive
+        on :math:`\omega_2 / \omega_e` for the random, non-dispersed
         sinusoid in the paper.
         """
         return self.gen_omega_cdf(
             fit=self.fit2, omega=2, tx=[
                 (1.06, 0.8), (1.04, 0.82), (1.03, 0.84), (1.02, 0.86),
                 (1.01, 0.88)
-            ], an=(1.08, 0.75)
+            ], npxy=(1.08, 0.75), npan=(1.06, 0.8)
         )
 
+    @expected_outputs
     def sin_rand_d2(self):
         r"""
         Generates a figure and table showing the effects of :math:`n_k`
@@ -1035,9 +1081,10 @@ class Sinusoid:
         """
         return self.gen_omega_cdf(
             fit=self.fit2, omega=2, tx=[1.21, 1.14, 1.1, 1.07, 1.04, 1.01],
-            y_sigma=0.1
+            y_sigma=0.1, npxy=(0.98, 0.98)
         )
 
+    @expected_outputs
     def sin_final(self):
         """
         Generates a figure showing the final, and all intermediate
@@ -1081,15 +1128,10 @@ class Sinusoid:
             heading=['', ':math:`(1)`', ':math:`(2)`', ':math:`(3)`']
         )
 
-
-sinusoid = Sinusoid()
-func_list = [
-    gauss_pdf, gauss_cdf, erf_test, exp, weibull_cdf,
-    sinusoid.sin_exact, sinusoid.sin_nomega, sinusoid.sin_int,
-    sinusoid.sin_eq_nd, sinusoid.sin_rand_nd, sinusoid.sin_rand_d,
-    sinusoid.sin_saw, sinusoid.sin_rand_nd2, sinusoid.sin_rand_d2,
-    sinusoid.sin_final,
-]
+    def sin_fail_plot(self):
+        """
+        Estimate failure rates.
+        """
 
 
 if __name__ != '__main__':
@@ -1098,17 +1140,24 @@ if __name__ != '__main__':
 for func in func_list:
     name = func.__name__.replace('_', '-')
     title = name.replace('-', ' ').upper()
-    figure, table = func()
+
     if __name__ == '__main__':
+        figure, table = func()
         if table:
             print(title, table, sep='\n\n')
         if figure:
             figure.suptitle(title)
+            plt.show()
     else:
-        if figure:
-            save_fig('{}-plot'.format(name), figure)
-        if table:
-            save_table('{}-data'.format(name), table)
+        fname = join(OUTPUT_FOLDER, '{}-plot.png'.format(name))
+        tname = join(OUTPUT_FOLDER, '{}-data.rst'.format(name))
+        if (not isfile(fname) and func.figure) or \
+                (not isfile(tname) and func.table):
+            figure, table = func()
+            if figure:
+                save_fig(fname, figure)
+            if table:
+                save_table(tname, table)
 
 if __name__ == '__main__':
     plt.show()

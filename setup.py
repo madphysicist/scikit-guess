@@ -15,7 +15,7 @@ LICENSE = 'BSD 2-Clause License'
 DESCRIPTION = 'Non-iterative initial parameter guesses for fitting routines'
 
 AUTHOR = 'Joseph R. Fox-Rabinovitz'
-AUTHOR_EMAIL = 'joseph.r.fox-rabinovitz@nasa.gov'
+AUTHOR_EMAIL = 'jfoxrabinovitz@gmail.com'
 
 MAINTAINER = 'Joseph R. Fox-Rabinovitz'
 MAINTAINER_EMAIL = 'jfoxrabinovitz@gmail.com'
@@ -39,6 +39,7 @@ CLASSIFIERS = (
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
     'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: Implementation :: CPython',
     #'Programming Language :: Python :: Implementation :: PyPy',
     #'Programming Language :: Python :: Implementation :: Jython',

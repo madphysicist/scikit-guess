@@ -2164,8 +2164,87 @@ repeating the calculations would not modify the final result because it is
 based on the initial numerical integrations, whose inherent inaccuracies will
 not decrease with further iterations.
 
-To form an objective opinion of the properties of this method, it is necessary
-to sample a large number of simulations under different conditions.
+Sampling a large number of simulations of different conditions would be
+required to form an objective opinion of the properties of this method. We can
+refer to :numref:`reei-sin-rand-nd2-data` and :numref:`reei-sin-rand-d2-data`
+for a summary of the results for the the optimization of :math:`\omega`, which
+is the essential part of the algorithm. Naturally, the final results are
+unchanged from what is shown in :numref:`reei-sin-rand-nd2-plot` and
+:numref:`reei-sin-rand-d2-data` since :math:`\omega_3 = \omega_2`.
+
+For each simulated value of :math:`(\omega_3, a_3, b_3, c_3)`, the root mean
+square is computed from
+
+.. math::
+   :label: sin3-rms
+
+   \sigma_3 = \sqrt{\frac{1}{n} \sum_{k=1}^n \left( y_k - \left(
+       a_3 + b_3 \; \text{sin}(\omega_3 \; x_k) +
+       c_3 \; \text{cos}(\omega_3 \; x_k)
+   \right) \right)^2}
+
+The distribution of :math:`(\sigma_3/\rho_e)` for each fixed value of
+:math:`n_p` is plotted from 10000 simulations, each with a different set of
+:math:`(x_k, y_k)`, since the ordinates are perturbed with a characteristic
+root mean square of :math:`\sigma_e` about the nominal (defined in
+:ref:`Section1 <reei3-sec1>`). For the plot in figure :numref:`sin-11`, the
+dispersed ordinates are generated so that the ratio :math:`\sigma_e / \rho_e`
+is always a constant, in this case 0.1. The abscissae, on the other hand, are
+generated differently:
+
+  - :numref:`reei-sin-rms-a-plot`: The abscissae of successive points are
+    distributed uniformly.
+  - :numref:`reei-sin-rms-b-plot`: The abscissae are distributed randomly
+    (with :math:`n_p` points per full period)
+
+It might seem surprising that the root mean squared error :math:`\sigma_3` is
+smaller than the initial :math:`\sigma_e`. The explanation is that the
+"optimized" sinusoid will often pass closer to the data points than the "exact"
+one, especially with more dispersed points. The differences stem from the
+optimization of :math:`\omega_2`, which can differ significantly from
+:math:`\omega_e`, as we saw in :numref:`reei-sin-rand-nd2-plot` and
+:numref:`reei-sin-rand-d2-plot`. Consequently, for dispersed ordinates, the
+error does not increase as significantly as we might have feared in moving away
+from uniformly distributed abscissae.
+
+.. figure:: /generated/reei/sin-rms-a-plot.png
+   :name: reei-sin-rms-a-plot
+
+   Cumulative distribution functions for the root mean squared error, with
+   uniformly distributed absissae.
+
+.. figure:: /generated/reei/sin-rms-b-plot.png
+   :name: reei-sin-rms-b-plot
+
+   Cumulative distribution functions for the root mean squared error, with
+   non-uniformly distributed absissae.
+
+The biggest difference between the uniform and non-uniform cases is the failure
+rate of the process. This must be mentioned, since it is the common lot of all
+methods when the points are irregularly distributed. Inevitably (not
+frequently, but nevertheless with a non-zero probabililty), we run into data
+sets in which all the points are tightly clustered. The sinusoid for such data
+is not defined, and therefore can be neither characterized nor approximated.
+This can be expressed differently in different portions of the computation, for
+example through indeterminacy (division by a number too close to zero),
+non-invertibility of one of the matrices, square root of a negative number,
+etc.
+
+The calculation of :math:`\omega_1` in :eq:`sin-int-params` is where the
+majority of failures occur in this method, fortunately quite rarely. For the
+hundreds of thousands of simulations performed **with uniformly distributed
+abscissae, no failure was ever encountered**. This is not surprising since the
+points could never be clumped in that situation. The case with randomly
+selected abscissae, on the other hand, showed a very low failure rate,
+dependent on both the dispersion and the quantity of data points under
+consideration, as shown in :numref:`reei-sin-fail-plot` (which required nearly
+five hundred thousand simulations for a coherent view to emerge).
+
+.. figure:: /generated/reei/sin-fail-plot.png
+   :name: reei-sin-fail-plot
+
+   Failure rates (orders of magnitude).
+
 
 
 .. _reei3-sec7:
