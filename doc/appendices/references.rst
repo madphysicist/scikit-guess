@@ -54,3 +54,26 @@ as part of the documentation of scikit-guess. The translation can be read here:
 
    reei/translation
    reei/supplement
+
+
+.. _ref-cflnls
+
+----------------------------------------------------
+Circle Fitting by Linear and Nonlinear Least Squares
+----------------------------------------------------
+
+This paper by Ian Coope demonstrates a way to linearize a non-linear least
+squares problem. A PDF is available with this documentation:
+:download:`Circle Fitting by Linear and Nonlinear Least Squares </_static/documents/Circle-Fitting-by-Linear-and-Nonlinear-Least-Squares.pdf>`.
+
+Available online at https://core.ac.uk/download/pdf/35472611.pdf.
+
+
+Concept
+=======
+
+Rather than solving the traditional non-linear least squares problem for
+n-dimensional circles, this paper proposes a change of variable that reduces
+the problem to a simple linear least squares. The change appears to yield more
+robust results in some cases. This is one of the multidimensional optimizations
+offered in the scikit.
