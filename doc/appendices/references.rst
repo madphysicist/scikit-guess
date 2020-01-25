@@ -68,7 +68,7 @@ squares problem.
 .. A PDF is available with this documentation:
 .. :download:`Circle Fitting by Linear and Nonlinear Least Squares </_static/documents/Circle-Fitting-by-Linear-and-Nonlinear-Least-Squares.pdf>`.
 
-Available online at https://core.ac.uk/download/pdf/35472611.pdf.
+Available online at https://ir.canterbury.ac.nz/bitstream/handle/10092/11104/coope_report_no69_1992.pdf.
 
 
 Concept
