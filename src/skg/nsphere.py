@@ -6,7 +6,7 @@ n-dimensional surface and because it does not have a model function
 because of the non-functional nature of n-spheres.
 """
 
-from future import division, absolute_import
+from __future__ import division, absolute_import
 
 from numpy import asfarray, sqrt
 from numpy import __version__ as __np_version__
@@ -19,7 +19,7 @@ __all__ = ['nsphere_fit']
 
 if NumpyVersion(__np_version__) >= '1.11.0':
     from numpy import moveaxis
-else
+else:
     from numpy import rollaxis as moveaxis
 
 

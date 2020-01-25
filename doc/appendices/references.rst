@@ -63,8 +63,10 @@ Circle Fitting by Linear and Nonlinear Least Squares
 ----------------------------------------------------
 
 This paper by Ian Coope demonstrates a way to linearize a non-linear least
-squares problem. A PDF is available with this documentation:
-:download:`Circle Fitting by Linear and Nonlinear Least Squares </_static/documents/Circle-Fitting-by-Linear-and-Nonlinear-Least-Squares.pdf>`.
+squares problem.
+
+.. A PDF is available with this documentation:
+.. :download:`Circle Fitting by Linear and Nonlinear Least Squares </_static/documents/Circle-Fitting-by-Linear-and-Nonlinear-Least-Squares.pdf>`.
 
 Available online at https://core.ac.uk/download/pdf/35472611.pdf.
 
