@@ -49,14 +49,14 @@ randomly generated inputs, and checked for speed and quality. The quality of
 each algorithm will be assessed based on these tests. Quality has three
 categories: speed, accuracy and usefulness.
 
-- Speed is a benchmark against :func:`scipy.optimize.curve_fit`. An algorithm
-  that is slower than a non-linear optimizer starting with default parameters
-  is not deemed very useful.
-- Accuracy is checked by making sure that the fit is within reasonable bounds
-  of the values computed by :func:`scipy.optimize.curve_fit`. Reasonableness is
-  a function of the analytically derived partial derivatives of the model with
-  respect to the parameters.
-- Usefulness is a measure of how many iterations
+- **Speed** is a benchmark against :func:`scipy.optimize.curve_fit`. An
+  algorithm that is slower than a non-linear optimizer starting with default
+  parameters is not deemed very useful.
+- **Accuracy** is checked by making sure that the fit is within reasonable
+  bounds of the values computed by :func:`scipy.optimize.curve_fit`.
+  Reasonableness is a function of the analytically derived partial derivatives
+  of the model with respect to the parameters.
+- **Usefulness** is a measure of how many iterations
   :func:`scipy.optimize.curve_fit` saves by using the algorithm as an initial
   guess. Another informal metric is the combined runtime of the algorithm and
   :func:`~scipy.optimize.curve_fit` vs. the runtime of just
