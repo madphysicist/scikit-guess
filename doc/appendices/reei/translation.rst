@@ -2161,8 +2161,8 @@ This figure might give the appearance that the prodedure is apparently
 converging the solid curves with the dotted one with successive approximations.
 However, attempts to use this approach iteratively would have no effect:
 repeating the calculations would not modify the final result because it is
-based on the initial numerical integrations, whose inherent inaccuracies will
-not decrease with further iterations.
+based on the initial numerical integrations, whose inherent noise will not
+decrease with further iterations.
 
 Sampling a large number of simulations of different conditions would be
 required to form an objective opinion of the properties of this method. We can
@@ -2332,6 +2332,148 @@ Double Exponential Regression & Double Power Regression
 Multivariate Regression
 -----------------------
 
+Rather than depending on a single variable, :math:`x`, our function may depend
+on multiple variables, :math:`x, t, ...`.
 
+Review of the Linear Case
+=========================
+
+In the simplest case, the function :math:`y(x, t, ...)` is linear with respect
+to the optimiation parameters
+:math:`\lambda_1, \lambda_2, ..., \lambda_j, ..., \lambda_m`:
+
+.. math::
+
+   y(x, t, ...) = \lambda_1 f_1(x, t, ...) + ... + \lambda_j f_j(x, t, ...) +
+                ... + \lambda_m f_m(x, t, ...)
+
+The given functions :math:`f_j(x, t, ...)` do not themselves deped on the
+optimization parameters.
+
+Given the :math:`n` data points :math:`(x_1, t_1, ...; y_1), (x_2, t_2, ...; y_2), ..., (x_k, t_k, ...; y_j), ..., (x_n, t_n, ...; y_m)`,
+the fitting parameters can be computed using the least-squares method:
+
+.. math::
+
+   \text{With :} f_{j,k} = f_j(x_k, t_k, ...) \\ \\
+
+   \begin{bmatrix}
+       \lambda_1 \\ ... \\ \lambda_j \\ ... \\ \lambda_m
+   \end{bmatrix} =
+
+   \begin{bmatrix}
+       \sum_{k=1}^n \left(f_{1,k}\right)^2 & ... & \sum_{k=1}^n f_{1,k} f_{j,k}
+                                           & ... & \sum_{k=1}^n f_{1,k} f_{m,k} \\
+       ...                                 & ... & ...
+                                           & ... & ... \\
+       \sum_{k=1}^n f_{1,k} f_{j,k}        & ... & \sum_{k=1}^n \left(f_{j,k}\right)^2
+                                           & ... & \sum_{k=1}^n f_{j,k} f_{m,k} \\
+       ...                                 & ... & ...
+                                           & ... & ... \\
+       \sum_{k=1}^n f_{1,k} f_{m,k}        & ... & \sum_{k=1}^n f_{j,k} f_{m,k}
+                                           & ... & \sum_{k=1}^n \left(f_{m,k}\right)^2
+   \end{bmatrix}^{-1}
+
+   \begin{bmatrix}
+       \sum_{k=1}^n y_k f_{1,k} \\ ... \\ \sum_{k=1}^n y_k f_{j,k} \\ ... \\ \sum_{k=1}^n y_k f_{m,k}
+   \end{bmatrix}
+
+Non-Linear Case
+===============
+
+If one or more of the functions depend on the fitting parameter(s),
+:math:`y(x, t, ...)` will no longer be linear with respect to the optimization
+parameters:
+
+.. math::
+
+   y(x, t, ...) = b_1 \varphi_1(p_1, p_2, ...; x, t, ...) +
+                  b_2 \varphi_2(p_1, p_2, ...; x, t, ...) + ... +
+                  \lambda_1 f_1(x, t, ...) + ... +
+                  \lambda_j f_j(x, t, ...) + ... +
+                  \lambda_m f_m(x, t, ...)
+
+The functions given as :math:`\varphi_1, \varphi_2, ...` depend on the fitting
+parameters :math:`p_1, p_2, ...`. The complete set of parameters to optimize is
+therefore
+:math:`p_1, p_2, ..., b_1, b_2, ..., \lambda_1, ..., \lambda_j, ..., lambda_m`.
+The least squarese method can not be applied directly in this case. A
+multitude of variations of this method are used, based generally on forming an
+initial guess of the parameters in the non-linear terms
+(:math:`p_1, p_2, ...`), followed by recursive approximations to progressively
+optimize the initial guess.
+
+The method studied here follows from a very different principle. We perform
+one or more integrations of :math:`y(x, t, ...)`, for example
+:math:`\int y(x, y, ...) dx`, or :math:`\int y(x, t, ...) dt`, or
+:math:`\int \int y(x, t, ...) dx dt`, or other multiple integrations.
+
+We can can also introduce new functions :math:`g(x, t, ...)`, to simplify the
+integrals: :math:`\int g(x, t, ...) y(x, t, ...) dx`, or
+:math:`\int g(x, t, ...) y(x, t, ...) dt`, or
+:math:`\int \int g(x, t, ...) y(x, t, ...) dx dt`, or other multiple
+integrations.
+
+We can see that the possibilities are endless. It is sometimes possible to form
+linear combinations of such equations that cancel out the non linear terms
+depending on the parameters :math:`p_1, p_2, ...`.
+
+**For Example**, consider the following function:
+
+.. math::
+
+   y(x, t) = b \text{exp}(p x t) + \lambda(x - t)^2 \quad
+
+   \begin{cases}
+       b_1 = b \quad ; \quad b_2 = b_3 = ... = 0 \\
+       p_1 = p \quad ; \quad p_2 = p_3 = ... = 0 \\
+       \varphi(p_1, p_2, ...; x, t, ...) = \text{exp}(p x t) \\
+       \lambda_1 = \lambda \quad ; \quad \lambda_2 = \lambda_3 = ... = 0 \\
+       f_1(x, t, ...) = (x - t)^2
+   \end{cases} \\
+
+   \begin{cases}
+       \text{with :} \\
+       g(x, t) = t
+   \end{cases}
+
+   \begin{cases}
+       \int g(x, t) y(x, y) dx = \int t b \text{exp}(p x t) dx + \int t \lambda(x - t)^2 dx \\
+       = \frac{b}{p} \text{exp}(p x t) + \frac{\lambda}{3} t (x-t)^3 + ...
+   \end{cases}
+
+We can see that a linear combination between this equation and the definition
+of :math:`y(x, t)` can be used to cancel out the term
+:math:`\text{exp}(p x t)`:
+
+.. math::
+
+   y(x, t) = p \int t y(x, t) dx - \frac{1}{3} \lambda p t (x - t)^3 +
+                                               \lambda (x - t)^2 + ... \\
+   y(x, t) = p S(x, t) + \lambda_1 f_1(x, t) + \lambda_2 f_2(x, t) + ...
+
+   \begin{cases}
+       S(x, t) = \int t y(x, t) dx \\
+       f_1(x, t) = t(x - t)^3 \\
+       f_2(x, t) = (x - t)^2
+   \end{cases}
+
+:math:`S(x, t)` will be approximated numerically from the data.
+
+This relationship is linear in :math:`p, \lambda_1, \lambda_2`. Least squares
+regression gives us the desired approximation of :math:`p`. This reduces the
+equation for :math:`y(x, t)` to a linear relationship with regards to :math:`b`
+and :math:`lambda`.
+
+Nevertheless, the equations above are not quite correct, as they were
+deliberately left incomplete, so as to simplify the following explanation. The
+integrals can not be left in their indefinite form, especially when it comes to
+numerical integration. It is necessary to define a lower limit if integration.
+This requirement does not pose any fundamental difficulty for a function
+:math:`y(x)` of one variable. It does, however, become a sensitive problem for
+functions :math:`y(x, t, ...)` of multiple variables. The potential problems
+with numerical integration must be examined carefully in the presence of
+multiple variables (:math:`x, t, ...`), even when the integration is only
+carried out over one of them.
 
 .. include:: /link-defs.rst
