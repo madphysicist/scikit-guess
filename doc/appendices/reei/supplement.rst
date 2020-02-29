@@ -536,11 +536,14 @@ link back to the corresponding location in the translated paper as footnotes.
 .. [errata-reei-11] The original paper has the figure number listed as 1 here,
    but should be 2.
 
-.. [errata-reei-12] The version of :eq:`sin-int-resid` in the original paper
+.. [errata-reei-12] The equation was moved to a separate line, for consistency
+   with all the other numbered equations in the paper.
+
+.. [errata-reei-13] The version of :eq:`sin-int-resid` in the original paper
    has an unbalanced closing parenthesis after :math:`D`. It has been removed
    in the translation.
 
-.. [errata-reei-13] It is a bit unclear as to how the :math:`f'_k` values were
+.. [errata-reei-14] It is a bit unclear as to how the :math:`f'_k` values were
    generated in the figure in the original paper. The x-values of the points
    appear to be half way between the exact x-values. This makes it reasonable
    to suppose that the values were calculated from :math:`(x_k, y_k)` with
@@ -550,7 +553,7 @@ link back to the corresponding location in the translated paper as footnotes.
    first equation in :ref:`reei1-sec2` (describing :math:`D_k`) does not help
    either in this case.
 
-.. [errata-reei-14] The figure shown here is generates identical results to the
+.. [errata-reei-15] The figure shown here is generates identical results to the
    one in the original paper, but it is not strictly correct. For each value of
    :math:`n_p`, the following code generates the :math:`x` and :math:`y`
    values used to compute :math:`\omega_1`:
@@ -566,7 +569,7 @@ link back to the corresponding location in the translated paper as footnotes.
    the paper appears to be generated for values of :math:`n_p - 1` rather than
    :math:`n_p`. The overall point being made holds regardless, of course.
 
-.. [errata-reei-15] The original figure shows the "exact" :math:`\theta` line
+.. [errata-reei-16] The original figure shows the "exact" :math:`\theta` line
    slightly elevated above the "exact" :math:`\Phi` line, so as not to obscure
    the portion of :math:`\Phi` where they match. I have chosen instead to match
    the lines but make the dotted line thicker, so it is not completely

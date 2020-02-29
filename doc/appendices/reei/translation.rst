@@ -1671,7 +1671,7 @@ as it was in the preceding example.
 The goal being to reduce the problem to a linear regression, it is sometimes
 tempting to use a linear differential equation whose solution is our function
 of interest as the intermediary. An example is the follwing equation, for which
-the sinusiod :eq:`sin-fx` is a solution:
+the sinusiod :eq:`sin-fx` is a solution\ [errata-reei-12]_:
 
 .. math::
    :label: sin-diff-eq
@@ -1738,8 +1738,8 @@ regard to the quantity of interest, the optimized value of :math:`\omega`
    \end{cases}
 
 The coefficients :math:`A`, :math:`B`, :math:`C`, :math:`D` are unknown.
-However, they can be approximated through linear regression based on the values
-of :math:`SS_k` computed beforehand. To accomplish this, we perform two numeric
+However, they can be approximated through linear regression based on the
+precomputed values of :math:`SS_k`. To accomplish this, we perform two numeric
 integrations:
 
 .. math::
@@ -1762,7 +1762,7 @@ integrations:
 
 It goes without saying that the points must first be ranked in order of
 ascending :math:`x_k`. It follows that the sum of squared residuals to minimize
-is the following\ [errata-reei-12]_:
+is the following\ [errata-reei-13]_:
 
 .. math::
    :label: sin-int-resid
@@ -1770,7 +1770,7 @@ is the following\ [errata-reei-12]_:
    \varepsilon^2_{a, b, c, \omega} = \sum_{k=1}^n \left( y_k -
        \left( A \; SS_k + B \; x_k^2 + C \; x_k  + D \right) \right)^2
 
-It would be fruitless to reiterate the partial derivatives with respect to
+There is no need to reiterate the partial derivatives with respect to
 :math:`A`, :math:`B`, :math:`C` and :math:`D`, used to obtain the optimized
 :math:`A_1`, :math:`B_1`, :math:`C_1` and :math:`D_1`, followed by :math:`a_1`,
 :math:`b_1`, :math:`c_1` and :math:`\omega_1` (according to
@@ -1825,7 +1825,7 @@ feasible solution must be based on integral equations rather than differential.
    :name: reei-sin-int-plot
 
    Numerical integrations and comparison with differentiations.\
-   [errata-reei-13]_.
+   [errata-reei-14]_.
 
 .. table:: Cumulative sums corresponding to :numref:`reei-sin-int-plot`.
    :name: reei-sin-int-data
@@ -1833,10 +1833,10 @@ feasible solution must be based on integral equations rather than differential.
 
    .. include:: /generated/reei/sin-int-data.rst
 
-While keeping in mind that with more numerous and uniformly distributed
-:math:`x_k`, coupled with less scattered :math:`y_k` would result in more
-acceptable fluctuations in the derivatives, we must also remember that a good
-solution must apply not only to the easy cases, but the hard ones as well.
+While noting that with more numerous and uniformly distributed :math:`x_k`,
+coupled with less scattered :math:`y_k` would result in more acceptable
+fluctuations in the derivatives, we must also remember that a good solution
+must apply not only to the trivial cases, but the difficult ones as well.
 
 
 .. _reei3-sec4:
@@ -1881,7 +1881,7 @@ described in :ref:`Section 5 <reei3-sec5>`, seems more appropriate.
    Effect of the number of points per period, with a uniform distribution.
 
 .. table:: Numerical results corresponding to :numref:`reei-sin-eq-nd-plot`.\
-   [errata-reei-14]_
+   [errata-reei-15]_
    :name: reei-sin-eq-nd-data
    :class: data-table
 
@@ -2037,7 +2037,7 @@ points :math:`(x_k, \theta_k)` represented by squares, some of which coincide.
    :name: reei-sin-saw-plot
 
    Transformation of a sawtooth function in preparation for linear regression
-   [errata-reei-15]_
+   [errata-reei-16]_
 
 .. table:: Numerical data for the points shown in :numref:`reei-sin-saw-plot`.
    :name: reei-sin-saw-data
