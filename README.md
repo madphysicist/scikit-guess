@@ -6,3 +6,5 @@ fitting parameters for common functions. The estimates may be used as-is on
 their own, or refined through non-linear optimization algorithms. The name of
 the scikit comes from the fact that estimates are a good initial guess for the
 optimal fitting parameters.
+
+Documentation available on Read the Docs: https://scikit-guess.readthedocs.io/en/latest/.
