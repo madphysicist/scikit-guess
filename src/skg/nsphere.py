@@ -32,7 +32,7 @@ def nsphere_fit(x, axis=0):
 
     .. math::
 
-       \norm{\vec{x} - \vec{c}}_2 = r
+       \|\overrightarrow{x} - \overrightarrow{c}\|_2 = r
 
     Parameters
     ----------
