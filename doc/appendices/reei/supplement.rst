@@ -575,5 +575,12 @@ link back to the corresponding location in the translated paper as footnotes.
    the lines but make the dotted line thicker, so it is not completely
    obscured.
 
+.. [errata-reei-20] The original list of points was written as
+   :math:`(x_1, t_1, ...; y_1), (x_2, t_2, ...; y_2), ..., (x_k, t_k, ...; y_j), ..., (x_n, t_n, ...; y_m)`.
+   This implies that the indices of dependent values, :math:`y`, are not in
+   lockstep with the independent parameters :math:`x, t, ...`, which is
+   misleading. It is also inconsistent with the subsequent exposition. I have
+   therefore taken the liberty of using the same index for the dependent
+   variables as for the independent.
 
 .. include:: /link-defs.rst

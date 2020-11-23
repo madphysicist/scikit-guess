@@ -56,7 +56,7 @@ as part of the documentation of scikit-guess. The translation can be read here:
    reei/supplement
 
 
-.. _ref-cflnls
+.. _ref-cflnls:
 
 ----------------------------------------------------
 Circle Fitting by Linear and Nonlinear Least Squares

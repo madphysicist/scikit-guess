@@ -18,7 +18,7 @@ REGRESSIONS et EQUATIONS INTEGRALES
 | Generalization of Sinusoidal Regression
 | Damped Sinusoidal Regression
 | Sum of Two Exponentials and Sum of Two Powers
-| Multivariate Regression
+| :ref:`Multivariate Regression <reei10>`
 
 .. image:: /_static/images/Regressions-et-equations-integrales.cover.jpg
    :name: cover-image
@@ -2332,81 +2332,82 @@ Double Exponential Regression & Double Power Regression
 Multivariate Regression
 -----------------------
 
-Rather than depending on a single variable, :math:`x`, our function may depend
+Rather than a single variable, :math:`x`, the objective function depends
 on multiple variables, :math:`x, t, ...`.
+
 
 Review of the Linear Case
 =========================
 
 In the simplest case, the function :math:`y(x, t, ...)` is linear with respect
-to the optimiation parameters
+to the optimization parameters
 :math:`\lambda_1, \lambda_2, ..., \lambda_j, ..., \lambda_m`:
 
-.. math::
+    .. math::
 
-   y(x, t, ...) = \lambda_1 f_1(x, t, ...) + ... + \lambda_j f_j(x, t, ...) +
-                ... + \lambda_m f_m(x, t, ...)
+       y(x, t, ...) = \lambda_1 f_1(x, t, ...) + ... +
+                      \lambda_j f_j(x, t, ...) + ... +
+                      \lambda_m f_m(x, t, ...)
 
-The given functions :math:`f_j(x, t, ...)` do not themselves deped on the
+The given functions :math:`f_j(x, t, ...)` do not themselves depend on the
 optimization parameters.
 
-Given the :math:`n` data points :math:`(x_1, t_1, ...; y_1), (x_2, t_2, ...; y_2), ..., (x_k, t_k, ...; y_j), ..., (x_n, t_n, ...; y_m)`,
+Given the :math:`n` data points
+:math:`(x_1, t_1, ...; y_1), (x_2, t_2, ...; y_2), ..., (x_k, t_k, ...; y_j), ..., (x_n, t_n, ...; y_m)`,
 the fitting parameters can be computed using the least-squares method:
 
-.. math::
+With: :math:`f_{j,k} = f_j(x_k, t_k, ...)`
 
-   \text{With :} f_{j,k} = f_j(x_k, t_k, ...) \\ \\
+    .. math::
 
-   \begin{bmatrix}
-       \lambda_1 \\ ... \\ \lambda_j \\ ... \\ \lambda_m
-   \end{bmatrix} =
+       \begin{bmatrix}
+           \lambda_1 \\ ... \\ \lambda_j \\ ... \\ \lambda_m
+       \end{bmatrix} = \begin{bmatrix}
+           \sum_{k=1}^n \left(f_{1,k}\right)^2     & ... &
+               \sum_{k=1}^n f_{1,k} f_{j,k}        & ... &
+               \sum_{k=1}^n f_{1,k} f_{m,k} \\
+           ... & ... & ... & ... & ... \\
+           \sum_{k=1}^n f_{1,k} f_{j,k}            & ... &
+               \sum_{k=1}^n \left(f_{j,k}\right)^2 & ... &
+               \sum_{k=1}^n f_{j,k} f_{m,k} \\
+           ... & ... & ... & ... & ... \\
+           \sum_{k=1}^n f_{1,k} f_{m,k}            & ... &
+               \sum_{k=1}^n f_{j,k} f_{m,k}        & ... &
+               \sum_{k=1}^n \left(f_{m,k}\right)^2
+       \end{bmatrix}^{-1} \begin{bmatrix}
+           \sum_{k=1}^n y_k f_{1,k} \\ ... \\
+               \sum_{k=1}^n y_k f_{j,k} \\ ... \\ \sum_{k=1}^n y_k f_{m,k}
+       \end{bmatrix}
 
-   \begin{bmatrix}
-       \sum_{k=1}^n \left(f_{1,k}\right)^2 & ... & \sum_{k=1}^n f_{1,k} f_{j,k}
-                                           & ... & \sum_{k=1}^n f_{1,k} f_{m,k} \\
-       ...                                 & ... & ...
-                                           & ... & ... \\
-       \sum_{k=1}^n f_{1,k} f_{j,k}        & ... & \sum_{k=1}^n \left(f_{j,k}\right)^2
-                                           & ... & \sum_{k=1}^n f_{j,k} f_{m,k} \\
-       ...                                 & ... & ...
-                                           & ... & ... \\
-       \sum_{k=1}^n f_{1,k} f_{m,k}        & ... & \sum_{k=1}^n f_{j,k} f_{m,k}
-                                           & ... & \sum_{k=1}^n \left(f_{m,k}\right)^2
-   \end{bmatrix}^{-1}
-
-   \begin{bmatrix}
-       \sum_{k=1}^n y_k f_{1,k} \\ ... \\ \sum_{k=1}^n y_k f_{j,k} \\ ... \\ \sum_{k=1}^n y_k f_{m,k}
-   \end{bmatrix}
 
 Non-Linear Case
 ===============
 
-If one or more of the functions depend on the fitting parameter(s),
-:math:`y(x, t, ...)` will no longer be linear with respect to the optimization
-parameters:
+If one or more of the functions depend on the fitting parameter(s), the
+corresponding :math:`y(x, t, ...)` will no longer be linear with respect to the
+optimization parameters:
 
-.. math::
+    .. math::
 
-   y(x, t, ...) = b_1 \varphi_1(p_1, p_2, ...; x, t, ...) +
-                  b_2 \varphi_2(p_1, p_2, ...; x, t, ...) + ... +
-                  \lambda_1 f_1(x, t, ...) + ... +
-                  \lambda_j f_j(x, t, ...) + ... +
-                  \lambda_m f_m(x, t, ...)
+       y(x, t, ...) = b_1 \varphi_1(p_1, p_2, ...; x, t, ...) +
+                      b_2 \varphi_2(p_1, p_2, ...; x, t, ...) + ... +
+                      \lambda_1 f_1(x, t, ...) + ... +
+                      \lambda_j f_j(x, t, ...) + ... +
+                      \lambda_m f_m(x, t, ...)
 
 The functions given as :math:`\varphi_1, \varphi_2, ...` depend on the fitting
 parameters :math:`p_1, p_2, ...`. The complete set of parameters to optimize is
 therefore
 :math:`p_1, p_2, ..., b_1, b_2, ..., \lambda_1, ..., \lambda_j, ..., lambda_m`.
-The least squarese method can not be applied directly in this case. A
-multitude of variations of this method are used, based generally on forming an
-initial guess of the parameters in the non-linear terms
-(:math:`p_1, p_2, ...`), followed by recursive approximations to progressively
-optimize the initial guess.
+The least squares method can not be applied directly in this case. A multitude
+of different methods exist, based generally on forming an initial estimate of
+the non-linear parameters (:math:`p_1, p_2, ...`), followed by recursive
+approximations to progressively optimize the initial guess.
 
 The method studied here follows from a very different principle. We perform
 one or more integrations of :math:`y(x, t, ...)`, for example
 :math:`\int y(x, y, ...) dx`, or :math:`\int y(x, t, ...) dt`, or
-:math:`\int \int y(x, t, ...) dx dt`, or other multiple integrations.
+:math:`\int \int y(x, t, ...) dx dt`, or other multiple integrals.
 
 We can can also introduce new functions :math:`g(x, t, ...)`, to simplify the
 integrals: :math:`\int g(x, t, ...) y(x, t, ...) dx`, or
@@ -2420,43 +2421,42 @@ depending on the parameters :math:`p_1, p_2, ...`.
 
 **For Example**, consider the following function:
 
-.. math::
+    .. math::
 
-   y(x, t) = b \text{exp}(p x t) + \lambda(x - t)^2 \quad
+       y(x, t) = b \text{exp}(p x t) + \lambda(x - t)^2 \quad
 
-   \begin{cases}
-       b_1 = b \quad ; \quad b_2 = b_3 = ... = 0 \\
-       p_1 = p \quad ; \quad p_2 = p_3 = ... = 0 \\
-       \varphi(p_1, p_2, ...; x, t, ...) = \text{exp}(p x t) \\
-       \lambda_1 = \lambda \quad ; \quad \lambda_2 = \lambda_3 = ... = 0 \\
-       f_1(x, t, ...) = (x - t)^2
-   \end{cases} \\
+       \begin{cases}
+           b_1 = b \quad ; \quad b_2 = b_3 = ... = 0 \\
+           p_1 = p \quad ; \quad p_2 = p_3 = ... = 0 \\
+           \varphi(p_1, p_2, ...; x, t, ...) = \text{exp}(p x t) \\
+           \lambda_1 = \lambda \quad ; \quad \lambda_2 = \lambda_3 = ... = 0 \\
+           f_1(x, t, ...) = (x - t)^2
+       \end{cases} \\
 
-   \begin{cases}
-       \text{with :} \\
-       g(x, t) = t
-   \end{cases}
-
-   \begin{cases}
-       \int g(x, t) y(x, y) dx = \int t b \text{exp}(p x t) dx + \int t \lambda(x - t)^2 dx \\
-       = \frac{b}{p} \text{exp}(p x t) + \frac{\lambda}{3} t (x-t)^3 + ...
-   \end{cases}
+       \begin{cases}
+           \text{with :} \\
+           g(x, t) = t
+       \end{cases} \begin{cases}
+           \int g(x, t) y(x, y) dx = \int t b \text{exp}(p x t) dx +
+               \int t \lambda(x - t)^2 dx \\
+           = \frac{b}{p} \text{exp}(p x t) + \frac{\lambda}{3} t (x-t)^3 + ...
+       \end{cases}
 
 We can see that a linear combination between this equation and the definition
 of :math:`y(x, t)` can be used to cancel out the term
 :math:`\text{exp}(p x t)`:
 
-.. math::
+    .. math::
 
-   y(x, t) = p \int t y(x, t) dx - \frac{1}{3} \lambda p t (x - t)^3 +
-                                               \lambda (x - t)^2 + ... \\
-   y(x, t) = p S(x, t) + \lambda_1 f_1(x, t) + \lambda_2 f_2(x, t) + ...
+       y(x, t) = p \int t y(x, t) dx - \frac{1}{3} \lambda p t (x - t)^3 +
+                                                   \lambda (x - t)^2 + ... \\
+       y(x, t) = p S(x, t) + \lambda_1 f_1(x, t) + \lambda_2 f_2(x, t) + ...
 
-   \begin{cases}
-       S(x, t) = \int t y(x, t) dx \\
-       f_1(x, t) = t(x - t)^3 \\
-       f_2(x, t) = (x - t)^2
-   \end{cases}
+       \begin{cases}
+           S(x, t) = \int t y(x, t) dx \\
+           f_1(x, t) = t(x - t)^3 \\
+           f_2(x, t) = (x - t)^2
+       \end{cases}
 
 :math:`S(x, t)` will be approximated numerically from the data.
 
