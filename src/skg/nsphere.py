@@ -29,7 +29,7 @@ else:
         return rollaxis(a, start, end)
 
 
-def nsphere_fit(x, axis=-1):
+def nsphere_fit(x, axis=-1, scaling=False):
     r"""
     Fit an n-sphere to ND data.
 
@@ -49,6 +49,10 @@ def nsphere_fit(x, axis=-1):
         The axis that determines the number of dimensions of the
         n-sphere. All other axes are effectively raveled to obtain an
         ``(m, n)`` array.
+    scaling : bool
+        If `True`, scale and offset the data to a bounding box of -1 to
+        +1 during computations for numerical stability. Default is
+        `False`.
 
     Return
     ------
@@ -71,15 +75,29 @@ def nsphere_fit(x, axis=-1):
     m = x.shape[0]
 
     B = empty((m, n + 1), dtype=x.dtype)
-    B[:, :-1] = x
+    X = B[:, :-1]
+    X[:] = x
     B[:, -1] = 1
 
-    d = square(x).sum(axis=-1)
+    if scaling:
+        xmin = X.min()
+        xmax = X.max()
+        scale = 0.5 * (xmax - xmin)
+        offset = 0.5 * (xmax + xmin)
+        X -= offset
+        X /= scale
+
+    d = square(X).sum(axis=-1)
 
     y, *_ = lstsq(B, d, overwrite_a=True, overwrite_b=True)
 
     c = 0.5 * y[:-1]
     r = sqrt(y[-1] + square(c).sum())
+
+    if scaling:
+        r *= scale
+        c *= scale
+        c += offset
 
     return r, c
 
