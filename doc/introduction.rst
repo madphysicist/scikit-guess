@@ -11,11 +11,11 @@ optimal fitting parameters.
 The seed for this toolkit is Jean Jacquelin's paper "Régressions et équations
 intégrales"\ :ref:`[ref] <ref-reei>`. It demonstrates the techniques for
 deriving linear least squares formulas by cleverly integrating the model
-functions. The resulting estimates are not perfectly optimal, since the
-formulas are derived for continuous functions but approximated by discrete
-samples. However, they are very robust and fast. The key is to produce a result
-that is adequate for most purposes, and can be used as a starting point for
-non-linear optimization algorithms.
+functions. The resulting estimates are not always optimal, since the
+formulas are derived by discretizing continuous functions. However, they are
+very robust and fast. The key is to produce a result that is adequate for most
+purposes, and can be used as a starting point for non-linear optimization
+algorithms.
 
 
 --------
@@ -39,9 +39,6 @@ more significant than others (think frequency of a sine wave). As a consequece,
 some of the algorithms provided by this scikit are good candidates for the
 :meth:`~lmfit.model.Model.guess` methods of corresponding models in
 `lmfit`_.
-
-All the functions that are *currently* supported are one dimensional, but that
-is not a requirement.
 
 
 .. include:: /link-defs.rst
