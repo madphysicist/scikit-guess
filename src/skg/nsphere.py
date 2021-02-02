@@ -20,10 +20,16 @@ __all__ = ['nsphere_fit']
 if NumpyVersion(__np_version__) >= '1.11.0':
     from numpy import moveaxis
 else:
-    from numpy import rollaxis as moveaxis
+    from numpy import rollaxis
+    def moveaxis(a, start, end):
+        if end == -1:
+            end = a.ndim
+        elif end < 0:
+            end += 1
+        return rollaxis(a, start, end)
 
 
-def nsphere_fit(x, axis=0):
+def nsphere_fit(x, axis=-1):
     r"""
     Fit an n-sphere to ND data.
 
@@ -42,7 +48,7 @@ def nsphere_fit(x, axis=0):
     axis : int
         The axis that determines the number of dimensions of the
         n-sphere. All other axes are effectively raveled to obtain an
-        nxm array.
+        ``(m, n)`` array.
 
     Return
     ------
@@ -59,18 +65,18 @@ def nsphere_fit(x, axis=0):
     """
     x = asfarray(x)
     n = x.shape[axis]
-    if axis:
-        x = moveaxis(x, axis, 0)
-    x = x.reshape(n, -1)
-    m = x.shape[1]
+    if axis not in (-1, x.ndim - 1):
+        x = moveaxis(x, axis, -1)
+    x = x.reshape(-1, n)
+    m = x.shape[0]
 
     B = empty((m, n + 1), dtype=x.dtype)
-    B[:, :-1] = x.T
+    B[:, :-1] = x
     B[:, -1] = 1
 
-    D = square(x).sum(axis=0)
+    d = square(x).sum(axis=-1)
 
-    y, *_ = lstsq(B, D, overwrite_a=True, overwrite_b=True)
+    y, *_ = lstsq(B, d, overwrite_a=True, overwrite_b=True)
 
     c = 0.5 * y[:-1]
     r = sqrt(y[-1] + square(c).sum())
