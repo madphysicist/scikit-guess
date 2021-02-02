@@ -67,7 +67,7 @@ def x_data(seed, n_points, x_spread, x_range, plots):
         # Gamma spacing
         d = end - start
         spread2 = x_spread**2
-        space = np.empty(n_points, dtype=np.float)
+        space = np.empty(n_points, dtype=np.float_)
         space[0] = 0
         space[1:] = np.random.gamma(
             shape=1.0 / spread2,
