@@ -26,12 +26,6 @@ def plots(request):
     """
     if request.config.getoption('--plots'):
         try:
-            makedirs(join(request.config.rootdir, '.skg_test'))
-        except OSError as e:
-            if e.errno != EEXIST:
-                raise
-        try:
-            
             import matplotlib
             matplotlib.use('Agg')
             import matplotlib.pyplot
@@ -40,6 +34,11 @@ def plots(request):
                  'plotting will not be enabled.')
             return False
 
+        try:
+            makedirs(join(request.config.rootdir, '.skg_test'))
+        except OSError as e:
+            if e.errno != EEXIST:
+                raise
         return True
 
     return False

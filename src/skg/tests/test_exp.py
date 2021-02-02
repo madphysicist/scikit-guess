@@ -93,8 +93,8 @@ def x_data(seed, n_points, x_spread, x_range, plots):
                     seed, label, n_points, start, end
                 )
             )
-            fig.savefig('.skg_test/x_data_R{}_N{}_S{}_{}-{}.debug.png'.format(
-                seed, n_points, x_spread, start, end
+            fig.savefig('.skg_test/{}-x_data_R{}_N{}_S{}_{}-{}.debug.png'.format(
+                __name__, seed, n_points, x_spread, start, end
             ))
 
     return x
