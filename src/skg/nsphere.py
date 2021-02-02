@@ -8,10 +8,10 @@ because of the non-functional nature of n-spheres.
 
 from __future__ import division, absolute_import
 
-from numpy import array, asfarray, sqrt, square
+from numpy import asfarray, empty, sqrt, square
 from numpy import __version__ as __np_version__
 from numpy.lib import NumpyVersion
-from scipy.linalg import lstsq, norm
+from scipy.linalg import lstsq
 
 
 __all__ = ['nsphere_fit']
@@ -64,7 +64,7 @@ def nsphere_fit(x, axis=0):
     x = x.reshape(n, -1)
     m = x.shape[1]
 
-    B = array((m, n + 1), dtype=x.dtype)
+    B = empty((m, n + 1), dtype=x.dtype)
     B[:, :-1] = x.T
     B[:, -1] = 1
 
@@ -73,7 +73,7 @@ def nsphere_fit(x, axis=0):
     y, *_ = lstsq(B, D, overwrite_a=True, overwrite_b=True)
 
     c = 0.5 * y[:-1]
-    r = sqrt(y[-1] + norm(c, axis=0))
+    r = sqrt(y[-1] + square(c).sum())
 
     return r, c
 
