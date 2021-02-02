@@ -5,6 +5,7 @@ __pycache__/
 # Build + distribution artifacts
 build/
 dist/
+venvs/
 .egg/
 *.egg-info/
 

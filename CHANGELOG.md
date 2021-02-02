@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.0 (2018-09-19)
-------------------
+0.0.1a0 (2021-02-01)
+--------------------
 
-* First release on PyPI.
+* First release on PyPI. Still a WIP, but wanted to hog the package name.
