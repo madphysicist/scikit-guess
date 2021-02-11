@@ -19,8 +19,6 @@ As a general rule, ``pow_fit(x, y, ...)`` is equivalent to
    Add `nan_policy` argument.
 """
 
-from __future__ import division, absolute_import
-
 from numpy import log, power
 
 from .exp import exp_fit

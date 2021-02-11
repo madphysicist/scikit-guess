@@ -45,8 +45,6 @@ parameter), see :mod:`~skg.gauss`.
    Allow broadcasting of x and y, not necessarily identical size
 """
 
-from __future__ import absolute_import, division
-
 from numpy import array, ones_like, sqrt, stack
 from scipy.linalg import lstsq
 from scipy.special import erf, erfinv

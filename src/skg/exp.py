@@ -22,8 +22,6 @@ Exponential fit with and additive bias of the form :math:`A + Be^{Cx}`.
    Add axis parameter.
 """
 
-from __future__ import absolute_import, division
-
 from numpy import array, cumsum, diff, empty, exp, subtract
 from scipy.linalg import lstsq
 

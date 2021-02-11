@@ -42,8 +42,6 @@ parameter), see :mod:`~skg.gauss`. For the CDF, see
    Allow broadcasting of x and y, not necessarily identical size
 """
 
-from __future__ import absolute_import, division
-
 from numpy import array, cumsum, diff, empty, exp, pi, sqrt
 from scipy.linalg import lstsq
 

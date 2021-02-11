@@ -6,8 +6,6 @@ n-dimensional surface and because it does not have a model function
 because of the non-functional nature of n-spheres.
 """
 
-from __future__ import division, absolute_import
-
 from numpy import asfarray, empty, sqrt, square
 from numpy import __version__ as __np_version__
 from numpy.lib import NumpyVersion

@@ -40,7 +40,7 @@ At this stage, the code is written in pure python, with all the extensions
 being implemented through the dependencies. That may change at some point in
 the future.
 
-Python 2.7 and 3.4+ are supported.
+Python 3.6+ is supported.
 
 Testing is done with `pytest`_ and has an optional dependency on `matplotlib`_
 for debugging images. Another optional dependency is `pytest-pep8`_.

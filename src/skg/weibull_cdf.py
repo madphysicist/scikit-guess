@@ -28,8 +28,6 @@ expects the dependent variable to be sorted in ascending order.
    Add axis parameter.
 """
 
-from __future__ import absolute_import, division
-
 from numpy import array, expm1, log
 
 from ._util import preprocess

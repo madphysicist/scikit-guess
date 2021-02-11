@@ -32,7 +32,7 @@ CLASSIFIERS = (
     #'Operating System :: Unix',
     #'Operating System :: MacOS',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
     'Programming Language :: Python :: 3.6',
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
@@ -89,9 +89,12 @@ def import_file(name, location):
     """
     Imports the specified python file as a module, without explicitly
     registering it to `sys.modules`.
+
+    For historical reasons, this function is able to operate on
+    much older versions of python (>= 2.6 or so).
     """
     if sys.version_info[0] == 2:
-        # Python 2.7-
+        # Python 2.6-
         from imp import load_source
         mod = load_source(name, location)
     elif sys.version_info < (3, 5, 0):
