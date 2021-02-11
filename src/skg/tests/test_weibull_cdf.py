@@ -4,10 +4,10 @@ Tests for the :func:`skg.weibull_cdf_fit` function.
 
 import numpy as np
 
-from skg.weibull_cdf import weibull_cdf_fit
+from skg.weibull_cdf import weibull_cdf_fit, model
 
 
-def test_paper():
+def test_paper(plots):
     """
     Verifies the results of the example in :ref:`reei` in Section
     :ref:`reei2-sec3`.
@@ -28,3 +28,14 @@ def test_paper():
     assert np.isclose(alpha, alpha_1, atol=5e-6, rtol=0.0)
     assert np.isclose(beta, beta_1, atol=5e-6, rtol=0.0)
     assert np.isclose(mu, mu_1, atol=5e-6, rtol=0.0)
+
+    if plots:
+        from .util import plotting_context, save
+
+        x_2 = np.linspace(1, 4, 400)
+        with plotting_context() as fig:
+            ax = fig.subplots(1)
+            ax.scatter(x, y, color='k', marker='+')
+            ax.loglog(x_2, model(x_2, alpha_1, beta_1, mu_1), c='k', ls='-')
+            ax.loglog(x_2, model(x_2, alpha, beta, mu), c='r', ls=':')
+            save(fig, __name__, 'paper')

@@ -5,9 +5,9 @@ Tests for the :func:`skg.exp_fit` function.
 import numpy as np
 from pytest import fixture
 
-from skg.exp import exp_fit
+from skg.exp import exp_fit, model
 
-from .util import plotting_context
+from .util import plotting_context, save
 
 
 partials = {
@@ -90,7 +90,9 @@ def x_data(seed, n_points, x_spread, x_range, plots):
                 label = 'Uniform'
             ax.set_title(f'X-VALUES for seed={seed}\n{label}, '
                          f'{n_points} points\nFrom {start} to {end}')
-            fig.save(f'.skg_test/{__name__}-x_data_R{seed}_N{n_points}_S{x_spread}_{start}-{end}.debug.png')
+            save(fig, __name__,
+                 f'x_data_R{seed}_N{n_points}_S{x_spread}_{start}-{end}',
+                 debug=True)
 
     return x
 
@@ -142,7 +144,7 @@ def test_exp_noisy(x_data, noisy_data):
     print('OK')
 
 
-def test_paper():
+def test_paper(plots):
     """
     Verifies the results of the example in :ref:`reei` in Section
     :ref:`reei2-sec2`.
@@ -163,3 +165,12 @@ def test_paper():
     assert np.isclose(a, a_2, atol=5e-7, rtol=0.0)
     assert np.isclose(b, b_2, atol=5e-7, rtol=0.0)
     assert np.isclose(c, c_2, atol=5e-7, rtol=0.0)
+
+    if plots:
+        x_2 = np.linspace(-1, 1, 100)
+        with plotting_context() as fig:
+            ax = fig.subplots(1)
+            ax.scatter(x, y, color='k', marker='+')
+            ax.plot(x_2, model(x_2, a_2, b_2, c_2), c='k', ls='-')
+            ax.plot(x_2, model(x_2, a, b, c), c='r', ls=':')
+            save(fig, __name__, 'paper')

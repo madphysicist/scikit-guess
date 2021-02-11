@@ -6,8 +6,6 @@ import numpy as np
 
 from skg.nsphere import nsphere_fit
 
-from .util import plotting_context
-
 
 def test_paper(plots):
     """
@@ -52,6 +50,7 @@ def test_paper(plots):
 
     if plots:
         from matplotlib.patches import Circle
+        from .util import plotting_context, save
 
         with plotting_context() as fig:
             ax = fig.subplots(2, 2)
@@ -76,5 +75,5 @@ def test_paper(plots):
             ax[1, 1].add_patch(Circle(c9s, r9s, ec='r', fc='none', ls=':'))
             ax[1, 1].set_title('9-Points, Scaling')
 
-            fig.savefig('.skg_test/{}-paper.debug.png'.format(__name__), dpi=300)
+            save(fig, __name__, 'paper')
 
