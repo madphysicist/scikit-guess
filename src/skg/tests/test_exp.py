@@ -159,6 +159,7 @@ def test_paper():
     a_2, b_2, c_2 = 0.313648, 0.574447, 1.716029
     a, b, c = exp_fit(x, y)
 
+    # Parameters in the paper are rounded to 6 decimal places
     assert np.isclose(a, a_2, atol=5e-7, rtol=0.0)
     assert np.isclose(b, b_2, atol=5e-7, rtol=0.0)
     assert np.isclose(c, c_2, atol=5e-7, rtol=0.0)

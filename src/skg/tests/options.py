@@ -1,10 +1,10 @@
 """
-Plugin for processing the skg-specific command-line options.
+Pytest plugin for processing the skg-specific command-line options.
 """
 
 def pytest_addoption(parser):
     """
-    Add some options to the default command line.
+    Add options to the default command line.
 
     The following options are added:
 

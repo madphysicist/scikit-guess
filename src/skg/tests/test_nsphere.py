@@ -28,21 +28,25 @@ def test_paper(plots):
 
     # 8-points, no scaling
     r8ns, c8ns = nsphere_fit(x[:8], axis=-1, scaling=False)
+    # Parameters in the paper are rounded to 5 decimal places
     assert np.isclose(r8ns, r8, atol=5e-6, rtol=0.0)
     assert np.allclose(c8ns, c8, atol=5e-6, rtol=0.0)
 
     # 9-points, no scaling
     r9ns, c9ns = nsphere_fit(x, axis=-1, scaling=False)
+    # Parameters in the paper are rounded to 5 decimal places
     assert np.isclose(r9ns, r9, atol=5e-6, rtol=0.0)
     assert np.allclose(c9ns, c9, atol=5e-6, rtol=0.0)
 
     # 8-points, with scaling
     r8s, c8s = nsphere_fit(x[:8], axis=-1, scaling=True)
+    # Parameters in the paper are rounded to 5 decimal places
     assert np.isclose(r8s, r8, atol=5e-6, rtol=0.0)
     assert np.allclose(c8s, c8, atol=5e-6, rtol=0.0)
 
     # 9-points, with scaling
     r9s, c9s = nsphere_fit(x, axis=-1, scaling=True)
+    # Parameters in the paper are rounded to 5 decimal places
     assert np.isclose(r9s, r9, atol=5e-6, rtol=0.0)
     assert np.allclose(c9s, c9, atol=5e-6, rtol=0.0)
 

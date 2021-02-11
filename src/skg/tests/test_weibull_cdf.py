@@ -24,6 +24,7 @@ def test_paper():
     alpha_1, beta_1, mu_1 = 2.44301, 1.55262, 0.82099
     alpha, beta, mu = weibull_cdf_fit(x, y)
 
+    # Parameters in the paper are rounded to 6 decimal places
     assert np.isclose(alpha, alpha_1, atol=5e-6, rtol=0.0)
     assert np.isclose(beta, beta_1, atol=5e-6, rtol=0.0)
     assert np.isclose(mu, mu_1, atol=5e-6, rtol=0.0)

@@ -24,5 +24,6 @@ def test_paper():
     mu_1, sigma_1 = 0.266843, 0.374462
     mu, sigma = gauss_cdf_fit(x, y)
 
+    # Parameters in the paper are rounded to 6 decimal places
     assert np.isclose(mu, mu_1, atol=5e-7, rtol=0.0)
     assert np.isclose(sigma, sigma_1, atol=5e-7, rtol=0.0)
