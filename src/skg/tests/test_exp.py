@@ -85,17 +85,12 @@ def x_data(seed, n_points, x_spread, x_range, plots):
             ax = fig.subplots()
             ax.plot(range(x.size), x)
             if x_spread:
-                label = 'Gamma with spread {}'.format(x_spread)
+                label = f'Gamma with spread {x_spread}'
             else:
                 label = 'Uniform'
-            ax.set_title(
-                'X-VALUES for seed={}\n{}, {} points\nFrom {} to {}'.format(
-                    seed, label, n_points, start, end
-                )
-            )
-            fig.savefig('.skg_test/{}-x_data_R{}_N{}_S{}_{}-{}.debug.png'.format(
-                __name__, seed, n_points, x_spread, start, end
-            ))
+            ax.set_title(f'X-VALUES for seed={seed}\n{label}, '
+                         f'{n_points} points\nFrom {start} to {end}')
+            fig.save(f'.skg_test/{__name__}-x_data_R{seed}_N{n_points}_S{x_spread}_{start}-{end}.debug.png')
 
     return x
 

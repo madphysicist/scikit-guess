@@ -177,11 +177,11 @@ texinfo_documents = [
 intersphinx_mapping = {
     'lmfit': ('https://lmfit.github.io/lmfit-py/', None),
     'matplotlib': ('https://matplotlib.org/', None),
-    'numpy': ('https://docs.scipy.org/doc/numpy/', None),
+    'numpy': ('https://numpy.org/doc/stable/', None),
     'pytest': ('https://docs.pytest.org/en/latest/', None),
     'python': ('https://docs.python.org/3/', None),
+    'sphinx': ('http://www.sphinx-doc.org/en/master/', None),
     'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
-    'sphinx': ('http://www.sphinx-doc.org/en/latest/', None),
 }
 
 # -- Options for todo extension ----------------------------------------------

@@ -184,8 +184,8 @@ def gen_table(cols, specs=None, heading=None):
         return tr((fill * w for w in widths), '+', fill)
 
     def tr(items, sep='|', fill=' '):
-        mid = '{1}{0}{1}'.format(sep, fill).join(items)
-        return '{0}{1}{2}{1}{0}\n'.format(sep, fill, mid)
+        mid = f'{fill}{sep}{fill}'.join(items)
+        return f'{sep}{fill}{mid}{fill}{sep}\n'
 
     def pad(row):
         return starmap('{:<{}}'.format, zip(row, widths))
@@ -526,7 +526,7 @@ def weibull_cdf():
     plt.setp(par_x.xaxis,
         major_locator=FixedLocator(xtrans([1, 2, 3, 4])),
         major_formatter=FuncFormatter(
-            lambda x, pos=None: '${:0.2g}$'.format(np.exp(x))
+            lambda x, pos=None: f'${np.exp(x):0.2g}$'
         ),
         minor_locator=NullLocator(),
         minor_formatter=NullFormatter()
@@ -551,7 +551,7 @@ def weibull_cdf():
             ytrans([0.05, 0.1, 0.5, 0.9, 0.95, 0.99])
         ),
         major_formatter=FuncFormatter(
-            lambda x, pos=None: '${:0.2g}$'.format(-np.expm1(-np.exp(x)))
+            lambda x, pos=None: f'${-np.expm1(-np.exp(x)):0.2g}$'
         ),
         minor_locator=FixedLocator(ytrans(np.concatenate((
             np.arange(0.01, 0.1, 0.01),
@@ -796,7 +796,7 @@ class Sinusoid:
         ax.spines['left'].set_position(('data', 1))
         ax.set_xlim(0.89, 1.35)
         ax.set_ylim(0, 1.099)
-        xlabel(ax, r'$\frac{{\omega_{}}}{{\omega_e}}$'.format(omega))
+        xlabel(ax, rf'$\frac{{\omega_{omega}}}{{\omega_e}}$')
         ylabel(ax, '$P$')
 
         if npan is None:
@@ -821,16 +821,15 @@ class Sinusoid:
 
             ax.plot(bins, cdf, lw=0.5)
             t, u = unpack_tx(t)
-            ax.text(t, u, '${}$'.format(p), fontsize=8, va='top', ha='left')
+            ax.text(t, u, f'${p}$', fontsize=8, va='top', ha='left')
 
         wm = np.array(wm)
 
         ax.plot([1, 1.2], [0.5, 0.5], ':', lw=0.5)
         ax.plot([1, 1.4], [1, 1], lw=0.75)
         ax.text(1.21, 0.5,
-                r'$P \left( \frac{{\omega_{0}}}{{\omega_e}} < '
-                r'\frac{{\omega_{{{0}m}}}}{{\omega_e}} \right) = '
-                '0.5$'.format(omega),
+                rf'$P \left( \frac{{\omega_{omega}}}{{\omega_e}} < '
+                rf'\frac{{\omega_{{{omega}m}}}}{{\omega_e}} \right) = 0.5$',
                 va='center', ha='left')
 
         fix_plot_zeros(ax)
@@ -839,7 +838,7 @@ class Sinusoid:
             cols=[ns[:len(wm)], wm], specs=['{:d}', '{:0.3f}'],
             heading=[
                 ':math:`n_p`',
-                r':math:`\frac{{\omega_{{{}m}}}}{{\omega_e}}`'.format(omega)
+                rf':math:`\frac{{\omega_{{{omega}m}}}}{{\omega_e}}`'
             ]
         )
 
@@ -1149,8 +1148,8 @@ for func in func_list:
             figure.suptitle(title)
             plt.show()
     else:
-        fname = join(OUTPUT_FOLDER, '{}-plot.png'.format(name))
-        tname = join(OUTPUT_FOLDER, '{}-data.rst'.format(name))
+        fname = join(OUTPUT_FOLDER, f'{name}-plot.png')
+        tname = join(OUTPUT_FOLDER, f'{name}-data.rst')
         if (not isfile(fname) and func.figure) or \
                 (not isfile(tname) and func.table):
             figure, table = func()
