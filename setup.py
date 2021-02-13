@@ -20,7 +20,7 @@ AUTHOR_EMAIL = 'jfoxrabinovitz@gmail.com'
 MAINTAINER = 'Joseph R. Fox-Rabinovitz'
 MAINTAINER_EMAIL = 'jfoxrabinovitz@gmail.com'
 
-CLASSIFIERS = (
+CLASSIFIERS = [
     'Development Status :: 2 - Pre-Alpha',
     'Intended Audience :: Developers',
     'Intended Audience :: Education',
@@ -46,7 +46,7 @@ CLASSIFIERS = (
     'Topic :: Scientific/Engineering :: Information Analysis',
     'Topic :: Scientific/Engineering :: Mathematics',
     'Topic :: Office/Business :: Financial :: Investment',
-)
+]
 
 
 COMMANDS = {}
