@@ -6,11 +6,12 @@ n-dimensional surface and because it does not have a model function
 because of the non-functional nature of n-spheres.
 """
 
-from numpy import asfarray, empty, sqrt, square
+from numpy import empty, sqrt, square
 from numpy import __version__ as __np_version__
 from numpy.lib import NumpyVersion
 from scipy.linalg import lstsq
 
+from .util import preprocess
 
 __all__ = ['nsphere_fit']
 
@@ -64,7 +65,7 @@ def nsphere_fit(x, axis=-1, scaling=False):
     ----------
     - [Coope]_ "\ :ref:`ref-cfblanls`\ "
     """
-    x = asfarray(x)
+    x = preprocess(x, float=True)
     n = x.shape[axis]
     if axis not in (-1, x.ndim - 1):
         x = moveaxis(x, axis, -1)

@@ -49,7 +49,7 @@ from numpy import array, ones_like, sqrt, stack
 from scipy.linalg import lstsq
 from scipy.special import erf, erfinv
 
-from ._util import preprocess
+from .util import preprocess_pair
 
 
 __all__ = ['gauss_cdf_fit']
@@ -87,7 +87,7 @@ def gauss_cdf_fit(x, y, sorted=True):
     ----------
     - [Jacquelin]_ "\ :ref:`ref-reei`\ ", :ref:`pp. 11-13. <reei1-appendix2>`
     """
-    x, y = preprocess(x, y, sorted)
+    x, y = preprocess_pair(x, y, sorted)
 
     M = stack((x, ones_like(x)), axis=1)
     Y = erfinv(2 * y - 1)

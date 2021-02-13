@@ -30,7 +30,7 @@ expects the dependent variable to be sorted in ascending order.
 
 from numpy import array, expm1, log
 
-from ._util import preprocess
+from .util import preprocess_pair
 from .exp import exp_fit
 
 
@@ -77,7 +77,7 @@ def weibull_cdf_fit(x, y, sorted=True):
     ----------
     - [Jacquelin]_ "\ :ref:`ref-reei`\ ", :ref:`pp. 19-20. <reei2-sec3>`
     """
-    F, y = preprocess(y, x, sorted)
+    F, y = preprocess_pair(y, x, sorted)
 
     x = log(-log(1.0 - F))
     a, b, c = exp_fit(x, y, sorted=True)

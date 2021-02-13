@@ -55,7 +55,7 @@ function, see :mod:`~skg.gauss_pdf`. For the CDF, see
 from numpy import array, cumsum, diff, empty, exp, sqrt
 from scipy.linalg import lstsq
 
-from ._util import preprocess
+from .util import preprocess_pair
 
 
 __all__ = ['gauss_fit']
@@ -95,7 +95,7 @@ def gauss_fit(x, y, sorted=True):
     - [Jacquelin]_ "\ :ref:`ref-reei`\ ", :ref:`pp. 6-8. <reei1-sec3>`
     - :ref:`reei-supplement-extended`, :ref:`reei-supplement-gauss3`
     """
-    x, y = preprocess(x, y, sorted)
+    x, y = preprocess_pair(x, y, sorted)
 
     d = 0.5 * diff(x)
     xy = x * y

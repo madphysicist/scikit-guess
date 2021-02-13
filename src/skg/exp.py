@@ -25,7 +25,7 @@ Exponential fit with and additive bias of the form :math:`A + Be^{Cx}`.
 from numpy import array, cumsum, diff, empty, exp, subtract
 from scipy.linalg import lstsq
 
-from ._util import preprocess
+from .util import preprocess_pair
 
 
 __all__ = ['exp_fit']
@@ -63,7 +63,7 @@ def exp_fit(x, y, sorted=True):
     ----------
     - [Jacquelin]_ "\ :ref:`ref-reei`\ ", :ref:`pp. 15-18. <reei2-sec2>`
     """
-    x, y = preprocess(x, y, sorted)
+    x, y = preprocess_pair(x, y, sorted)
 
     M = empty(y.shape + (2,), dtype=y.dtype)
     subtract(x, x[0], out=M[:, 0])

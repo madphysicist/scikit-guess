@@ -32,17 +32,18 @@ refers to the model function being fitted. Each fitting routine has a
    pow_fit
    weibull_cdf_fit
    nsphere_fit
+   sin_fit
 """
 
-from .exp import exp_fit
-from .gauss_cdf import gauss_cdf_fit
-from .gauss_pdf import gauss_pdf_fit
-from .gauss import gauss_fit
-from .pow import pow_fit
-from .weibull_cdf import weibull_cdf_fit
-from .nsphere import nsphere_fit
+from .exp import exp_fit as exp_fit
+from .gauss_cdf import gauss_cdf_fit as gauss_cdf_fit
+from .gauss_pdf import gauss_pdf_fit as gauss_pdf_fit
+from .gauss import gauss_fit as gauss_fit
+from .pow import pow_fit as pow_fit
+from .weibull_cdf import weibull_cdf_fit as weibull_cdf_fit
+from .nsphere import nsphere_fit as nsphere_fit
 
-from .version import __version__
+from .version import __version__ as __version__
 
 
 __all__ = [

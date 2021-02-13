@@ -23,6 +23,7 @@ from matplotlib.transforms import Affine2D
 from matplotlib import rc, cycler
 
 from skg import exp_fit, gauss_cdf_fit, gauss_pdf_fit, weibull_cdf_fit
+from skg.util import preprocess_pair
 
 
 OUTPUT_FOLDER = 'generated/reei'
@@ -672,7 +673,7 @@ class Sinusoid:
         """
         Integral-only fitting function.
         """
-        x, y = map(np.asfarray, (x, y))
+        x, y = preprocess_pair(x, y)
 
         d = 0.5 * np.diff(x)
 
