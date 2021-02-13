@@ -3,14 +3,16 @@ Shared utility functions used by the fitting routines.
 """
 
 from numpy import (
-    argsort, array, float_, inexact, issubdtype, __version__ as __np_version__
+    add, argsort, array, concatenate, empty, flatnonzero, float_, inexact,
+    issubdtype, mean, median, sqrt, __version__ as __np_version__
 )
 from numpy.core.multiarray import normalize_axis_index
 from numpy.lib import NumpyVersion
 
 
 __all__ = [
-    'moveaxis', 'preprocess', 'preprocess_pair', 'preprocess_npair'
+    'bias_mean', 'counts', 'ends', 'medians', 'moveaxis', 'preprocess',
+    'preprocess_pair', 'preprocess_npair', 'roots', 'stds', 'sums', 'vars'
 ]
 
 
@@ -161,3 +163,260 @@ def preprocess_npair(x, y, axis=-1, xcopy=False, ycopy=False):
     x = x.reshape(-1, x.shape[-1])
     y = y.ravel()
     return x, y
+
+
+def ends(p, size):
+    """
+    Compute the exclusive end indices of each cluster for a dataset of
+    `size` elements.
+
+    Parameters
+    ----------
+    p : array-like
+        The start points of each cluster. Clusters continue until the
+        start of the next cluster.
+    size : int
+        The size of the dataset (not of `p`). Necessary because `p`
+        omits the end index.
+
+    Return
+    ------
+    q : numpy.ndarray
+        The exclusive indices of the end of each cluster.
+        ``q.size == p.size``.
+    """
+    return concatenate((p.ravel()[1:], [size]))
+
+
+def counts(p, size):
+    """
+    Compute the number of elements in each cluster in a dataset of `size`
+    elements.
+
+    Parameters
+    ----------
+    p : array-like
+        The start points of each cluster. Clusters continue until the
+        start of the next cluster.
+    size : int
+        The size of the dataset (not of `p`). Necessary because `p`
+        omits the end index.
+
+    Return
+    ------
+    c : numpy.ndarray
+        The number of elements in each cluster. ``c.size == p.size``.
+    """
+    c = ends(p, size)
+    c -= p.ravel()
+    return c
+
+
+def sums(x, p):
+    """
+    Compute the sums of each cluster in `x`.
+
+    Parameters
+    ----------
+    x : array-like
+        The array to compute sums over.
+    p : array-like
+        The start points of each cluster. Clusters continue until the
+        start of the next cluster. The indices should start with zero
+        and increase monotonically.
+
+    Return
+    ------
+    s : numpy.ndarray
+        The sum of each cluster identified by `p`.
+    """
+    return add.reduceat(preprocess(x).ravel(), p.ravel())
+
+
+def means(x, p):
+    """
+    Compute the means of each cluster in `x`.
+
+    Parameters
+    ----------
+    x : array-like
+        The array to compute means over.
+    p : array-like
+        The start points of each cluster. Clusters continue until the
+        start of the next cluster. The indices should start with zero
+        and increase monotonically.
+
+    Return
+    ------
+    m : numpy.ndarray
+        The mean of each cluster identified by `p`.
+    """
+    x = preprocess(x)
+    return sums(x, p) / counts(p, x.size)
+
+
+def vars(x, p):
+    """
+    Compute the variances of each cluster in `x`.
+
+    Parameters
+    ----------
+    x : array-like
+        The array to compute variances over.
+    p : array-like
+        The start points of each cluster. Clusters continue until the
+        start of the next cluster. The indices should start with zero
+        and increase monotonically.
+
+    Return
+    ------
+    v : numpy.ndarray
+        The variance of each cluster identified by `p`.
+    """
+    x = preprocess(x)
+    c = counts(p, x.size)
+    return (sums(x**2, p) - sums(x, p)**2 / c) / c
+
+
+def stds(x, p):
+    """
+    Compute the standard deviations of each cluster in `x`.
+
+    Parameters
+    ----------
+    x : array-like
+        The array to compute standard deviations over.
+    p : array-like
+        The start points of each cluster. Clusters continue until the
+        start of the next cluster. The indices should start with zero
+        and increase monotonically.
+
+    Return
+    ------
+    s : numpy.ndarray
+        The standard deviation of each cluster identified by `p`.
+    """
+    return sqrt(vars(x, p))
+
+
+def medians(x, p):
+    """
+    Compute the median of each cluster in `x`.
+
+    Parameters
+    ----------
+    x : array-like
+        The array to compute medians over.
+    p : array-like
+        The start points of each cluster. Clusters continue until the
+        start of the next cluster. The indices should start with zero
+        and increase monotonically.
+
+    Return
+    ------
+    m : numpy.ndarray
+        The median of each cluster identified by `p`.
+    """
+    x = preprocess(x).ravel()
+    m = empty(p.size)
+    for i, (start, end) in enumerate(zip(p, ends(p, x.size))):
+        m[i] = median(x[start:end])
+    return m
+
+
+def bias_mean(x, y):
+    """
+    Computes the bias of a dataset as the mean of the `y` values.
+
+    This function is a wrapper to be used as `bias` for `roots`.
+
+    Parameters
+    ----------
+    x : array-like
+        The x-values, passed in to fulfill the correct interface and
+        otherwise ignored.
+    y : array-like
+        The y-values of the data, treated as a 1D raveled array.
+
+    Return
+    ------
+    The mean of `y`.
+    """
+    return mean(y)
+
+
+def roots(x, y, sorted=True, bias=bias_mean, return_indices=False, return_bias=False):
+    """
+    Interpolate the roots of a 1-D dataset.
+
+    Roots are interpolated using linear interpolation about an arbitrary
+    bias, possibly generated from the data.
+
+    Parameters
+    ----------
+    x : array-like
+        The x-values of the data. Must be monotonically increasing or
+        decreasing. Treated as a 1D raveled array.
+    y : array-like
+        The y-values of the data. Treated as a 1D raveled array. Must be
+        the same lendth as `x`.
+    sorted : bool
+        Set to True if `x` is already monotonically increasing or
+        decreasing. If False, `x` will be sorted into increasing order,
+        and `y` will be sorted along with it.
+    bias : scalar or array-like or callable, optional
+        Either a fixed y-value that the data is offset by, or a callable
+        that generates the value from `x` and `y`. The roots are
+        computed for the y-values with the bias subtracted off. Defaults
+        to the mean of the data.
+    return_indices : bool, optional
+        If `True`, return the indices of the interpolation points.
+    return_bias : bool, optional
+        If `True`, return the bias as an additional output parameter.
+        This parameter is especially useful if `bias` is a callable.
+
+    Return
+    ------
+    roots : numpy.ndarray
+        The x-values of the interpolated intersections between the data
+        and the bias.
+    indices : numpy.ndarray
+        If `return_indices` is set, this will be the indices of the
+        interpolation points in `x`, as if returned by
+        `numpy.searchsorted`. This will be the index of the point on the
+        right of the interval containing the root.
+    bias : numpy.ndarray or scalar
+        If `return_bias` is set, this will be the actual scalar or array
+        that is subtraced from the y-values to compute the roots.
+    """
+    if callable(bias):
+        bias = bias(x, y)
+
+    x, y = preprocess_pair(x, y, sorted, ycopy=True)
+    # Speed tested
+    y -= bias
+
+    # Speed tested
+    le = (y <= 0)
+    gt = ~le
+
+    mask = (gt[:-1] & le[1:]) | (le[:-1] & gt[1:])
+
+    # Speed tested
+    m0 = flatnonzero(mask)
+    m1 = m0 + 1
+
+    x0 = x[m0]
+    x1 = x[m1]
+    y0 = y[m0]
+    y1 = y[m1]
+
+    roots = (x0 * y1 - x1 * y0) / (y1 - y0)
+
+    if return_indices:
+        if return_bias:
+            return roots, m1, bias
+        return roots, m1
+    if return_bias:
+        return roots, bias
+    return roots

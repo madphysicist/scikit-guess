@@ -20,6 +20,8 @@ refers to the model function being fitted. Each fitting routine has a
    weibull_cdf
    ngauss
    nsphere
+   sin
+   cluster1d
    util
 
 .. rubric:: Exported Functions
@@ -39,6 +41,7 @@ addition to the modules that define them.
    ngauss_fit
    ngauss_from_image
    nsphere_fit
+   sin_fit
 """
 
 from .exp import exp_fit as exp_fit
@@ -51,6 +54,7 @@ from .ngauss import (
     ngauss_fit as ngauss_fit, ngauss_from_image as ngauss_from_image
 )
 from .nsphere import nsphere_fit as nsphere_fit
+from .sin import sin_fit as sin_fit
 
 from .version import __version__ as __version__
 
@@ -58,6 +62,7 @@ from .version import __version__ as __version__
 __all__ = [
     'gauss_cdf_fit', 'gauss_pdf_fit', 'gauss_fit', 'exp_fit', 'pow_fit',
     'weibull_cdf_fit', 'ngauss_fit', 'ngauss_from_image', 'nsphere_fit',
+    'sin_fit',
 ]
 
 
