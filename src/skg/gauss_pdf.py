@@ -81,9 +81,7 @@ def gauss_pdf_fit(x, y, sorted=True):
 
     References
     ----------
-    .. [1] Jacquelin, Jean. "\ :ref:`ref-reei`\ ",
-       :ref:`pp. 6-8. <reei1-sec3>`,
-       https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
+    - [Jacquelin]_ "\ :ref:`ref-reei`\ ", :ref:`pp. 6-8. <reei1-sec3>`
     """
     x, y = preprocess(x, y, sorted)
 

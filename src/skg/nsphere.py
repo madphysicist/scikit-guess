@@ -62,8 +62,7 @@ def nsphere_fit(x, axis=-1, scaling=False):
 
     References
     ----------
-    Coope, I.D. "CIRCLE FITTING BY LINEAR AND NONLINEAR LEAST SQUARES",
-    Available online: https://core.ac.uk/download/pdf/35472611.pdf
+    - [Coope]_ "\ :ref:`ref-cfblanls`\ "
     """
     x = asfarray(x)
     n = x.shape[axis]

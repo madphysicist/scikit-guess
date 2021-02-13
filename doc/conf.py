@@ -257,5 +257,5 @@ def setup(app):
     """
     Add custom stylesheet(s).
     """
-    app.add_stylesheet('css/custom.css')
+    app.add_css_file('css/custom.css')
     preprocess_content()

@@ -822,10 +822,10 @@ with the convention that :math:`\sum \equiv \sum_{k=1}^n`. We then deduce
        \sigma_1 = \frac{1}{\sqrt{2} A_1} \quad ; \quad \mu_1 = -\frac{B_1}{A_1}
 
 For the example shown, the numerical values of :math:`\sigma_1` and
-:math:`\mu_1` that we obtain are shown in :numref:`reei-gauss-cdf-data`
-[errata-reei-9]_. The curve of the corresponding function is marked with a
-solid line in :numref:`reei-gauss-cdf-plot` [errata-reei-11]_. It neighbors the
-"theoretical" curve, which is dashed.
+:math:`\mu_1` that we obtain are shown in :numref:`reei-gauss-cdf-data`\ [errata-reei-9]_.
+The curve of the corresponding function is marked with a solid line in
+:numref:`reei-gauss-cdf-plot` [errata-reei-11]_. It neighbors the "theoretical"
+curve, which is dashed.
 
 In fact, the example was intentionally chosen to have a very small number of
 widely dispersed points, so as to make the two curves clearly distinct from
@@ -1824,8 +1824,7 @@ feasible solution must be based on integral equations rather than differential.
 .. figure:: /generated/reei/sin-int-plot.png
    :name: reei-sin-int-plot
 
-   Numerical integrations and comparison with differentiations.\
-   [errata-reei-14]_.
+   Numerical integrations and comparison with differentiations.\ [errata-reei-14]_.
 
 .. table:: Cumulative sums corresponding to :numref:`reei-sin-int-plot`.
    :name: reei-sin-int-data
@@ -1880,8 +1879,7 @@ described in :ref:`Section 5 <reei3-sec5>`, seems more appropriate.
 
    Effect of the number of points per period, with a uniform distribution.
 
-.. table:: Numerical results corresponding to :numref:`reei-sin-eq-nd-plot`.\
-   [errata-reei-15]_
+.. table:: Numerical results corresponding to :numref:`reei-sin-eq-nd-plot`.\ [errata-reei-15]_
    :name: reei-sin-eq-nd-data
    :class: data-table
 
@@ -2036,8 +2034,7 @@ points :math:`(x_k, \theta_k)` represented by squares, some of which coincide.
 .. figure:: /generated/reei/sin-saw-plot.png
    :name: reei-sin-saw-plot
 
-   Transformation of a sawtooth function in preparation for linear regression
-   [errata-reei-16]_
+   Transformation of a sawtooth function in preparation for linear regression\ [errata-reei-16]_
 
 .. table:: Numerical data for the points shown in :numref:`reei-sin-saw-plot`.
    :name: reei-sin-saw-data
@@ -2353,7 +2350,7 @@ The given functions :math:`f_j(x, t, ...)` do not themselves depend on the
 optimization parameters.
 
 Given the :math:`n` data points
-:math:`(x_1, t_1, ...; y_1), (x_2, t_2, ...; y_2), ..., (x_k, t_k, ...; y_j), ..., (x_n, t_n, ...; y_m)`,
+:math:`(x_1, t_1, ...; y_1), (x_2, t_2, ...; y_2), ..., (x_k, t_k, ...; y_k), ..., (x_n, t_n, ...; y_n)`\ [errata-reei-17]_,
 the fitting parameters can be computed using the least-squares method:
 
 With: :math:`f_{j,k} = f_j(x_k, t_k, ...)`

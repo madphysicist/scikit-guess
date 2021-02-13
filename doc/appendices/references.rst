@@ -18,11 +18,7 @@ Régressions et équations intégrales
 -----------------------------------
 
 The ideas proposed in this paper by Jean Jacquelin were the seed for this
-scikit. A PDF is available with this documentation:
-:download:`Régressions et équations intégrales </_static/documents/Regressions-et-equations-integrales.pdf>`.
-
-Available online at
-https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales.
+scikit.
 
 
 Concept
@@ -56,7 +52,17 @@ as part of the documentation of scikit-guess. The translation can be read here:
    reei/supplement
 
 
-.. _ref-cflnls:
+Citation
+========
+
+.. [Jacquelin] J. Jacquelin, “Régressions et équations intégrales,” Scribd, pp. 1–85, Jan. 2014.
+
+Available online at https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales.
+
+A PDF is available with this documentation: :download:`Régressions et équations intégrales </_static/documents/Regressions-et-equations-integrales.pdf>`.
+
+
+.. _ref-cfblanls:
 
 ----------------------------------------------------
 Circle Fitting by Linear and Nonlinear Least Squares
@@ -64,11 +70,6 @@ Circle Fitting by Linear and Nonlinear Least Squares
 
 This paper by Ian Coope demonstrates a way to linearize a non-linear least
 squares problem.
-
-.. A PDF is available with this documentation:
-.. :download:`Circle Fitting by Linear and Nonlinear Least Squares </_static/documents/Circle-Fitting-by-Linear-and-Nonlinear-Least-Squares.pdf>`.
-
-Available online at https://ir.canterbury.ac.nz/bitstream/handle/10092/11104/coope_report_no69_1992.pdf.
 
 
 Concept
@@ -79,3 +80,14 @@ n-dimensional circles, this paper proposes a change of variable that reduces
 the problem to a simple linear least squares. The change appears to yield more
 robust results in some cases. This is one of the multidimensional optimizations
 offered in the scikit.
+
+Citation
+========
+
+.. Without the backslash, I. gets interpreted as the start of a list
+.. [Coope] \I. D. Coope, “Circle fitting by linear and nonlinear least squares,” Journal of Optimization Theory and Applications, vol. 76, no. 2, pp. 381–388, 1993.
+
+Preprint available online at https://ir.canterbury.ac.nz/bitstream/handle/10092/11104/coope_report_no69_1992.pdf.
+
+.. A PDF is available with this documentation:
+.. :download:`Circle Fitting by Linear and Nonlinear Least Squares </_static/documents/Circle-Fitting-by-Linear-and-Nonlinear-Least-Squares.pdf>`.

@@ -85,9 +85,7 @@ def gauss_cdf_fit(x, y, sorted=True):
 
     References
     ----------
-    .. [1] Jacquelin, Jean. "\ :ref:`ref-reei`\ ",
-       :ref:`pp. 11-13. <reei1-appendix2>`,
-       https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
+    - [Jacquelin]_ "\ :ref:`ref-reei`\ ", :ref:`pp. 11-13. <reei1-appendix2>`
     """
     x, y = preprocess(x, y, sorted)
 

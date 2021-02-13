@@ -75,9 +75,7 @@ def weibull_cdf_fit(x, y, sorted=True):
 
     References
     ----------
-    .. [1] Jacquelin, Jean. "\ :ref:`ref-reei`\ ",
-       :ref:`pp. 19-20. <reei2-sec3>`,
-       https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
+    - [Jacquelin]_ "\ :ref:`ref-reei`\ ", :ref:`pp. 19-20. <reei2-sec3>`
     """
     F, y = preprocess(y, x, sorted)
 

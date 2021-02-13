@@ -61,9 +61,7 @@ def exp_fit(x, y, sorted=True):
 
     References
     ----------
-    .. [1] Jacquelin, Jean. "\ :ref:`ref-reei`\ ",
-       :ref:`pp. 15-18. <reei2-sec2>`,
-       https://www.scribd.com/doc/14674814/Regressions-et-equations-integrales
+    - [Jacquelin]_ "\ :ref:`ref-reei`\ ", :ref:`pp. 15-18. <reei2-sec2>`
     """
     x, y = preprocess(x, y, sorted)
 
