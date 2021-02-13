@@ -14,18 +14,19 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../src'))
+import skg.version
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'scikit-guess'
-copyright = '2018, Joseph R. Fox-Rabinovitz'
+copyright = '2021, Joseph R. Fox-Rabinovitz'
 author = 'Joseph R. Fox-Rabinovitz'
 
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = skg.version.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -40,14 +41,14 @@ release = '0.0.1'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
     'sphinx.ext.coverage',
-    'sphinx.ext.imgmath',
+    'sphinx.ext.doctest',
     'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode',
+    'sphinx.ext.imgmath',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
+    'sphinx.ext.todo',
+    'sphinx.ext.viewcode',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -76,6 +77,12 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
+
+# Don't add () after function names
+add_function_parentheses = False
+
+# Number figures and tables
+numfig = True
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -171,6 +178,11 @@ texinfo_documents = [
 
 # -- Extension configuration -------------------------------------------------
 
+# -- Options for autosummary extension ---------------------------------------
+
+# Auto-generate stubs
+autosummary_generate = True
+
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
@@ -180,8 +192,16 @@ intersphinx_mapping = {
     'numpy': ('https://numpy.org/doc/stable/', None),
     'pytest': ('https://docs.pytest.org/en/latest/', None),
     'python': ('https://docs.python.org/3/', None),
-    'sphinx': ('http://www.sphinx-doc.org/en/master/', None),
+    'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
     'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+}
+
+# -- Options for napoleon extension ------------------------------------------
+
+napoleon_use_param = True
+napoleon_type_aliases = {
+    'array-like': ':term:`array-like <numpy:array_like>`',
+    'array_like': ':term:`numpy:array_like`',
 }
 
 # -- Options for todo extension ----------------------------------------------
@@ -189,18 +209,11 @@ intersphinx_mapping = {
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
-# Don't add () after function names
-add_function_parentheses = False
 
-# Auto-generate stubs
-autosummary_generate = True
-
-# Number figures and tables
-numfig = True
+# -- Project configuration ---------------------------------------------------
 
 # Content generators
 content_preprocess = ['appendices/reei']
-
 
 def preprocess_content():
     """
