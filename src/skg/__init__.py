@@ -19,8 +19,12 @@ refers to the model function being fitted. Each fitting routine has a
    pow
    weibull_cdf
    nsphere
+   util
 
 .. rubric:: Exported Functions
+
+These functions are available directly in the :py:mod:`skg` namespace in
+addition to the modules that define them.
 
 .. autosummary::
    :toctree: generated/

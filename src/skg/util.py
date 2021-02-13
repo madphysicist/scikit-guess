@@ -13,6 +13,32 @@ __all__ = [
 
 
 def preprocess(x, copy=False, float=False):
+    """
+    Ensure that `x` is a properly formatted numpy array.
+
+    Proper formatting means at least one dimension, and may include
+    optional copying and coersion into a floating point datatype.
+
+    Parameters
+    ----------
+    x : array-like
+        The array to process. If not already a numpy array, it will be
+        converted to one.
+    copy : bool, optional
+        If True, a copy is made regardless of whether `x` is already a
+        numpy array or not. The default is False.
+    float : bool, optional
+        If True, and `x` is not an inexact array already
+        (:py:attr:`numpy.float16`, :py:attr:`numpy.float32`,
+        :py:attr:`numpy.float64`, :py:attr:`numpy.float96`,
+        :py:attr:`numpy.float128`, etc), coerce to be of type
+        :py:attr:`numpy.float_`. Defaults to False.
+
+    Return
+    ------
+    x : ~numpy.ndarray
+        Processed version of the input.
+    """
     if float:
         dtype = x.dtype if hasattr(x, 'dtype') and \
                            issubdtype(x.dtype, inexact) else float_
@@ -24,7 +50,7 @@ def preprocess(x, copy=False, float=False):
 
 def preprocess_pair(x, y, sorted=True, xcopy=False, ycopy=False):
     """
-    Ensures that `x` and `y` are floating point arrays of the same size,
+    Ensure that `x` and `y` are floating point arrays of the same size,
     ranked in increasing order by `x`.
 
     Parameters
@@ -50,7 +76,7 @@ def preprocess_pair(x, y, sorted=True, xcopy=False, ycopy=False):
     Return
     ------
     x, y : ~numpy.ndarray
-        Normalized versions of the inputs.
+        Processed versions of the inputs.
     """
     x = preprocess(x, copy=xcopy, float=True).ravel()
     y = preprocess(y, copy=ycopy, float=True).ravel()
