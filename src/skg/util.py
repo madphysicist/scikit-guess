@@ -3,13 +3,23 @@ Shared utility functions used by the fitting routines.
 """
 
 from numpy import (
-    argsort, array, float_, inexact, issubdtype
+    argsort, array, float_, inexact, issubdtype, __version__ as __np_version__
 )
+from numpy.core.multiarray import normalize_axis_index
+from numpy.lib import NumpyVersion
 
 
 __all__ = [
-    'preprocess', 'preprocess_pair',
+    'moveaxis', 'preprocess', 'preprocess_pair',
 ]
+
+
+if NumpyVersion(__np_version__) >= '1.11.0':
+    from numpy import moveaxis
+else:
+    from numpy import rollaxis
+    def moveaxis(a, start, end):
+        return rollaxis(a, start, normalize_axis_index(end, a.ndim + 1))
 
 
 def preprocess(x, copy=False, float=False):
@@ -61,7 +71,7 @@ def preprocess_pair(x, y, sorted=True, xcopy=False, ycopy=False):
     y : array-like
         The y-values of the data points corresponding to `x`. Must be
         the same size as `x`. Will be converted to floating point and
-        raveled only as necessary. Will be sorted if `x` is sorted.
+        raveled only as necessary. Will be sorted if `x` gets sorted.
     sorted : bool
         Set to True if `x` is already monotonically increasing or
         decreasing. If False, `x` will be sorted into increasing order,

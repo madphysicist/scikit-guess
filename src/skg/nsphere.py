@@ -7,25 +7,11 @@ because of the non-functional nature of n-spheres.
 """
 
 from numpy import empty, sqrt, square
-from numpy import __version__ as __np_version__
-from numpy.lib import NumpyVersion
 from scipy.linalg import lstsq
 
 from .util import preprocess
 
 __all__ = ['nsphere_fit']
-
-
-if NumpyVersion(__np_version__) >= '1.11.0':
-    from numpy import moveaxis
-else:
-    from numpy import rollaxis
-    def moveaxis(a, start, end):
-        if end == -1:
-            end = a.ndim
-        elif end < 0:
-            end += 1
-        return rollaxis(a, start, end)
 
 
 def nsphere_fit(x, axis=-1, scaling=False):
