@@ -51,10 +51,8 @@ def nsphere_fit(x, axis=-1, scaling=False):
     ----------
     - [Coope]_ "\ :ref:`ref-cfblanls`\ "
     """
-    x = preprocess(x, float=True)
-    n = x.shape[axis]
-    if axis not in (-1, x.ndim - 1):
-        x = moveaxis(x, axis, -1)
+    x = preprocess(x, float=True, axis=axis)
+    n = x.shape[-1]
     x = x.reshape(-1, n)
     m = x.shape[0]
 
