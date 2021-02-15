@@ -31,7 +31,7 @@ __all__ = ['anthony_weights', 'ngauss_fit', 'ngauss_from_image']
 
 
 def anthony_weights(noise=None):
-    """
+    r"""
     Returns a function that computes weights for :py:func:`ngauss_fit`
     based on the `noise` standard deviation.
 

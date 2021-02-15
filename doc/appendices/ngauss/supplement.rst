@@ -1,8 +1,8 @@
 .. _ngauss-suplement:
 
-=======================
-Supplementary Materials
-=======================
+===========================================================
+N-Dimensional Generalization of Linearized Gaussian Fitting
+===========================================================
 
 Papers by [Anthony-Granick]_ and [Wan-Wang-Wei-Li-Zhang]_ naturally focus on
 the two-dimensional case of Gaussian fitting presented in image analysis. In
