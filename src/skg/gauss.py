@@ -93,7 +93,7 @@ def gauss_fit(x, y, sorted=True):
     References
     ----------
     - [Jacquelin]_ "\ :ref:`ref-reei`\ ", :ref:`pp. 6-8. <reei1-sec3>`
-    - :ref:`reei-supplement-extended`, :ref:`reei-supplement-gauss3`
+    - :ref:`reei-supplement`, :ref:`reei-supplement-extended`, :ref:`reei-supplement-gauss3`
     """
     x, y = preprocess_pair(x, y, sorted)
 

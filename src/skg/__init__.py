@@ -18,6 +18,7 @@ refers to the model function being fitted. Each fitting routine has a
    gauss
    pow
    weibull_cdf
+   ngauss
    nsphere
    util
 
@@ -35,8 +36,9 @@ addition to the modules that define them.
    gauss_fit
    pow_fit
    weibull_cdf_fit
+   ngauss_fit
+   ngauss_from_image
    nsphere_fit
-   sin_fit
 """
 
 from .exp import exp_fit as exp_fit
@@ -45,6 +47,9 @@ from .gauss_pdf import gauss_pdf_fit as gauss_pdf_fit
 from .gauss import gauss_fit as gauss_fit
 from .pow import pow_fit as pow_fit
 from .weibull_cdf import weibull_cdf_fit as weibull_cdf_fit
+from .ngauss import (
+    ngauss_fit as ngauss_fit, ngauss_from_image as ngauss_from_image
+)
 from .nsphere import nsphere_fit as nsphere_fit
 
 from .version import __version__ as __version__
@@ -52,7 +57,7 @@ from .version import __version__ as __version__
 
 __all__ = [
     'gauss_cdf_fit', 'gauss_pdf_fit', 'gauss_fit', 'exp_fit', 'pow_fit',
-    'weibull_cdf_fit', 'nsphere_fit',
+    'weibull_cdf_fit', 'ngauss_fit', 'ngauss_from_image', 'nsphere_fit',
 ]
 
 

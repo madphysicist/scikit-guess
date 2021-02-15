@@ -1,3 +1,5 @@
+_reei-supplement:
+
 =======================
 Supplementary Materials
 =======================
@@ -271,6 +273,7 @@ Due to limitations in numpy, ``kk`` must be a floating-point datatype for the
 expression ``(-1)**kk`` to work properly. Any negative values in ``kk`` would
 raise ``ValueError: Integers to negative integer powers are not allowed.``
 
+
 .. _sin-step3-mat:
 
 Final Optimization of Sinusoid Once Frequency is Found
@@ -309,6 +312,7 @@ Reference implementation of the code used to generate the various radomized
 figures and tables is shown below, along with brief explanations. The figures
 are regenerated every time the documentation is built, so results will always
 vary slightly.
+
 
 Cumulative Distributions and Medians
 ------------------------------------
