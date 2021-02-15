@@ -219,8 +219,8 @@ def ngauss_from_image(img, weights=None, scaling=True):
         A weighing function must be applied to the data to avoid having
         the low-SNR data dominate the fit. The default is to weight
         the measurements by their intensity, as per
-        _[Wan-Wang-Wei-Li-Zhang]. However, other schemes are possible,
-        such as the one proposed by _[Anthony-Granick]. `weights` can
+        [Wan-Wang-Wei-Li-Zhang]_. However, other schemes are possible,
+        such as the one proposed by [Anthony-Granick]_. `weights` can
         be passed in as an array with the same number of elements as
         `y` (it will be raveled), or a callable that accepts reshaped
         versions of `x` and `y` and returns an array of weights.
