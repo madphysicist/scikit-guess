@@ -106,7 +106,7 @@ def sin_fit(t, y, sorted=True, _debug=False):
         plt.figure()
         p1 = plt.subplot(3, 1, 1)
         plt.vlines(z, 0, 1)
-        plt.vlines(0.5 * (z[breaks[1:]] + z[breaks[1:] + 1]), 0, 1, 'r', ':')
+        plt.vlines(0.5 * (z[breaks[1:]] + z[breaks[:-1] + 1]), 0, 1, 'r', ':')
         plt.scatter(xings, full_like(xings, 0.5), c='m', zorder=10)
         plt.title('Initial grouping')
 
