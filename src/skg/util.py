@@ -48,7 +48,7 @@ def preprocess(x, copy=False, float=False, axis=None):
         :py:attr:`numpy.float_`. Defaults to False.
     axis : int, optional
         If specified, the specified axis is moved to the end of the
-        shape. Default is to return `x` without reshaping.
+        shape. Default is to return `x` with the original dimensions.
 
     Return
     ------
