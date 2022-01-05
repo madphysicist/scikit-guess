@@ -94,6 +94,14 @@ def ngauss_fit(x, y, axis=-1, weights=None, scaling=False):
     [AnthonyGranick]_ and the first of two passes described in
     [Wan-Wang-Wei-Li-Zhang]_.
 
+    A weighing function must be applied to the data to avoid having the
+    low-SNR data dominate the fit. The default is to weight the
+    measurements by their intensity, as per _[Wan-Wang-Wei-Li-Zhang].
+    However, other schemes are possible, such as the one proposed by
+    _[Anthony-Granick]. The latter scheme can be used by passing in a
+    callable returned by :py:func:`anthony_weights` as the `weights`
+    parameter.
+
     Parameters
     ----------
     x : array-like
@@ -108,14 +116,9 @@ def ngauss_fit(x, y, axis=-1, weights=None, scaling=False):
         The axis containing the vectors of x. The dimension of the
         Gaussian is ``x.shape[axis]``. The default is ``-1``.
     weights : array-like or callable, optional
-        A weighing function must be applied to the data to avoid having
-        the low-SNR data dominate the fit. The default is to weight
-        the measurements by their intensity, as per
-        _[Wan-Wang-Wei-Li-Zhang]. However, other schemes are possible,
-        such as the one proposed by _[Anthony-Granick]. `weights` can
-        be passed in as an array with the same number of elements as
-        `y` (it will be raveled), or a callable that accepts reshaped
-        versions of `x` and `y` and returns an array of weights.
+        Either an array with the same number of elements as `y` (it will
+        be raveled), or a callable that accepts reshaped versions of `x`
+        and `y` and returns an array of weights.
     scaling : bool, optional
         If `True`, scale and offset the data to a bounding box of -1 to
         +1 in each axis during computations for numerical stability.
@@ -137,16 +140,16 @@ def ngauss_fit(x, y, axis=-1, weights=None, scaling=False):
     anthony_weights : A function that returns an alternative, noise-specific
         weighting scheme.
 
+    Notes
+    -----
+    Negative and zero weights are discarded from the computation
+    without ever being inserted into the solution matrix.
+
     References
     ----------
     - [Anthony-Granick]_
     - [Wan-Wang-Wei-Li-Zhang]_
     - :ref:`ngauss-suplement`, :ref:`ngauss-supplement-ndim`
-
-    Notes
-    -----
-    Negative and zero weights are discarded from the computation
-    without ever being inserted into the solution matrix.
     """
     x, y = preprocess_npair(x, y, axis, xcopy=False, ycopy=False)
 
