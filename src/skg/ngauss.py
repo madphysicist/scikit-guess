@@ -296,7 +296,6 @@ def model(x, a, mu, sigma, axis=-1):
     x = preprocess(x, float=True, copy=True, axis=axis)
     x -= mu
     arg = einsum('...i,ij,...j', x, inv(sigma), x)
-    square(arg, out=arg)
     arg *= -0.5
     return a * exp(arg)
 
