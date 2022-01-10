@@ -37,8 +37,25 @@ optimal. The main criterion for accuracy is that the result can be used as a
 good initial guess for a non-linear optimization method. Some parameters are
 more significant than others (think frequency of a sine wave). As a consequece,
 some of the algorithms provided by this scikit are good candidates for the
-:meth:`~lmfit.model.Model.guess` methods of corresponding models in
+:py:meth:`~lmfit.model.Model.guess` methods of corresponding models in
 `lmfit`_.
+
+
+---------------
+Historical Note
+---------------
+
+I came across Jean Jacquelin's paper while researching fast exponential
+fitting routines that could be run on enormous dataframes within a limited time
+slot: i.e., stock applications. The subsequent attempt to submit
+`PR #9158 <https://github.com/scipy/scipy/pull/9158>`_ to scipy_ was rejected.
+The maintainers kindly indicated that the correct place for such a function
+would be in an independent scikit rather the main body of scipy. At the same
+time, Matt Newville, the author of lmfit_, noticed the PR, and we briefly
+discussed using the functions of this scikit as the
+:py:meth:`~lmfit.model.Model.guess` methods for the appropriate models. Ever
+since then one of the goals of this package has been to get into a shape that
+is useable by lmfit_.
 
 
 .. include:: /link-defs.rst
